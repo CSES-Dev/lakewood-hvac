@@ -10,46 +10,49 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ["Chivo", "sans-serif"],
+            },
             colors: {
-                background: "hsl(var(--background))",
-                foreground: "hsl(var(--foreground))",
+                background: "#FFFFFF",
+                foreground: "#10383A",
                 card: {
-                    DEFAULT: "hsl(var(--card))",
-                    foreground: "hsl(var(--card-foreground))",
+                    DEFAULT: "#FFFFFF",
+                    foreground: "#10383A",
                 },
                 popover: {
-                    DEFAULT: "hsl(var(--popover))",
-                    foreground: "hsl(var(--popover-foreground))",
+                    DEFAULT: "#FFFFFF",
+                    foreground: "#10383A",
                 },
                 primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
+                    DEFAULT: "#10383A",
+                    foreground: "#FFFFFF",
                 },
                 secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
+                    DEFAULT: "#FFFFFF",
+                    foreground: "#10383A",
                 },
                 muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
+                    DEFAULT: "#F8F8F8",
+                    foreground: "#666666",
                 },
                 accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
+                    DEFAULT: "#10383A",
+                    foreground: "#FFFFFF",
                 },
                 destructive: {
-                    DEFAULT: "hsl(var(--destructive))",
-                    foreground: "hsl(var(--destructive-foreground))",
+                    DEFAULT: "#D32F2F",
+                    foreground: "#FFFFFF",
                 },
-                border: "hsl(var(--border))",
-                input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
+                border: "#E0E0E0",
+                input: "#FFFFFF",
+                ring: "#10383A",
                 chart: {
-                    "1": "hsl(var(--chart-1))",
-                    "2": "hsl(var(--chart-2))",
-                    "3": "hsl(var(--chart-3))",
-                    "4": "hsl(var(--chart-4))",
-                    "5": "hsl(var(--chart-5))",
+                    1: "#10383A",
+                    2: "#14504A",
+                    3: "#187861",
+                    4: "#1C9F79",
+                    5: "#20C691",
                 },
             },
             borderRadius: {

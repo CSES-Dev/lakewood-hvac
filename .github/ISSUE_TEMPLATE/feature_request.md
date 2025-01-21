@@ -1,13 +1,13 @@
 ---
 name: Feature request
 about: Features to be implemented for this project
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 ### Acceptance Criteria
+
 **As a:**
 
 **I want:**
@@ -21,5 +21,6 @@ assignees: ''
 **Split from:**
 
 ### Acceptance Criteria
-- [ ] Criteria 1
-- [ ] Criteria 2
+
+-   [ ] Criteria 1
+-   [ ] Criteria 2
