@@ -14,7 +14,7 @@ export default {
                 sans: ["Chivo", "sans-serif"],
             },
             colors: {
-                background: "#FFFFFF",
+                background: "#2C2C2C",
                 foreground: "#10383A",
                 card: {
                     DEFAULT: "#FFFFFF",
@@ -45,7 +45,6 @@ export default {
                     foreground: "#FFFFFF",
                 },
                 border: "#E0E0E0",
-                input: "#2C2C2CBF",
                 ring: "#10383A",
                 chart: {
                     1: "#10383A",
@@ -54,6 +53,11 @@ export default {
                     4: "#1C9F79",
                     5: "#20C691",
                 },
+                input: {
+                    DEFAULT: "#2C2C2CBF",
+                    background: "#FFFDF6",
+                },
+                button: "#4F6E4E",
             },
             borderRadius: {
                 lg: "var(--radius)",
