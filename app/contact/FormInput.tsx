@@ -21,7 +21,7 @@ export default function FormInput({
         <div className="flex flex-col mt-5 w-full max-md:max-w-full">
             <label
                 htmlFor={inputId}
-                className="text-input-background max-md:max-w-full text-[24px] font-medium"
+                className="text-input-background max-md:max-w-full text-2xl font-medium"
             >
                 {label}
             </label>
@@ -32,7 +32,7 @@ export default function FormInput({
                     onChange={(e) => {
                         onChange(e.target.value); // Added braces to make it an explicit block
                     }}
-                    className="gap-2.5 px-7 text-[24px] pt-4 pb-60 mt-5 w-full font-light rounded-2xl bg-input-background min-h-[280px] text-input max-md:px-5 max-md:pb-24 max-md:max-w-full"
+                    className="gap-2.5 px-7 text-2xl pt-4 pb-60 mt-5 w-full font-light rounded-2xl bg-input-background min-h-[280px] text-input placeholder-input max-md:px-5 max-md:pb-24 max-md:max-w-full"
                     placeholder={label}
                 />
             ) : (
@@ -43,7 +43,7 @@ export default function FormInput({
                     onChange={(e) => {
                         onChange(e.target.value); // Added braces to make it an explicit block
                     }}
-                    className="gap-2.5 self-stretch text-[24px] px-7 py-4 mt-5 w-full font-light rounded-2xl bg-input-background text-input max-md:px-5 max-md:max-w-full"
+                    className="gap-2.5 self-stretch text-2xl px-7 py-4 mt-5 w-full font-light rounded-2xl bg-input-background text-input placeholder-input max-md:px-5 max-md:max-w-full"
                     placeholder={label}
                 />
             )}

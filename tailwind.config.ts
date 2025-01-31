@@ -57,6 +57,7 @@ export default {
                     DEFAULT: "#2C2C2CBF",
                     background: "#FFFDF6",
                 },
+                header: "#F0F0F0",
                 button: "#4F6E4E",
             },
             borderRadius: {
