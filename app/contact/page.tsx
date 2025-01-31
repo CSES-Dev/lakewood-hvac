@@ -4,13 +4,13 @@ import ContactForm from "./ContactForm";
 export default function ContactPage() {
     return (
         <div className="flex overflow-hidden flex-col bg-background">
-            <main className="flex flex-col px-16 mt-16 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
-                <h1 className="flex flex-col w-full text-8xl font-medium leading-none max-w-[1120px] text-[#FFFDF6] max-md:max-w-full max-md:text-4xl">
+            <main className="flex flex-col px-16 my-16 w-full max-md:px-5 max-md:my-10 max-md:max-w-full">
+                <h1 className="flex flex-col w-full text-8xl font-medium leading-none max-w-[1120px] text-header max-md:max-w-full max-md:text-6xl">
                     Contact Us
-                    <div className="flex mt-8 max-w-full min-h-[100px] w-[100px]" />
+                    <div className="flex mt-8 max-w-full min-h-[100px] max-md:min-h-[5px]" />
                 </h1>
 
-                <div className="z-10 mt-0 w-full max-md:max-w-full">
+                <div className="z-10 w-full max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
                             <ContactForm />

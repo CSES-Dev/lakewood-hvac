@@ -18,7 +18,7 @@ export default function ContactForm() {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col w-full max-md:max-w-full">
-            <div className="flex grow gap-2.5 items-center px-9 py-8 w-full text-2xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:mt-10">
+            <div className="flex grow gap-2.5 items-center px-9 py-4 w-full text-2xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
                 <div className="flex flex-col self-stretch my-auto min-w-[240px] w-[595px] max-md:max-w-full">
                     <FormInput
                         label="Full Name"
@@ -53,7 +53,7 @@ export default function ContactForm() {
                     />
                     <button
                         type="submit"
-                        className="gap-2.5 self-stretch px-7 py-4 mt-8 w-full rounded-2xl bg-button text-input-background max-md:px-5 max-md:max-w-full"
+                        className="gap-2.5 self-stretch px-7 py-4 mt-8 mb-4 w-full rounded-2xl bg-button text-input-background max-md:px-5 max-md:max-w-full"
                     >
                         Send Message
                     </button>
