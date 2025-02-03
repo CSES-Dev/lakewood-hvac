@@ -14,8 +14,10 @@ export default {
                 sans: ["Chivo", "sans-serif"],
             },
             colors: {
-                background: "#FFFFFF",
-                foreground: "#10383A",
+                // background: "#FFFFFF",
+                background: "#232323",
+                // foreground: "#10383A",
+                foreground: "#4F6E4E",
                 card: {
                     DEFAULT: "#FFFFFF",
                     foreground: "#10383A",
