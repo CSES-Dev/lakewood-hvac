@@ -1,62 +1,77 @@
-import Head from "next/head";
+"use client";
+
 import React from "react";
+import Landing from "./Landing";
+import Reviews from "./Reviews";
+import Image from "next/image";
 import CirclesSection from "./sections/CirclesSection";
 
 export default function Page() {
     return (
-        <>
-            <Head>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1, viewport-fit=cover"
-                ></meta>
-            </Head>
-            <div className="w-screen" style={{ background: "#232323" }}>
-                {/* Landing - Brandon  */}
-                {/* <div className="bg-green-500 relative h-screen">
-                    <div className="absolute text-white bottom-0 left-0 max-w-[70rem]  pl-16 pb-12">
-                        <h1 className="text-[5.625rem] font-bold leading-[1.16]">
-                            Lakewood Heating and Air Conditioning Inc.
-                        </h1>
-                        <h2 className="text-[2.5rem]">
-                            Your friendly neighborhood air conditioning company!
-                        </h2>
+        <div className="bg-background">
+            <Landing></Landing>
+            {/* Services */}
+
+            <div>
+                {/* Squares - Jesus*/}
+                <div className="px-4 py-8 sm:p-8 mx-auto">
+                    <h2 className="text-4xl text-center font-bold mb-8 text-primary-foreground">
+                        Professional Work, With Professional Services
+                    </h2>
+                    {/* Images */}
+                    <div className="flex flex-wrap lg:flex-nowrap w-full p-4 gap-4 justify-center">
+                        <div className="max-w-xs relative rounded-lg overflow-hidden">
+                            <Image
+                                src="/homePage/AC.png"
+                                alt="Air Conditioning"
+                                className="w-full h-full object-cover"
+                                fill={true}
+                            />
+                            <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
+                                Air Conditioning
+                            </div>
+                        </div>
+                        <div className="max-w-xs relative rounded-lg overflow-hidden">
+                            <Image
+                                src="/homePage/Heating.png"
+                                alt="Air Conditioning"
+                                className="w-full h-full object-cover"
+                                fill={true}
+                            />
+                            <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
+                                Heating
+                            </div>
+                        </div>
+                        <div className="max-w-xs relative rounded-lg overflow-hidden">
+                            <Image
+                                src="/homePage/Thermostats.png"
+                                alt="Air Conditioning"
+                                className="w-full h-full object-cover"
+                                fill={true}
+                            />
+                            <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
+                                Thermostats
+                            </div>
+                        </div>
+                        <div className="max-w-xs relative rounded-lg overflow-hidden">
+                            <Image
+                                src="/homePage/HeatPumps.png"
+                                alt="Air Conditioning"
+                                className="w-full h-full object-cover"
+                                fill={true}
+                            />
+                            <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
+                                HeatPumps
+                            </div>
+                        </div>
                     </div>
-                </div> */}
-                {/* Services */}
-                <div>
-                    {/* Squares - Jesus*/}
-                    <div></div>
-                    {/* Circles - Brandon*/}
-                    <CirclesSection />
                 </div>
-                {/* What our clients say - Jesus*/}
-                <div className="p-8">
-                    <div className="">
-                        <h2
-                            className="text-4xl text-center font-bold mb-8 "
-                            style={{ color: "#F0F0F0" }}
-                        >
-                            See What Our Clients Say
-                        </h2>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <button
-                            className="w-12 h-12 rounded-full text-4xl"
-                            style={{ background: "#4F6E4E", color: "#F0F0F0" }}
-                        >
-                            &lt;
-                        </button>
-                        <div className="w-full">asd</div>
-                        <button
-                            className="w-12 h-12 rounded-full text-4xl"
-                            style={{ background: "#4F6E4E", color: "#F0F0F0" }}
-                        >
-                            &gt;
-                        </button>
-                    </div>
-                </div>
+                {/* Circles - Brandon*/}
+                <div></div>
             </div>
-        </>
+            <CirclesSection />
+            {/* What our clients say - Jesus*/}
+            <Reviews></Reviews>
+        </div>
     );
 }
