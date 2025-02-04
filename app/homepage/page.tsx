@@ -23,6 +23,7 @@ export default function Page() {
                                 src="/homePage/AC.png"
                                 alt="Air Conditioning"
                                 className="w-full h-full object-cover"
+                                
                             />
                             <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
                                 Air Conditioning
@@ -33,6 +34,7 @@ export default function Page() {
                                 src="/homePage/Heating.png"
                                 alt="Air Conditioning"
                                 className="w-full h-full object-cover"
+                                
                             />
                             <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
                                 Heating
@@ -43,6 +45,7 @@ export default function Page() {
                                 src="/homePage/Thermostats.png"
                                 alt="Air Conditioning"
                                 className="w-full h-full object-cover"
+                                
                             />
                             <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
                                 Thermostats
@@ -53,6 +56,7 @@ export default function Page() {
                                 src="/homePage/HeatPumps.png"
                                 alt="Air Conditioning"
                                 className="w-full h-full object-cover"
+                                
                             />
                             <div className="absolute bottom-0 w-full bg-white/80 text-black text-sm font-semibold p-2">
                                 HeatPumps
