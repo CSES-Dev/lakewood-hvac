@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import NavigationBar from "@/components/ui/NavigationBar";
-import Footer from "@/components/ui/footer";
+import Head from "next/head";
+
 import "./globals.css";
 
 const geistSans = localFont({
@@ -27,6 +27,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <Head>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1, viewport-fit=cover"
+                />
+            </Head>
+
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <NavigationBar />
                 {children}
