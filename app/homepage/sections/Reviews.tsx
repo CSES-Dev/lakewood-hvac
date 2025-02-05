@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ReviewItem from "../components/ReviewItem";
 
 const reviews = [
     {
@@ -37,7 +36,7 @@ const reviews = [
 export default function Reviews() {
     const [startIndex, setStartIndex] = useState(0);
     const [animationClass, setAnimationClass] = useState("");
-    const itemsPerPage = 2;
+    const itemsPerPage = 3;
 
     // Handle Previous Click
     const prevReview = () => {
@@ -73,8 +72,8 @@ export default function Reviews() {
     }, [startIndex]);
 
     return (
-        <div className="px-4 py-8 sm:p-8 mx-auto">
-            <h2 className="text-4xl text-center font-bold mb-8 text-primary-foreground">
+        <div className="px-4 py-8 sm:p-8 mx-auto overflow-y-hidden">
+            <h2 className="text-5xl text-left font-bold mb-8 text-primary-foreground">
                 See What Our Clients Say
             </h2>
 
@@ -86,18 +85,29 @@ export default function Reviews() {
                 >
                     &lt;
                 </button>
-                {/* ReviewItems */}
+
+                {/* Testimonials Wrapper - Scrollable */}
                 <div className="w-full">
                     <div className="w-full flex flex-col lg:flex-row">
                         {reviews
                             .slice(startIndex, startIndex + itemsPerPage)
                             .map((review, index) => (
-                                <ReviewItem key={index} text={review.text} author={review.author} animation={animationClass}></ReviewItem>
+                                <div
+                                    key={index}
+                                    className={`flex flex-col m-4 p-4 lg:w-full bg-primary-foreground text-black rounded-lg min-h-40 shadow-md transform ${animationClass} transition-all duration-300`}
+                                >
+                                    <div className="flex-grow overflow-hidden text-ellipsis line-clamp-4">
+                                        {review.text}
+                                    </div>
+                                    <hr className="my-2" />
+                                    <div className="font-semibold">{review.author}</div>
+                                </div>
                             ))}
                     </div>
                 </div>
+
                 {/* Right Button */}
-                <button 
+                <button
                     onClick={nextReview}
                     className="w-12 h-12 rounded-full text-4xl bg-foreground text-primary-foreground flex items-center justify-center transition hover:scale-110"
                 >
