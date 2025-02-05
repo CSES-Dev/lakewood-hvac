@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Landing from "./Landing";
-import Reviews from "./Reviews";
+import Landing from "./sections/Landing";
+import Reviews from "./sections/Reviews";
 import CirclesSection from "./sections/CirclesSection";
 
 export default function Page() {
