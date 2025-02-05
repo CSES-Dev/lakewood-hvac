@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import SquareItem from "../components/SquareItem";
 
 const squareData = [
@@ -30,8 +31,8 @@ export default function Squares() {
             </h2>
             {/* Images */}
             <div className="flex flex-wrap lg:flex-nowrap w-full p-4 gap-4 justify-center">
-                {squareData.map(((data, index) => (
-                    <SquareItem key={index} description={data.description} source={data.source}></SquareItem>
+                {squareData.map((data => (
+                    <SquareItem description={data.description} source={data.source}></SquareItem>
                 )))}
             </div>
         </div>
