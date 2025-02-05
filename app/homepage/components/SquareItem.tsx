@@ -1,6 +1,6 @@
 const SquareItem = ({ description, source }: { description: string, source: string }) => {
     return (
-        <div className="max-w-xs relative rounded-lg overflow-hidden">
+        <div className="max-w-xs relative rounded-xl overflow-hidden transform transition-transform duration-400 ease-in-out hover:scale-105 hover:brightness-105">
             <img
                 src={source}
                 alt="Air Conditioning"
