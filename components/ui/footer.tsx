@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-[#4F6E4E] text-[#F0F0F0] py-8 border-t border-[#4F6E4E] w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row items-center sm:h-[30vh]">
+        <footer className="bg-primary text-[#F0F0F0] py-8 border-t border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row items-center sm:h-[30vh]">
             <div className="max-w-screen-lg mx-auto flex flex-col sm:flex-row items-center justify-center w-full h-full">
                 <Image
                     src="/lakewoodlogo.png"
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
                                 width={29}
                                 height={29}
                                 style={{ flexShrink: 0 }}
-                                className="w-[2vw] h-auto"
+                                className="w-[2vw] h-auto min-w-[14px]"
                             />
                             <a href={`tel:5626336412`}>562-633-6412</a>
                         </p>
@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
                                 width={29}
                                 height={29}
                                 style={{ flexShrink: 0 }}
-                                className="w-[2vw] h-auto"
+                                className="w-[2vw] h-auto min-w-[14px]"
                             />
                             <a href={`mailto:lakewooodhvac90712@gmail.com`}>
                                 lakewooodhvac90712@gmail.com
@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
                                 width={29}
                                 height={29}
                                 style={{ flexShrink: 0 }}
-                                className="w-[2vw] h-auto"
+                                className="w-[2vw] h-auto min-w-[14px]"
                             />
                             <a>Mondays-Saturdays: 8AM-8PM</a>
                         </p>
