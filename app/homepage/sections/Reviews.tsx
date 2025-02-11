@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ReviewItem from "../components/ReviewItem";
 
 const reviews = [
     {
@@ -36,7 +37,7 @@ const reviews = [
 export default function Reviews() {
     const [startIndex, setStartIndex] = useState(0);
     const [animationClass, setAnimationClass] = useState("");
-    const itemsPerPage = 3;
+    const itemsPerPage = 2;
 
     // Handle Previous Click
     const prevReview = () => {
@@ -85,27 +86,21 @@ export default function Reviews() {
                 >
                     &lt;
                 </button>
-
-                {/* Testimonials Wrapper - Scrollable */}
+                {/* ReviewItems */}
                 <div className="w-full">
                     <div className="w-full flex flex-col lg:flex-row">
                         {reviews
                             .slice(startIndex, startIndex + itemsPerPage)
                             .map((review, index) => (
-                                <div
+                                <ReviewItem
                                     key={index}
-                                    className={`flex flex-col m-4 p-4 lg:w-full bg-primary-foreground text-black rounded-lg min-h-40 shadow-md transform ${animationClass} transition-all duration-300`}
-                                >
-                                    <div className="flex-grow overflow-hidden text-ellipsis line-clamp-4">
-                                        {review.text}
-                                    </div>
-                                    <hr className="my-2" />
-                                    <div className="font-semibold">{review.author}</div>
-                                </div>
+                                    text={review.text}
+                                    author={review.author}
+                                    animation={animationClass}
+                                ></ReviewItem>
                             ))}
                     </div>
                 </div>
-
                 {/* Right Button */}
                 <button
                     onClick={nextReview}
