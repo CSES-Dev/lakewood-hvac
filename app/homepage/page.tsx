@@ -3,6 +3,7 @@
 import React from "react";
 import Landing from "./Landing";
 import Reviews from "./Reviews";
+import CirclesSection from "./sections/CirclesSection";
 
 export default function Page() {
     return (
@@ -12,7 +13,7 @@ export default function Page() {
             <div>
                 {/* Squares - Jesus*/}
                 <div className="px-4 py-8 sm:p-8 mx-auto">
-                    <h2 className="text-4xl text-center font-bold mb-8 text-primary-foreground">
+                    <h2 className="text-5xl text-left font-bold mb-8 text-primary-foreground ">
                         Professional Work, With Professional Services
                     </h2>
                     {/* Images */}
