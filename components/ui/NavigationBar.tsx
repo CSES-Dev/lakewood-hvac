@@ -44,7 +44,7 @@ export default function NavigationBar() {
                     </button>
                 </Link>
                 <button className="text-white flex items-center justify-center h-[40px]">
-                    <Menu className="h-full w-auto" color="#FFFDF5"/>
+                    <Menu className="h-full w-auto" color="#FFFDF5" />
                 </button>
             </div>
         </header>
