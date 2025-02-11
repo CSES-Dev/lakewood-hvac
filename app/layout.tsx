@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Footer from "@/components/ui/footer";
 
 import "./globals.css";
 
@@ -28,6 +29,9 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 {children}
+                <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center w-full">
+                    <Footer />
+                </footer>
             </body>
         </html>
     );
