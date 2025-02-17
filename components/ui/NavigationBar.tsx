@@ -1,6 +1,9 @@
+"use client";
+
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { NavigationLink } from "@/types/navigation";
 
 export const navigationLinks: NavigationLink[] = [
@@ -10,14 +13,20 @@ export const navigationLinks: NavigationLink[] = [
 ];
 
 export default function NavigationBar() {
+    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const closeMenu = () => {
+        setMobileMenuOpen(false);
+    };
+
     return (
-        <header className="flex justify-between items-center px-6 py-4 w-full h-auto text-xl font-medium bg-[#1E1E1E] text-[#F0F0F0]">
+        <header className="flex justify-between items-center px-6 pt-4 pb-6 w-full h-auto text-xl font-medium bg-[#1E1E1E] text-[#F0F0F0]">
             <Link href="/" className="h-[8vh] md:h-[12vh]">
                 <Image
-                    src="/logo.png"
+                    src="/lakewoodlogo.png"
                     alt="Lakewood HVAC"
-                    width={465}
-                    height={137}
+                    width={266}
+                    height={149}
                     className="h-full w-auto object-contain"
                 />
             </Link>
@@ -43,9 +52,42 @@ export default function NavigationBar() {
                         Schedule Service
                     </button>
                 </Link>
-                <button className="text-white flex items-center justify-center h-[40px]">
-                    <Menu className="h-full w-auto" color="#FFFDF5" />
+                <button
+                    className="text-white flex items-center justify-center h-[40px]"
+                    onClick={() => {
+                        setMobileMenuOpen(true);
+                    }}
+                >
+                    <Menu className="ml-1 h-full w-auto" color="#FFFDF5" />
                 </button>
+            </div>
+
+            {/* Mobile Menu */}
+            <div
+                className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-500 ${
+                    isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+                onClick={closeMenu}
+            >
+                <div
+                    className={`fixed right-0 top-0 h-full w-[70%] bg-[#1E1E1E] text-[#F0F0F0] shadow-lg flex flex-col pl-10 pt-8 transition-transform duration-500 ${
+                        isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                >
+                    {navigationLinks.map((item) => (
+                        <Link
+                            key={item.label}
+                            href={item.href}
+                            className="mb-5 text-2xl"
+                            onClick={closeMenu}
+                        >
+                            {item.label}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </header>
     );

@@ -14,7 +14,8 @@ test("Navbar should contain expected links", async ({ page }) => {
 
     await Promise.all(
         navigationLinks.map(async (navigationLink) => {
-            const linkElement = navbar.locator(`text=${navigationLink.label}`);
+            // Looks for desktop link first
+            const linkElement = navbar.locator(`text=${navigationLink.label}`).first();
 
             await expect(linkElement).toBeVisible();
             await expect(linkElement).toHaveAttribute("href", navigationLink.href);
