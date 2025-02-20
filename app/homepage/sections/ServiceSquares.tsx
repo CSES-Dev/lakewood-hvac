@@ -1,6 +1,6 @@
 "use client";
 
-import SquareItem from "../components/SquareItem";
+import ServiceItem from "../components/ServiceItem";
 
 const squareData = [
     {
@@ -17,11 +17,11 @@ const squareData = [
     },
     {
         source: "/homePage/HeatPumps.png",
-        description: "HeatPumps",
+        description: "Heat Pumps",
     }
 ];
 
-export default function Squares() {
+export default function ServiceSquares() {
 
     return (
         <div className="px-4 py-8 sm:p-8 mx-auto">
@@ -29,9 +29,9 @@ export default function Squares() {
                 Professional Work, With Professional Services
             </h2>
             {/* Images */}
-            <div className="flex flex-wrap lg:flex-nowrap w-full p-4 gap-4 justify-center">
+            <div className="flex flex-wrap lg:flex-nowrap w-full p-4 gap-8 justify-center">
                 {squareData.map(((data, index) => (
-                    <SquareItem key={index} description={data.description} source={data.source}></SquareItem>
+                    <ServiceItem key={index} description={data.description} source={data.source}></ServiceItem>
                 )))}
             </div>
         </div>

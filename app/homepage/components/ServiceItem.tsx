@@ -1,6 +1,6 @@
-const SquareItem = ({ description, source }: { description: string, source: string }) => {
+const ServiceItem = ({ description, source }: { description: string, source: string }) => {
     return (
-        <div className="max-w-xs relative rounded-xl overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105 hover:brightness-105 group ">
+        <div className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 relative rounded-xl overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105 hover:brightness-105 group">
             <img
                 src={source}
                 alt="Air Conditioning"
@@ -14,4 +14,4 @@ const SquareItem = ({ description, source }: { description: string, source: stri
     );
 };
 
-export default SquareItem;
+export default ServiceItem;
