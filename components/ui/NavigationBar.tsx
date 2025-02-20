@@ -38,7 +38,7 @@ export default function NavigationBar() {
                         {item.label}
                     </Link>
                 ))}
-                <Link href="/schedule">
+                <Link href="/contact">
                     <button className="px-4 py-3 rounded-2xl cursor-pointer bg-[#4F6E4E] text-[#FFFDF5]">
                         Schedule Service
                     </button>
@@ -47,7 +47,7 @@ export default function NavigationBar() {
 
             {/* Mobile */}
             <div className="md:hidden flex items-center gap-3">
-                <Link href="/schedule">
+                <Link href="/contact">
                     <button className="px-3 py-2 rounded-xl bg-[#4F6E4E] text-[#FFFDF5] text-sm">
                         Schedule Service
                     </button>
