@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import NavigationBar from "@/components/ui/NavigationBar";
 import Footer from "@/components/ui/footer";
-
 import "./globals.css";
 
 const geistSans = localFont({
@@ -28,6 +28,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                <NavigationBar />
                 {children}
                 <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center w-full">
                     <Footer />
