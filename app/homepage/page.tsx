@@ -5,6 +5,7 @@ import Landing from "./sections/Landing";
 import Reviews from "./sections/Reviews";
 import CirclesSection from "./sections/CirclesSection";
 import Squares from "./sections/Squares";
+import ScheduleService from "./sections/ScheduleService";
 
 export default function Page() {
     return (
@@ -13,6 +14,7 @@ export default function Page() {
             <Squares></Squares>
             <CirclesSection></CirclesSection>
             <Reviews></Reviews>
+            <ScheduleService></ScheduleService>
         </div>
     );
 }
