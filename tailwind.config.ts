@@ -14,7 +14,7 @@ export default {
                 sans: ["Chivo", "sans-serif"],
             },
             colors: {
-                background: "#FFFFFF",
+                background: "#2C2C2C",
                 foreground: "#10383A",
                 card: {
                     DEFAULT: "#FFFFFF",
@@ -25,7 +25,7 @@ export default {
                     foreground: "#10383A",
                 },
                 primary: {
-                    DEFAULT: "#10383A",
+                    DEFAULT: "#4E6E4D",
                     foreground: "#FFFFFF",
                 },
                 secondary: {
