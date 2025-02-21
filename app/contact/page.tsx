@@ -3,7 +3,7 @@ import ContactForm from "./ContactForm";
 export default function ContactPage() {
     return (
         <div className="flex overflow-hidden flex-col bg-background">
-            <main className="flex flex-col px-16 w-full mb-16 max-md:px-5 max-md:max-w-full">
+            <main className="flex flex-col px-16 w-full mb-20 max-md:px-5 max-md:max-w-full">
                 <h1 className="flex flex-col my-16 w-full text-8xl font-medium leading-none text-header max-md:my-6 max-md:text-6xl">
                     Contact Us
                 </h1>
