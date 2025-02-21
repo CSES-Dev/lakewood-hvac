@@ -20,7 +20,7 @@ export default function FormInput({
     const inputId = `${label.toLowerCase().replace(/\s+/g, "-")}-input`;
 
     return (
-        <div className="flex flex-col mt-5 w-full max-md:max-w-full">
+        <div className="flex flex-col mt-5 w-full">
             <label
                 htmlFor={inputId}
                 className="text-input-background max-md:max-w-full text-md font-medium"

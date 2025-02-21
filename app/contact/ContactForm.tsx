@@ -12,12 +12,12 @@ export default function ContactForm() {
         message: "",
     });
 
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const newErrors: { [key: string]: string } = {};
+
+        const newErrors: Record<string, string> = {};
 
         // Full Name validation
         if (!formData.fullName) {
@@ -48,7 +48,7 @@ export default function ContactForm() {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col w-full max-md:max-w-full">
             <div className="flex grow gap-2.5 items-center px-9 py-4 w-full text-xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
-                <div className="flex flex-col self-stretch my-auto min-w-[240px] w-[595px] max-md:max-w-full">
+                <div className="flex flex-col self-stretch my-auto w-full max-md:max-w-full">
                     <FormInput
                         label="Full Name"
                         value={formData.fullName}
