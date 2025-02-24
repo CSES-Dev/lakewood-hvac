@@ -73,7 +73,7 @@ export default function Reviews() {
     }, [startIndex]);
 
     return (
-        <div className="px-4 py-8 sm:p-8 mx-auto">
+        <div className="px-4 py-8 sm:p-8 mx-auto overflow-x-hidden">
             <h2 className="text-4xl text-center font-bold mb-8 text-primary-foreground">
                 See What Our Clients Say
             </h2>
@@ -92,12 +92,17 @@ export default function Reviews() {
                         {reviews
                             .slice(startIndex, startIndex + itemsPerPage)
                             .map((review, index) => (
-                                <ReviewItem key={index} text={review.text} author={review.author} animation={animationClass}></ReviewItem>
+                                <ReviewItem
+                                    key={index}
+                                    text={review.text}
+                                    author={review.author}
+                                    animation={animationClass}
+                                ></ReviewItem>
                             ))}
                     </div>
                 </div>
                 {/* Right Button */}
-                <button 
+                <button
                     onClick={nextReview}
                     className="w-12 h-12 rounded-full text-4xl bg-foreground text-primary-foreground flex items-center justify-center transition hover:scale-110"
                 >
