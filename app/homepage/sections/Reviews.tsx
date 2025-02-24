@@ -73,7 +73,7 @@ export default function Reviews() {
     }, [startIndex]);
 
     return (
-        <div className="px-4 py-8 sm:p-8 sm:pb-16 mx-auto overflow-y-hidden">
+        <div className="px-4 py-4 sm:px-8 sm:py-8 md:px-16 md:py-16 lg:px-20 lg:py-20 mx-auto overflow-y-hidden overflow-x-hidden">
             <h2 className="text-5xl text-left font-bold mb-8 text-primary-foreground">
                 See What Our Clients Say
             </h2>
