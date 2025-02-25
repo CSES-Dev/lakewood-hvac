@@ -92,12 +92,17 @@ export default function Reviews() {
                         {reviews
                             .slice(startIndex, startIndex + itemsPerPage)
                             .map((review, index) => (
-                                <ReviewItem key={index} text={review.text} author={review.author} animation={animationClass}></ReviewItem>
+                                <ReviewItem
+                                    key={index}
+                                    text={review.text}
+                                    author={review.author}
+                                    animation={animationClass}
+                                ></ReviewItem>
                             ))}
                     </div>
                 </div>
                 {/* Right Button */}
-                <button 
+                <button
                     onClick={nextReview}
                     className="w-12 h-12 rounded-full text-4xl bg-foreground text-primary-foreground flex items-center justify-center transition hover:scale-110"
                 >

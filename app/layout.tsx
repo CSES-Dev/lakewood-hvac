@@ -1,8 +1,8 @@
-import Footer from "@/components/ui/footer";
-import NavigationBar from "@/components/ui/NavigationBar";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Head from "next/head";
+import NavigationBar from "@/components/ui/NavigationBar";
+import Footer from "@/components/ui/footer";
 
 import "./globals.css";
 
