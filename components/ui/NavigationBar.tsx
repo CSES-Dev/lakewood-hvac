@@ -58,7 +58,7 @@ export default function NavigationBar() {
                         setMobileMenuOpen(true);
                     }}
                 >
-                    <Menu className="ml-1 h-full w-auto" color="#FFFDF5" />
+                    <Menu className="h-full w-auto" color="#FFFDF5" />
                 </button>
             </div>
 
