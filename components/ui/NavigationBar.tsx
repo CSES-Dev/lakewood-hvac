@@ -20,7 +20,7 @@ export default function NavigationBar() {
     };
 
     return (
-        <header className="flex justify-between items-center px-6 pt-4 pb-6 w-full h-auto text-xl font-medium bg-[#1E1E1E] text-[#F0F0F0]">
+        <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 pt-4 pb-6 h-auto text-xl font-medium bg-[#1E1E1E] text-[#F0F0F0]">
             <Link href="/" className="h-[8vh] md:h-[12vh]">
                 <Image
                     src="/lakewoodlogo.png"
