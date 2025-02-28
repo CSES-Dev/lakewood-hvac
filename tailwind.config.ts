@@ -14,30 +14,30 @@ export default {
                 sans: ["Chivo", "sans-serif"],
             },
             colors: {
-                background: "#FFFFFF",
-                foreground: "#10383A",
+                background: "#232323",
+                foreground: "#4F6E4E",
                 card: {
                     DEFAULT: "#FFFFFF",
-                    foreground: "#10383A",
+                    foreground: "#4F6E4E",
                 },
                 popover: {
                     DEFAULT: "#FFFFFF",
-                    foreground: "#10383A",
+                    foreground: "#4F6E4E",
                 },
                 primary: {
-                    DEFAULT: "#10383A",
+                    DEFAULT: "#4F6E4E",
                     foreground: "#FFFFFF",
                 },
                 secondary: {
                     DEFAULT: "#FFFFFF",
-                    foreground: "#10383A",
+                    foreground: "#4F6E4E",
                 },
                 muted: {
                     DEFAULT: "#F8F8F8",
                     foreground: "#666666",
                 },
                 accent: {
-                    DEFAULT: "#10383A",
+                    DEFAULT: "#4F6E4E",
                     foreground: "#FFFFFF",
                 },
                 destructive: {
@@ -46,9 +46,9 @@ export default {
                 },
                 border: "#E0E0E0",
                 input: "#FFFFFF",
-                ring: "#10383A",
+                ring: "#4F6E4E",
                 chart: {
-                    1: "#10383A",
+                    1: "#4F6E4E",
                     2: "#14504A",
                     3: "#187861",
                     4: "#1C9F79",
