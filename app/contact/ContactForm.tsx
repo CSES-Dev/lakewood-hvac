@@ -1,4 +1,4 @@
-"use client";
+"use client"; // This marks the file as a client component
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ export default function ContactForm() {
     
     const [showConfirmation, setShowConfirmation] = useState(false);
 
+    // Remove the 'async' here
     const onSubmit = (data: ContactFormData) => {
         console.log("Form submitted!", data);
         setShowConfirmation(true);
