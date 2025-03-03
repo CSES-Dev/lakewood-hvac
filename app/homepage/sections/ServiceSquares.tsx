@@ -18,11 +18,10 @@ const squareData = [
     {
         source: "/homePage/HeatPumps.png",
         description: "Heat Pumps",
-    }
+    },
 ];
 
 export default function ServiceSquares() {
-
     return (
         <div className="px-4 py-8 sm:p-8 mx-auto">
             <h2 className="text-4xl text-center font-medium mb-8 text-primary-foreground">
@@ -30,9 +29,13 @@ export default function ServiceSquares() {
             </h2>
             {/* Images */}
             <div className="flex flex-wrap lg:flex-nowrap w-full p-4 gap-8 justify-center">
-                {squareData.map(((data, index) => (
-                    <ServiceItem key={index} description={data.description} source={data.source}></ServiceItem>
-                )))}
+                {squareData.map((data, index) => (
+                    <ServiceItem
+                        key={index}
+                        description={data.description}
+                        source={data.source}
+                    ></ServiceItem>
+                ))}
             </div>
         </div>
     );

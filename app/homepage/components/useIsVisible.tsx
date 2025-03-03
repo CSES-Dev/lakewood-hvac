@@ -5,13 +5,13 @@ export function useIsVisible(ref: React.RefObject<HTMLElement>) {
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
-            setIntersecting(entry.isIntersecting)
+            setIntersecting(entry.isIntersecting);
         });
-        
+
         if (ref.current) {
             observer.observe(ref.current);
         }
-        
+
         return () => {
             observer.disconnect();
         };
