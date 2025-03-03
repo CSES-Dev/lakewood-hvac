@@ -1,57 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import FormInput from "./FormInput";
 import MessagePopup from "@/components/MessagePopup";
 import { ContactFormData } from "@/types/contact";
 
 export default function ContactForm() {
-    const [formData, setFormData] = useState<ContactFormData>({
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-        message: "",
-    });
-
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<ContactFormData>();
+    
     const [showConfirmation, setShowConfirmation] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const newErrors: Record<string, string> = {};
-
-        // Full Name validation
-        if (!formData.fullName) {
-            newErrors.fullName = "Full name is required.";
-        }
-
-        // Email validation
-        if (!formData.email) {
-            newErrors.email = "Email is required.";
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = "Please enter a valid email address.";
-        }
-
-        // Message validation
-        if (!formData.message) {
-            newErrors.message = "Message is required.";
-        }
-
-        // Set errors if any
-        if (Object.keys(newErrors).length === 0) {
-            // If no errors, proceed with form submission (e.g., API call)
-            console.log("Form submitted!", formData);
-            setShowConfirmation(true);
-            setFormData({
-                fullName: "",
-                email: "",
-                phoneNumber: "",
-                message: "",
-            });
-        } else {
-            setErrors(newErrors);
-        }
+    const onSubmit = (data: ContactFormData) => {
+        console.log("Form submitted!", data);
+        setShowConfirmation(true);
+        reset();
     };
 
     const handleCloseConfirmation = () => {
@@ -67,42 +35,42 @@ export default function ContactForm() {
                     onClose={handleCloseConfirmation}
                 />
             )}
-            <form onSubmit={handleSubmit} className="flex flex-col w-full max-md:max-w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full max-md:max-w-full">
                 <div className="flex grow gap-2.5 items-center px-9 py-4 w-full text-xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
                     <div className="flex flex-col self-stretch my-auto w-full max-md:max-w-full">
                         <FormInput
                             label="Full Name"
-                            value={formData.fullName}
-                            onChange={(value) => {
-                                setFormData({ ...formData, fullName: value });
-                            }}
-                            errorMessage={errors.fullName}
+                            {...register("fullName", { required: "Full name is required." })}
+                            errorMessage={errors.fullName?.message}
                         />
                         <FormInput
                             label="Email Address"
-                            value={formData.email}
-                            onChange={(value) => {
-                                setFormData({ ...formData, email: value });
-                            }}
                             type="email"
-                            errorMessage={errors.email}
+                            {...register("email", {
+                                required: "Email is required.",
+                                pattern: {
+                                    value: /\S+@\S+\.\S+/,
+                                    message: "Please enter a valid email address."
+                                }
+                            })}
+                            errorMessage={errors.email?.message}
                         />
                         <FormInput
                             label="Phone Number"
-                            value={formData.phoneNumber}
-                            onChange={(value) => {
-                                setFormData({ ...formData, phoneNumber: value });
-                            }}
                             type="tel"
+                            {...register("phoneNumber", {
+                                pattern: {
+                                    value: /^[0-9]{10,15}$/,
+                                    message: "Please enter a valid phone number (10-15 digits)."
+                                }
+                            })}
+                            errorMessage={errors.phoneNumber?.message}
                         />
                         <FormInput
                             label="How can we help?"
-                            value={formData.message}
-                            onChange={(value) => {
-                                setFormData({ ...formData, message: value });
-                            }}
                             isTextArea
-                            errorMessage={errors.message}
+                            {...register("message", { required: "Message is required." })}
+                            errorMessage={errors.message?.message}
                         />
                         <button
                             type="submit"
