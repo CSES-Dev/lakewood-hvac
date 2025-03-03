@@ -1,8 +1,8 @@
-import Footer from "@/components/ui/footer";
-import NavigationBar from "@/components/ui/NavigationBar";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Head from "next/head";
+import NavigationBar from "@/components/ui/NavigationBar";
+import Footer from "@/components/ui/footer";
 
 import "./globals.css";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
 
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <NavigationBar />
-                <main className="">{children}</main>
+                <main className="mt-[12vh] md:mt-[16vh]">{children}</main>
                 <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center w-full">
                     <Footer />
                 </footer>
