@@ -15,12 +15,10 @@ import { Review } from "./components/ReviewRow";
 export default function AdminPanel() {
     // Services state
     const [services, setServices] = useState<Service[]>([
-        {
-        id: 0,
-        name: "Air Conditioning",
-        description: "Cooling services for your comfort",
-        },
-        { id: 1, name: "Heating", description: "Efficient heating solutions" },
+        {id: 0, name: "Air Conditioning", description: "At Lakewood Heating and Air Conditioning Inc., we pride ourselves on providing top-notch air conditioning services to ensure that our clients enjoy a comfortable living environment. Our team of skilled technicians is well-equipped to handle installations, maintenance, and repairs for a variety of air conditioning systems. No matter the size or complexity of your cooling needs, you can trust us to deliver efficient, cost-effective, and timely solutions that keep your home cool and comfortable throughout the year.",},
+        { id: 1, name: "Heating", description: "Lakewood Heating and Air Conditioning Inc. is your reliable partner for all your heating needs. Our experienced technicians are committed to delivering exceptional heating services, from installations to repairs and maintenance for a wide range of heating systems. Our goal is to provide you with energy-efficient, safe, and comfortable heating solutions to keep your home cozy during the colder months while ensuring superior customer satisfaction. Give us a call today to learn more!" },
+        { id: 2, name: "Thermostats", description: "Our thermostat services include professional installation, maintenance, and repair of a variety of thermostat types and models. Our experts work with you to identify the ideal thermostat solution for your home, ensuring optimal temperature regulation and energy management, ultimately enhancing your comfort and reducing energy costs. Contact us to get started!" },
+        { id: 3, name: "Heat Pumps", description: "Lakewood Heating and Air Conditioning Inc. offers comprehensive heat pump installation services, designed to provide you with an eco-friendly, energy-efficient, and cost-effective alternative to traditional heating and cooling systems. Our skilled technicians are proficient in installing a wide range of heat pump models, ensuring seamless integration into your existing HVAC system. Trust us to help you transition to a greener, more comfortable living space while reducing your energy consumption and costs." },
     ]);
     // Temporary id for services
     const [counter, setCounter] = useState(services.length - 1);
@@ -72,9 +70,9 @@ export default function AdminPanel() {
 
     // About Us state and editing
     const [aboutUs, setAboutUs] = useState<AboutUsData>({
-        slogan: "Our Slogan",
-        title: "Our Title",
-        description: "Our description goes here.",
+        slogan: "Using the only highest quality materials, we aim to provide our clients the best service and results.",
+        title: "Where It All Began",
+        description: "Lakewood Heating and Air Conditioning Inc. is a professional HVAC company in Lakewood, CA with 30+ years in the community. We use only the highest quality materials and techniques and are dedicated to providing our clients with superior service and results. We offer a variety of services such as AC repair, heat pump installation, HVAC maintenance, and more. For friendly neighborhood air conditioning technicians, contact us today to schedule your appointment!",
     });
     const [editingAboutUs, setEditingAboutUs] = useState<AboutUsData | null>(null);
 
@@ -91,8 +89,8 @@ export default function AdminPanel() {
 
     // Reviews state and editing
     const [reviews, setReviews] = useState<Review[]>([
-        { id: 0, name: "John Doe", review: "Great service!" },
-        { id: 1, name: "Jane Doe", review: "Very professional." },
+        { id: 0, name: "Veloz Michelle", review: "Outstanding service! My husband and I were unsure about which company to use to put in our Ductless HVAC system. So glad we met the owner Juan!" },
+        { id: 1, name: "Leo Braka", review: "Recently I had the pleasure to have a work done by Juan, from Lakewood Heating and Air Conditioning. Juan was professional, courteous and thorough. The service was prompt, friendly, and efficient. I highly recommend Juan for his reliable and courteous service." },
     ]);
     const [reviewCounter, setReviewCounter] = useState(reviews.length - 1);
     const getNextReviewId = () => {
