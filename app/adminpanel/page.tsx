@@ -10,8 +10,12 @@ import EditAboutUsModal from "./components/EditAboutUsModal";
 
 export default function AdminPanel() {
     const [services, setServices] = useState<Service[]>([
-        { id: 0, name: "Air Conditioning" },
-        { id: 1, name: "Heating" },
+        {
+        id: 0,
+        name: "Air Conditioning",
+        description: "Cooling services for your comfort",
+        },
+        { id: 1, name: "Heating", description: "Efficient heating solutions" },
     ]);
 
     // temporary id thing
@@ -25,12 +29,13 @@ export default function AdminPanel() {
     const [editingService, setEditingService] = useState<Service | null>(null);
     const [addingService, setAddingService] = useState<Service | null>(null);
 
-    const handleEditClick = (id: number, name: string) => {
-        setEditingService({ id, name });
+    const handleEditClick = (id: number, name: string, description: string) => {
+        setEditingService({ id, name, description });
     };
 
     const handleAddClick = (name: string) => {
-        setAddingService({ id: services.length, name });
+        // When adding a new service, initialize with an empty description.
+        setAddingService({ id: services.length, name, description: "" });
     };
 
     const handleAddService = () => {
@@ -49,7 +54,11 @@ export default function AdminPanel() {
         setServices((prev) =>
             prev.map((service) =>
             service.id === editingService.id
-                ? { ...service, name: editingService.name }
+                ? {
+                    ...service,
+                    name: editingService.name,
+                    description: editingService.description,
+                }
                 : service
             )
         );
@@ -57,11 +66,11 @@ export default function AdminPanel() {
         }
     };
 
-  // About Us state and editing
+    // About Us state and editing
     const [aboutUs, setAboutUs] = useState<AboutUsData>({
-        slogan: "Using the only highest quality materials, we aim to provide our clients the best service and results.",
-        title: "Where It All Began",
-        description: "Lakewood Heating and Air Conditioning Inc. is a professional HVAC company in Lakewood, CA with 30+ years in the community. We use only the highest quality materials and techniques and are dedicated to providing our clients with superior service and results. We offer a variety of services such as AC repair, heat pump installation, HVAC maintenance, and more. For friendly neighborhood air conditioning technicians, contact us today to schedule your appointment!",
+        slogan: "Our Slogan",
+        title: "Our Title",
+        description: "Our description goes here.",
     });
     const [editingAboutUs, setEditingAboutUs] = useState<AboutUsData | null>(null);
 

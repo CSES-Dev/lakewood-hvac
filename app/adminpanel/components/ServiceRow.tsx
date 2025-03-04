@@ -5,11 +5,12 @@ import React from "react";
 export type Service = {
     id: number;
     name: string;
+    description: string;
 };
 
 type ServiceRowProps = {
     service: Service;
-    onEdit: (id: number, name: string) => void;
+    onEdit: (id: number, name: string, description: string) => void;
     onDelete: (id: number) => void;
 };
 
@@ -17,11 +18,12 @@ export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProp
     return (
         <tr className="border">
         <td className="p-2">{service.name}</td>
+        <td className="p-2">{service.description}</td>
         <td className="p-2 text-right">
             <button
             className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
             onClick={() => {
-                onEdit(service.id, service.name);
+                onEdit(service.id, service.name, service.description);
             }}
             >
             Edit

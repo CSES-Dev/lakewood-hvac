@@ -5,7 +5,7 @@ import ServiceRow, { Service } from "./ServiceRow";
 
 type ServiceTableProps = {
     services: Service[];
-    onEdit: (id: number, name: string) => void;
+    onEdit: (id: number, name: string, description: string) => void;
     onDelete: (id: number) => void;
     onAddClick: (name: string) => void;
 };
@@ -33,6 +33,7 @@ export default function ServiceTable({
             <thead>
             <tr className="bg-gray-200">
                 <th className="p-2 border text-left">Name</th>
+                <th className="p-2 border text-left">Description</th>
                 <th className="p-2 border text-right">Actions</th>
             </tr>
             </thead>

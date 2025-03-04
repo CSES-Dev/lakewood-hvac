@@ -22,9 +22,18 @@ export default function AddServiceModal({
             <h3 className="text-lg font-semibold mb-4">Add Service</h3>
             <input
             className="border p-2 w-full mb-4"
+            placeholder="Name"
             value={addingService.name}
             onChange={(e) => {
                 setAddingService({ ...addingService, name: e.target.value });
+            }}
+            />
+            <input
+            className="border p-2 w-full mb-4"
+            placeholder="Description"
+            value={addingService.description}
+            onChange={(e) => {
+                setAddingService({ ...addingService, description: e.target.value });
             }}
             />
             <div className="flex justify-end space-x-2">

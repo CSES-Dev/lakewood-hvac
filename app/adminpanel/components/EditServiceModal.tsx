@@ -19,12 +19,21 @@ export default function EditServiceModal({
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div className="bg-white p-6 rounded shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Edit Services</h3>
+            <h3 className="text-lg font-semibold mb-4">Edit Service</h3>
             <input
             className="border p-2 w-full mb-4"
+            placeholder="Name"
             value={editingService.name}
             onChange={(e) => {
                 setEditingService({ ...editingService, name: e.target.value });
+            }}
+            />
+            <input
+            className="border p-2 w-full mb-4"
+            placeholder="Description"
+            value={editingService.description}
+            onChange={(e) => {
+                setEditingService({ ...editingService, description: e.target.value });
             }}
             />
             <div className="flex justify-end space-x-2">
