@@ -2,28 +2,28 @@
 
 import React from "react";
 
-export type Service = {
+export type Review = {
     id: number;
     name: string;
-    description: string;
+    review: string;
 };
 
-type ServiceRowProps = {
-    service: Service;
-    onEdit: (id: number, name: string, description: string) => void;
+type ReviewRowProps = {
+    review: Review;
+    onEdit: (id: number, name: string, review: string) => void;
     onDelete: (id: number) => void;
 };
 
-export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProps) {
+export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) {
     return (
         <tr className="border">
-        <td className="p-2">{service.name}</td>
-        <td className="p-2">{service.description}</td>
+        <td className="p-2">{review.name}</td>
+        <td className="p-2">{review.review}</td>
         <td className="p-2 text-right">
             <button
-            className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+            className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 mb-1"
             onClick={() => {
-                onEdit(service.id, service.name, service.description);
+                onEdit(review.id, review.name, review.review);
             }}
             >
             Edit
@@ -31,7 +31,7 @@ export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProp
             <button
             className="bg-red-500 text-white px-3 py-1 rounded"
             onClick={() => {
-                onDelete(service.id);
+                onDelete(review.id);
             }}
             >
             Delete

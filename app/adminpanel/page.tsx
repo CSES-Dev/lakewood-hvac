@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Service } from "./components/ServiceRow";
-import ServiceTable from "./components/ServiceTable";
-import AddServiceModal from "./components/AddServiceModal";
-import EditServiceModal from "./components/EditServiceModal";
-import AboutUsTable, { AboutUsData } from "./components/AboutUsTable";
-import EditAboutUsModal from "./components/EditAboutUsModal";
-import ReviewTable from "./components/ReviewTable";
-import AddReviewModal from "./components/AddReviewModal";
-import EditReviewModal from "./components/EditReviewModal";
-import { Review } from "./components/ReviewRow";
+import { Service } from "./components/ServiceTable/ServiceRow";
+import ServiceTable from "./components/ServiceTable/ServiceTable";
+import AddServiceModal from "./components/ServiceTable/AddServiceModal";
+import EditServiceModal from "./components/ServiceTable/EditServiceModal";
+// import AboutUsTable, { AboutUsData } from "./components/AboutUsTable/AboutUsTable";
+// import EditAboutUsModal from "./components/AboutUsTable/EditAboutUsModal";
+import ReviewTable from "./components/ReviewTable/ReviewTable";
+import AddReviewModal from "./components/ReviewTable/AddReviewModal";
+import EditReviewModal from "./components/ReviewTable/EditReviewModal";
+import { Review } from "./components/ReviewTable/ReviewRow";
 
 export default function AdminPanel() {
     // Services state
@@ -68,24 +68,24 @@ export default function AdminPanel() {
         }
     };
 
-    // About Us state and editing
-    const [aboutUs, setAboutUs] = useState<AboutUsData>({
-        slogan: "Using the only highest quality materials, we aim to provide our clients the best service and results.",
-        title: "Where It All Began",
-        description: "Lakewood Heating and Air Conditioning Inc. is a professional HVAC company in Lakewood, CA with 30+ years in the community. We use only the highest quality materials and techniques and are dedicated to providing our clients with superior service and results. We offer a variety of services such as AC repair, heat pump installation, HVAC maintenance, and more. For friendly neighborhood air conditioning technicians, contact us today to schedule your appointment!",
-    });
-    const [editingAboutUs, setEditingAboutUs] = useState<AboutUsData | null>(null);
+    // // About Us state and editing
+    // const [aboutUs, setAboutUs] = useState<AboutUsData>({
+    //     slogan: "Using the only highest quality materials, we aim to provide our clients the best service and results.",
+    //     title: "Where It All Began",
+    //     description: "Lakewood Heating and Air Conditioning Inc. is a professional HVAC company in Lakewood, CA with 30+ years in the community. We use only the highest quality materials and techniques and are dedicated to providing our clients with superior service and results. We offer a variety of services such as AC repair, heat pump installation, HVAC maintenance, and more. For friendly neighborhood air conditioning technicians, contact us today to schedule your appointment!",
+    // });
+    // const [editingAboutUs, setEditingAboutUs] = useState<AboutUsData | null>(null);
 
-    const handleAboutUsEditClick = () => {
-        setEditingAboutUs({ ...aboutUs });
-    };
+    // const handleAboutUsEditClick = () => {
+    //     setEditingAboutUs({ ...aboutUs });
+    // };
 
-    const handleSaveAboutUs = () => {
-        if (editingAboutUs) {
-        setAboutUs(editingAboutUs);
-        setEditingAboutUs(null);
-        }
-    };
+    // const handleSaveAboutUs = () => {
+    //     if (editingAboutUs) {
+    //     setAboutUs(editingAboutUs);
+    //     setEditingAboutUs(null);
+    //     }
+    // };
 
     // Reviews state and editing
     const [reviews, setReviews] = useState<Review[]>([
@@ -154,12 +154,12 @@ export default function AdminPanel() {
             setEditingService={setEditingService}
             handleSaveEdit={handleSaveEdit}
         />
-        <AboutUsTable aboutUs={aboutUs} onEdit={handleAboutUsEditClick} />
+        {/* <AboutUsTable aboutUs={aboutUs} onEdit={handleAboutUsEditClick} />
         <EditAboutUsModal
             aboutUs={editingAboutUs}
             setAboutUs={setEditingAboutUs}
             handleSaveEdit={handleSaveAboutUs}
-        />
+        /> */}
         <ReviewTable
             reviews={reviews}
             onEdit={handleReviewEditClick}
