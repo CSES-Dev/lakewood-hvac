@@ -20,7 +20,7 @@ export default function NavigationBar() {
     };
 
     return (
-        <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 pt-4 pb-6 h-auto text-xl font-medium bg-[#1E1E1E] text-[#F0F0F0]">
+        <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 pt-4 pb-6 h-auto text-xl font-medium bg-background text-[#F0F0F0]">
             <Link href="/" className="h-[8vh] md:h-[12vh]">
                 <Image
                     src="/lakewoodlogo.png"
@@ -39,7 +39,7 @@ export default function NavigationBar() {
                     </Link>
                 ))}
                 <Link href="/contact">
-                    <button className="px-4 py-3 rounded-2xl cursor-pointer bg-[#4F6E4E] text-[#FFFDF5]">
+                    <button className="px-4 py-3 rounded-2xl cursor-pointer bg-foreground text-[#FFFDF5]">
                         Schedule Service
                     </button>
                 </Link>
@@ -48,7 +48,7 @@ export default function NavigationBar() {
             {/* Mobile */}
             <div className="md:hidden flex items-center gap-3">
                 <Link href="/contact">
-                    <button className="px-3 py-2 rounded-xl bg-[#4F6E4E] text-[#FFFDF5] text-sm">
+                    <button className="px-3 py-2 rounded-xl bg-foreground text-[#F0F0F0] text-sm">
                         Schedule Service
                     </button>
                 </Link>
@@ -58,7 +58,7 @@ export default function NavigationBar() {
                         setMobileMenuOpen(true);
                     }}
                 >
-                    <Menu className="ml-1 h-full w-auto" color="#FFFDF5" />
+                    <Menu className="h-full w-auto" color="#F0F0F0" />
                 </button>
             </div>
 
@@ -70,7 +70,7 @@ export default function NavigationBar() {
                 onClick={closeMenu}
             >
                 <div
-                    className={`fixed right-0 top-0 h-full w-[70%] bg-[#1E1E1E] text-[#F0F0F0] shadow-lg flex flex-col pl-10 pt-8 transition-transform duration-500 ${
+                    className={`fixed right-0 top-0 h-full w-[70%] bg-background text-[#F0F0F0] shadow-lg flex flex-col pl-10 pt-8 transition-transform duration-500 ${
                         isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                     }`}
                     onClick={(e) => {
