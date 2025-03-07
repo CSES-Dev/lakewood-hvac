@@ -76,7 +76,7 @@ export default function ContactForm() {
                         />
                         <button
                             type="submit"
-                            className="gap-2.5 self-stretch px-7 py-6 mt-8 mb-4 w-full rounded-2xl bg-button text-input-background max-md:px-5 max-md:max-w-full"
+                            className="gap-2.5 self-stretch px-7 py-6 mt-8 mb-4 w-full rounded-2xl bg-button text-white text-input-background max-md:px-5 max-md:max-w-full"
                         >
                             Send Message
                         </button>

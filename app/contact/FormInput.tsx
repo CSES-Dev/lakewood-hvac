@@ -21,7 +21,7 @@ export default function FormInput({
         <div className="flex flex-col mt-5 w-full">
             <label
                 htmlFor={inputId}
-                className="text-input-background max-md:max-w-full text-md font-medium"
+                className="text-input-background text-white max-md:max-w-full text-md font-medium"
             >
                 {label}
             </label>
