@@ -14,7 +14,7 @@ export default function ContactForm() {
         reset,
         formState: { errors },
     } = useForm<ContactFormData>();
-    
+
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     // Remove the 'async' here
@@ -37,7 +37,12 @@ export default function ContactForm() {
                     onClose={handleCloseConfirmation}
                 />
             )}
-            <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="flex flex-col w-full max-md:max-w-full"> {/* Line 40 */}
+            <form
+                onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+                className="flex flex-col w-full max-md:max-w-full"
+            >
+                {" "}
+                {/* Line 40 */}
                 <div className="flex grow gap-2.5 items-center px-9 py-4 w-full text-xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
                     <div className="flex flex-col self-stretch my-auto w-full max-md:max-w-full">
                         <FormInput
@@ -52,8 +57,8 @@ export default function ContactForm() {
                                 required: "Email is required.",
                                 pattern: {
                                     value: /\S+@\S+\.\S+/,
-                                    message: "Please enter a valid email address."
-                                }
+                                    message: "Please enter a valid email address.",
+                                },
                             })}
                             errorMessage={errors.email?.message}
                         />
@@ -63,8 +68,8 @@ export default function ContactForm() {
                             {...register("phoneNumber", {
                                 pattern: {
                                     value: /^[0-9]{10,15}$/,
-                                    message: "Please enter a valid phone number (10-15 digits)."
-                                }
+                                    message: "Please enter a valid phone number (10-15 digits).",
+                                },
                             })}
                             errorMessage={errors.phoneNumber?.message}
                         />
