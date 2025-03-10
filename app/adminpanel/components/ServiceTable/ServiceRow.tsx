@@ -17,26 +17,26 @@ type ServiceRowProps = {
 export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProps) {
     return (
         <tr className="border">
-        <td className="p-2">{service.name}</td>
-        <td className="p-2">{service.description}</td>
-        <td className="p-2 text-right">
-            <button
-            className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 mb-1"
-            onClick={() => {
-                onEdit(service.id, service.name, service.description);
-            }}
-            >
-            Edit
-            </button>
-            <button
-            className="bg-red-500 text-white px-3 py-1 rounded"
-            onClick={() => {
-                onDelete(service.id);
-            }}
-            >
-            Delete
-            </button>
-        </td>
+            <td className="p-2">{service.name}</td>
+            <td className="p-2">{service.description}</td>
+            <td className="p-2 text-right">
+                <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 mb-1"
+                    onClick={() => {
+                        onEdit(service.id, service.name, service.description);
+                    }}
+                >
+                    Edit
+                </button>
+                <button
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    onClick={() => {
+                        onDelete(service.id);
+                    }}
+                >
+                    Delete
+                </button>
+            </td>
         </tr>
     );
 }
