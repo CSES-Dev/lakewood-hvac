@@ -21,14 +21,14 @@ model products {
   available_at DateTime @db.Timestamp(6)
 }
 
+model reviews {
+  id       Int    @id @default(autoincrement())
+  author   String
+  comments String
+}
+
 enum status {
   active
   inactive
   archived
-}
-
-model reviews {
-  id           Int      @id @default(autoincrement())
-  author       String
-  comments     String
 }
