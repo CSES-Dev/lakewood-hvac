@@ -11,24 +11,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model products {
-  id           Int      @id @default(autoincrement())
-  image_url    String
-  name         String
-  status       status
-  price        Decimal  @db.Decimal(10, 2)
-  stock        Int
-  available_at DateTime @db.Timestamp(6)
-}
-
 model reviews {
   id       Int    @id @default(autoincrement())
   author   String
   comments String
-}
-
-enum status {
-  active
-  inactive
-  archived
 }

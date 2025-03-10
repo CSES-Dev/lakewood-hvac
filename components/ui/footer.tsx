@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-primary text-[#F0F0F0] py-8 border-t border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row items-center sm:h-[30vh]">
+        <footer className="bg-primary text-[#F0F0F0] py-8 border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row items-center sm:h-[30vh]">
             <div className="max-w-screen-lg mx-auto flex flex-col sm:flex-row items-center justify-center w-full h-full">
                 <Image
                     src="/lakewoodlogo.png"
