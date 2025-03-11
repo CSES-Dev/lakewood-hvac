@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import ReviewModal from "./components/ReviewTable/ReviewModal";
-import { Review } from "./components/ReviewTable/ReviewRow";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
+
 import ServiceModal from "./components/ServiceTable/ServiceModal";
 import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
+
+import { Review } from "@/models/Review"
 // import AboutUsTable, { AboutUsData } from "./components/AboutUsTable/AboutUsTable";
 // import EditAboutUsModal from "./components/AboutUsTable/EditAboutUsModal";
 
@@ -113,60 +116,83 @@ export default function AdminPanel() {
     // };
 
     // Reviews state and editing
-    const [reviews, setReviews] = useState<Review[]>([
-        {
-            id: 0,
-            name: "Veloz Michelle",
-            review: "Outstanding service! My husband and I were unsure about which company to use to put in our Ductless HVAC system. So glad we met the owner Juan!",
-        },
-        {
-            id: 1,
-            name: "Leo Braka",
-            review: "Recently I had the pleasure to have a work done by Juan, from Lakewood Heating and Air Conditioning. Juan was professional, courteous and thorough. The service was prompt, friendly, and efficient. I highly recommend Juan for his reliable and courteous service.",
-        },
-    ]);
-    const [reviewCounter, setReviewCounter] = useState(reviews.length - 1);
-    const getNextReviewId = () => {
-        const newId = reviewCounter + 1;
-        setReviewCounter(newId);
-        return newId;
-    };
-
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [editingReview, setEditingReview] = useState<Review | null>(null);
     const [addingReview, setAddingReview] = useState<Review | null>(null);
 
-    const handleReviewEditClick = (id: number, name: string, review: string) => {
-        setAction("Edit");
-        setEditingReview({ id, name, review });
+    useEffect(() => {
+        fetch("/api/reviews")
+            .then((response) => response.json() as Promise<Review[]>)
+            .then((data) => {
+                console.log(data[0].comment);
+                setReviews(data);
+            })
+            .catch((error: unknown) => { 
+                console.error("Error fetching reviews.", error);
+            });
+    }, []);
+
+    const handleReviewEditClick = (id: number, author: string, comment: string) => {
+        setAction(ACTIONS.EDIT);
+        setEditingReview({ id, author, comment });
     };
 
-    const handleAddReviewClick = (name: string) => {
-        // Initialize with an empty review text.
-        setAction("Add");
-        setAddingReview({ id: reviews.length, name, review: "" });
+    const handleAddReviewClick = () => {
+        setAction(ACTIONS.ADD);
+        setAddingReview({ id: 0, author: "", comment: "" });
     };
 
     const handleAddReview = () => {
         if (addingReview) {
-            setReviews((prev) => [...prev, { ...addingReview, id: getNextReviewId() }]);
-            setAddingReview(null);
+            // Create a shallow copy of addingReview and remove the id
+            const { id: _, ...reviewWithoutId } = addingReview;
+    
+            fetch("/api/reviews", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reviewWithoutId),  // Send without the id
+            })
+                .then((response) => response.json())
+                .then(() => {
+                    setReviews((prev) => [...prev, addingReview]);
+                    setAddingReview(null);
+                })
+                .catch(() => {
+                    console.error("Error adding review.");
+                });
         }
     };
-
+    
     const handleDeleteReview = (id: number) => {
-        setReviews(reviews.filter((review) => review.id !== id));
+        fetch(`/api/reviews?id=${String(id)}`, { method: "DELETE" })
+            .then(() => {
+                setReviews((prev) => prev.filter((review) => review.id !== id));
+            })
+            .catch(() => {
+                console.error("Error deleting review.");
+            });
     };
 
     const handleSaveReviewEdit = () => {
         if (editingReview) {
-            setReviews((prev) =>
-                prev.map((review) =>
-                    review.id === editingReview.id
-                        ? { ...review, name: editingReview.name, review: editingReview.review }
-                        : review,
-                ),
-            );
-            setEditingReview(null);
+            fetch(`/api/reviews?id=${String(editingReview.id)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(editingReview),
+            })
+                .then(() => {
+                    setReviews((prev) =>
+                        prev.map((review) =>
+                            review.id === editingReview.id
+                                ? { ...review, author: editingReview.author, comment: editingReview.comment }
+                                : review
+                        )
+                    );
+                    setEditingReview(null);
+                })
+                .catch(() => {
+                    console.error("Error saving review edit.");
+                });
         }
     };
 

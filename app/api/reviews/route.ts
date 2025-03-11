@@ -1,54 +1,97 @@
-// // /app/api/products/route.ts
+import { NextResponse } from "next/server";
 
-// import { NextResponse } from "next/server";
+import { z } from "zod";
+import { reviewsCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsCreateInput.schema";
+import { reviewsUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsUpdateInput.schema";
+import { addReview, deleteReview, getReview, getReviews, updateReview } from "@/services/review";
 
-// import { z } from "zod";
-// import { productsCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/productsCreateInput.schema";
-// import { productsUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/productsUpdateInput.schema";
-// import { addProduct, deleteProduct, getProduct, getProducts, updateProduct } from "@/services/demo";
-// // GET: Fetch all products or a single product by ID
-// export async function GET(request: Request) {
-//     const { searchParams } = new URL(request.url);
-//     const id = searchParams.get("id");
+// GET: Fetch all reviews or a single review by ID
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
 
-//     if (id) {
-//         // There was an id in the search, so find the product that corresponds to it
-//         const product = await getProduct({ id: Number(id) });
-//         if (!product) {
-//             return NextResponse.json({ message: "Product not found" }, { status: 404 });
-//         }
-//         return NextResponse.json(product, { status: 200 });
-//     } else {
-//         // There was no id in the get request, so return all of the products
-//         const products = await getProducts();
-//         return NextResponse.json(products, { status: 200 });
-//     }
-// }
+    if (id) {
+        // There was an id in the search, so find the review that corresponds to it
+        const review = await getReview({ id: Number(id) });
+        if (!review) {
+            return NextResponse.json({ message: "Review not found" }, { status: 404 });
+        }
 
-// // POST: Add a new product
-// export async function POST(request: Request) {
-//     const newProduct = productsCreateInputObjectSchema.parse(await request.json());
-//     const createdProduct = await addProduct(newProduct);
-//     return NextResponse.json(createdProduct, { status: 200 });
-// }
+        return NextResponse.json(review, { status: 200 });
+    } 
 
-// // PUT: Update a product
-// export async function PUT(request: Request) {
-//     const validator = z.object({
-//         id: z.number().int(), // Validate id as an integer
-//         update: productsUpdateInputObjectSchema, // Use your existing schema for update
-//     });
-//     const parsedRequest = validator.parse(await request.json());
-//     const id = parsedRequest.id;
-//     const updatedData = parsedRequest.update;
-//     const updatedProduct = await updateProduct(id, updatedData);
-//     return NextResponse.json(updatedProduct, { status: 200 });
-// }
+    // There was no id in the get request, so return all of the reviews
+    const reviews = await getReviews();
 
-// // DELETE: Delete a product
-// export async function DELETE(request: Request) {
-//     const validator = z.object({ id: z.number().int() });
-//     const { id } = validator.parse(await request.json());
-//     await deleteProduct(id);
-//     return NextResponse.json({ message: "Product deleted" }, { status: 200 });
-// }
+    return NextResponse.json(reviews, { status: 200 });
+}
+
+// POST: Add a new review
+export async function POST(request: Request) {
+    try {
+        const body: unknown = await request.json();
+        const newReview = reviewsCreateInputObjectSchema.parse(body);
+        const createdReview = await addReview(newReview);
+
+        return NextResponse.json(createdReview, { status: 201 });
+    } 
+    catch {
+        return NextResponse.json(
+            { error: "Invalid request" },
+            { status: 400 }
+        );
+    }
+}
+
+// PUT: Update a review
+export async function PUT(request: Request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ error: "ID is required" }, { status: 400 });
+        }
+
+        const existingReview = await getReview({ id: Number(id) });
+        if (!existingReview) {
+            return NextResponse.json({ error: "Review not found" }, { status: 404 });
+        }
+
+        const body: unknown = await request.json();
+        const validator = z.object({
+            update: reviewsUpdateInputObjectSchema,
+        });
+        const { update: updatedData } = validator.parse(body);
+
+        const updatedReview = await updateReview(Number(id), updatedData);
+        return NextResponse.json(updatedReview, { status: 200 });
+    } 
+    catch {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+}
+
+// DELETE: Delete a review
+export async function DELETE(request: Request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ error: "ID is required" }, { status: 400 });
+        }
+
+        const deletedReview = await deleteReview(Number(id));
+        if (!deletedReview) {
+            return NextResponse.json({ error: "Review not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: "Review deleted" }, { status: 200 });
+    } 
+    catch {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+}
+
+

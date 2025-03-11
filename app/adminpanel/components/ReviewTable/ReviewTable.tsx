@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import ReviewRow, { Review } from "./ReviewRow";
+import ReviewRow from "./ReviewRow";
+import { Review } from "@/models/Review"
 
 type ReviewTableProps = {
     reviews: Review[];

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Review } from "./ReviewRow";
+import { Review } from "@/models/Review"
 
 type ReviewModalProps = {
     action: string;
@@ -25,17 +25,17 @@ export default function AddReviewModal({
                 <input
                     className="border p-2 w-full mb-4"
                     placeholder="Name"
-                    value={review.name}
+                    value={review.author}
                     onChange={(e) => {
-                        setReview({ ...review, name: e.target.value });
+                        setReview({ ...review, author: e.target.value });
                     }}
                 />
                 <textarea
                     className="border p-2 w-full mb-4"
                     placeholder="Review"
-                    value={review.review}
+                    value={review.comment}
                     onChange={(e) => {
-                        setReview({ ...review, review: e.target.value });
+                        setReview({ ...review, comment: e.target.value });
                     }}
                 />
                 <div className="flex justify-end space-x-2">
