@@ -33,9 +33,9 @@ export default function AddReviewModal({
                 <textarea
                     className="border p-2 w-full mb-4"
                     placeholder="Review"
-                    value={review.comment}
+                    value={review.comments}
                     onChange={(e) => {
-                        setReview({ ...review, comment: e.target.value });
+                        setReview({ ...review, comments: e.target.value });
                     }}
                 />
                 <div className="flex justify-end space-x-2">

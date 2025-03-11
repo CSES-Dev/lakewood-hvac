@@ -13,12 +13,12 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
     return (
         <tr className="border">
             <td className="p-2">{review.author}</td>
-            <td className="p-2">{review.comment}</td>
+            <td className="p-2">{review.comments}</td>
             <td className="p-2 text-right">
                 <button
                     className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 mb-1"
                     onClick={() => {
-                        onEdit(review.id, review.author, review.comment);
+                        onEdit(review.id, review.author, review.comments);
                     }}
                 >
                     Edit

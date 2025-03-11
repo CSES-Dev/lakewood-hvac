@@ -9,11 +9,19 @@ import ServiceModal from "./components/ServiceTable/ServiceModal";
 import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
 
+import MessagePopup from "@/components/MessagePopup";
 import { Review } from "@/models/Review"
+
 // import AboutUsTable, { AboutUsData } from "./components/AboutUsTable/AboutUsTable";
 // import EditAboutUsModal from "./components/AboutUsTable/EditAboutUsModal";
 
 export default function AdminPanel() {
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+    };
+    
     // Services state
     const [services, setServices] = useState<Service[]>([
         {
@@ -124,7 +132,6 @@ export default function AdminPanel() {
         fetch("/api/reviews")
             .then((response) => response.json() as Promise<Review[]>)
             .then((data) => {
-                console.log(data[0].comment);
                 setReviews(data);
             })
             .catch((error: unknown) => { 
@@ -132,19 +139,18 @@ export default function AdminPanel() {
             });
     }, []);
 
-    const handleReviewEditClick = (id: number, author: string, comment: string) => {
+    const handleReviewEditClick = (id: number, author: string, comments: string) => {
         setAction(ACTIONS.EDIT);
-        setEditingReview({ id, author, comment });
+        setEditingReview({ id, author, comments });
     };
 
     const handleAddReviewClick = () => {
         setAction(ACTIONS.ADD);
-        setAddingReview({ id: 0, author: "", comment: "" });
+        setAddingReview({ id: 0, author: "", comments: "" });
     };
 
     const handleAddReview = () => {
         if (addingReview) {
-            // Create a shallow copy of addingReview and remove the id
             const { id: _, ...reviewWithoutId } = addingReview;
     
             fetch("/api/reviews", {
@@ -156,6 +162,8 @@ export default function AdminPanel() {
                 .then(() => {
                     setReviews((prev) => [...prev, addingReview]);
                     setAddingReview(null);
+
+                    setShowConfirmation(true);
                 })
                 .catch(() => {
                     console.error("Error adding review.");
@@ -164,9 +172,14 @@ export default function AdminPanel() {
     };
     
     const handleDeleteReview = (id: number) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this review?");
+        
+        if (!isConfirmed) return;
+    
         fetch(`/api/reviews?id=${String(id)}`, { method: "DELETE" })
             .then(() => {
                 setReviews((prev) => prev.filter((review) => review.id !== id));
+                setShowConfirmation(true);
             })
             .catch(() => {
                 console.error("Error deleting review.");
@@ -175,20 +188,25 @@ export default function AdminPanel() {
 
     const handleSaveReviewEdit = () => {
         if (editingReview) {
+            const { id: _, ...reviewWithoutId } = editingReview;
+            const reviewUpdateRequest = { update: reviewWithoutId };
+        
             fetch(`/api/reviews?id=${String(editingReview.id)}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(editingReview),
+                body: JSON.stringify(reviewUpdateRequest),
             })
                 .then(() => {
                     setReviews((prev) =>
                         prev.map((review) =>
                             review.id === editingReview.id
-                                ? { ...review, author: editingReview.author, comment: editingReview.comment }
+                                ? { ...review, author: editingReview.author, comments: editingReview.comments }
                                 : review
                         )
                     );
                     setEditingReview(null);
+
+                    setShowConfirmation(true);
                 })
                 .catch(() => {
                     console.error("Error saving review edit.");
@@ -198,6 +216,13 @@ export default function AdminPanel() {
 
     return (
         <div className="min-h-screen p-8 bg-gray-100">
+            {showConfirmation && (
+                <MessagePopup
+                    title="Thanks for your request!"
+                    message="Your message has been received, and someone from our team will be in touch soon!"
+                    onClose={handleCloseConfirmation}
+                />
+            )}
             <h1 className="text-3xl font-bold text-center mb-6">Admin Panel</h1>
             <ServiceTable
                 services={services}
@@ -232,3 +257,6 @@ export default function AdminPanel() {
         </div>
     );
 }
+
+
+// TODO: add and immediate, response 400
