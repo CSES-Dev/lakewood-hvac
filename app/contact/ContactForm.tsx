@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import FormInput from "./FormInput";
 import MessagePopup from "@/components/MessagePopup";
 import { ContactFormData } from "@/types/contact";
+import { Message } from "@/types/message";
 
 export default function ContactForm() {
     const {
@@ -32,8 +33,12 @@ export default function ContactForm() {
         <>
             {showConfirmation && (
                 <MessagePopup
-                    title="Thanks for your request!"
-                    message="Your message has been received, and someone from our team will be in touch soon!"
+                    message={
+                        {
+                            title: "Thanks for your request!",
+                            body: "Your message has been received, and someone from our team will be in touch soon!",
+                        } as Message
+                    }
                     onClose={handleCloseConfirmation}
                 />
             )}

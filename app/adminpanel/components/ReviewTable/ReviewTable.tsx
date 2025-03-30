@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReviewRow from "./ReviewRow";
-import { Review } from "@/models/Review"
+import { Review } from "@/models/Review";
 
 type ReviewTableProps = {
     reviews: Review[];

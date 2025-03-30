@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         }
 
         return NextResponse.json(review, { status: 200 });
-    } 
+    }
 
     // There was no id in the get request, so return all of the reviews
     const reviews = await getReviews();
@@ -34,12 +34,8 @@ export async function POST(request: Request) {
         const createdReview = await addReview(newReview);
 
         return NextResponse.json(createdReview, { status: 201 });
-    } 
-    catch {
-        return NextResponse.json(
-            { error: "Invalid request" },
-            { status: 400 }
-        );
+    } catch {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }
 
@@ -66,8 +62,7 @@ export async function PUT(request: Request) {
 
         const updatedReview = await updateReview(Number(id), updatedData);
         return NextResponse.json(updatedReview, { status: 200 });
-    } 
-    catch {
+    } catch {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }
@@ -88,10 +83,7 @@ export async function DELETE(request: Request) {
         }
 
         return NextResponse.json({ message: "Review deleted" }, { status: 200 });
-    } 
-    catch {
+    } catch {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }
-
-

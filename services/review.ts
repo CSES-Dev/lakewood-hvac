@@ -12,9 +12,9 @@ export async function getReview(where: Prisma.reviewsWhereUniqueInput) {
 }
 
 export async function updateReview(id: number, data: Prisma.reviewsUpdateInput) {
-    return await prisma.reviews.update({ 
-        where: { id }, 
-        data 
+    return await prisma.reviews.update({
+        where: { id },
+        data,
     });
 }
 
