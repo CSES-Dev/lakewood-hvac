@@ -21,14 +21,14 @@ const ServiceItem = ({
                 />
             </div>
             <div className="flex w-[66.67] flex-1 flex-col">
-                <p className=" pb-[1.67vw] text-[4.51vw] max-sm:text-[9.02vw] text-[clamp(0px,6.77vw,65px)] leading-none">
+                <p className=" pb-[1.67vw] text-[4.51vw] max-sm:text-[9.02vw] text-[clamp(0px,6.77vw,97.5px)] leading-none">
                     {title}
                 </p>
-                <p className=" pb-[2.22vw] text-[1.67vw] max-sm:text-[3.34vw] text-[clamp(0px,2.51vw,24px)]">
+                <p className=" pb-[2.22vw] text-[1.67vw] max-sm:text-[3.34vw] text-[clamp(0px,2.51vw,36px)]">
                     {description}
                 </p>
                 <div>
-                    <button className="text-[1.74vw] bg-primary rounded-[1.39vw] text-[clamp(0px,2.61vw,25px)] py-[1.04vw] px-[1.94vw] max-sm:text-[3.48vw]">
+                    <button className="text-[1.74vw] bg-primary rounded-[1.39vw] text-[clamp(0px,2.61vw,37.5px)] py-[1.04vw] px-[1.94vw] max-sm:text-[3.48vw]">
                         Schedule Today
                     </button>
                 </div>
