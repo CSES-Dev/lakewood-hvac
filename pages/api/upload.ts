@@ -9,7 +9,7 @@ import fs from 'fs';
 // --- Create uploads folder if it doesn't exist
 const uploadDir = path.join(process.cwd(), 'public/images/services');
 if (!fs.existsSync(uploadDir)) {
-    mkdirSync(uploadDir, { recursive: true });
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 // --- Configure Multer Storage
@@ -29,9 +29,9 @@ const upload = multer({
     fileFilter: (req, file, cb) => {
         const allowedTypes = ['image/jpeg', 'image/png'];
         if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
+            cb(null, true);
         } else {
-        cb(new Error('Only JPG/PNG files are allowed'));
+            cb(new Error('Only JPG/PNG files are allowed'));
         }
     },
 });
