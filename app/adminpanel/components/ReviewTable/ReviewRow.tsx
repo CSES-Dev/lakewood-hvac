@@ -16,7 +16,7 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
             <td className="p-2">{review.comments}</td>
             <td className="p-2 text-right">
                 <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 mb-1"
+                    className="bg-yellow-500 text-white px-3 py-1 rounded mb-1 w-20"
                     onClick={() => {
                         onEdit(review.id, review.author, review.comments);
                     }}
@@ -24,7 +24,7 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
                     Edit
                 </button>
                 <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded w-20"
                     onClick={() => {
                         onDelete(review.id);
                     }}
