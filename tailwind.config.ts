@@ -46,7 +46,7 @@ export default {
                 },
                 border: "#E0E0E0",
                 input: "#FFFFFF",
-                ring: "#4F6E4E",
+                ring: "#10383A",
                 chart: {
                     1: "#4F6E4E",
                     2: "#14504A",
@@ -54,6 +54,8 @@ export default {
                     4: "#1C9F79",
                     5: "#20C691",
                 },
+                header: "#F0F0F0",
+                button: "#4F6E4E",
             },
             borderRadius: {
                 lg: "var(--radius)",
