@@ -5,8 +5,8 @@ type FormInputProps = {
     type?: string;
     isTextArea?: boolean;
     errorMessage?: string;
-} & React.InputHTMLAttributes<HTMLInputElement> & 
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+} & React.InputHTMLAttributes<HTMLInputElement> &
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export default function FormInput({
     label,

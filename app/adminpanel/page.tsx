@@ -1,16 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import ReviewModal from "./components/ReviewTable/ReviewModal";
-import { Review } from "./components/ReviewTable/ReviewRow";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
+
 import ServiceModal from "./components/ServiceTable/ServiceModal";
 import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
+
+import MessagePopup from "@/components/MessagePopup";
+import { Review } from "@/models/Review";
+
+import { Message } from "@/types/message";
+
 // import AboutUsTable, { AboutUsData } from "./components/AboutUsTable/AboutUsTable";
 // import EditAboutUsModal from "./components/AboutUsTable/EditAboutUsModal";
 
 export default function AdminPanel() {
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState<Message>({
+        title: "",
+        body: "",
+    });
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+    };
+
     // Services state
     const [services, setServices] = useState<Service[]>([
         {
@@ -113,65 +130,120 @@ export default function AdminPanel() {
     // };
 
     // Reviews state and editing
-    const [reviews, setReviews] = useState<Review[]>([
-        {
-            id: 0,
-            name: "Veloz Michelle",
-            review: "Outstanding service! My husband and I were unsure about which company to use to put in our Ductless HVAC system. So glad we met the owner Juan!",
-        },
-        {
-            id: 1,
-            name: "Leo Braka",
-            review: "Recently I had the pleasure to have a work done by Juan, from Lakewood Heating and Air Conditioning. Juan was professional, courteous and thorough. The service was prompt, friendly, and efficient. I highly recommend Juan for his reliable and courteous service.",
-        },
-    ]);
-    const [reviewCounter, setReviewCounter] = useState(reviews.length - 1);
-    const getNextReviewId = () => {
-        const newId = reviewCounter + 1;
-        setReviewCounter(newId);
-        return newId;
-    };
-
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [editingReview, setEditingReview] = useState<Review | null>(null);
     const [addingReview, setAddingReview] = useState<Review | null>(null);
 
-    const handleReviewEditClick = (id: number, name: string, review: string) => {
-        setAction("Edit");
-        setEditingReview({ id, name, review });
+    useEffect(() => {
+        fetch("/api/reviews")
+            .then((response) => response.json() as Promise<Review[]>)
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching reviews.", error);
+            });
+    }, []);
+
+    const handleReviewEditClick = (id: number, author: string, comments: string) => {
+        setAction(ACTIONS.EDIT);
+        setEditingReview({ id, author, comments });
     };
 
-    const handleAddReviewClick = (name: string) => {
-        // Initialize with an empty review text.
-        setAction("Add");
-        setAddingReview({ id: reviews.length, name, review: "" });
+    const handleAddReviewClick = () => {
+        setAction(ACTIONS.ADD);
+        setAddingReview({ id: 0, author: "", comments: "" });
     };
 
     const handleAddReview = () => {
         if (addingReview) {
-            setReviews((prev) => [...prev, { ...addingReview, id: getNextReviewId() }]);
-            setAddingReview(null);
+            const { id: _, ...reviewWithoutId } = addingReview;
+            const message: Message = {
+                title: "Review Added",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch("/api/reviews", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reviewWithoutId), // Send without the id
+            })
+                .then((response) => response.json())
+                .then(() => {
+                    setReviews((prev) => [...prev, addingReview]);
+                    setAddingReview(null);
+
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error adding review.");
+                });
         }
     };
 
     const handleDeleteReview = (id: number) => {
-        setReviews(reviews.filter((review) => review.id !== id));
+        const isConfirmed = window.confirm("Are you sure you want to delete this review?");
+        if (!isConfirmed) return;
+
+        const message: Message = {
+            title: "Review Deleted",
+            body: "Your changes have been saved",
+        };
+        setConfirmationMessage(message);
+
+        fetch(`/api/reviews?id=${String(id)}`, { method: "DELETE" })
+            .then(() => {
+                setReviews((prev) => prev.filter((review) => review.id !== id));
+                setShowConfirmation(true);
+            })
+            .catch(() => {
+                console.error("Error deleting review.");
+            });
     };
 
     const handleSaveReviewEdit = () => {
         if (editingReview) {
-            setReviews((prev) =>
-                prev.map((review) =>
-                    review.id === editingReview.id
-                        ? { ...review, name: editingReview.name, review: editingReview.review }
-                        : review,
-                ),
-            );
-            setEditingReview(null);
+            const { id: _, ...reviewWithoutId } = editingReview;
+            const reviewUpdateRequest = { update: reviewWithoutId };
+            const message: Message = {
+                title: "Review Edited",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch(`/api/reviews?id=${String(editingReview.id)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reviewUpdateRequest),
+            })
+                .then(() => {
+                    setReviews((prev) =>
+                        prev.map((review) =>
+                            review.id === editingReview.id
+                                ? {
+                                      ...review,
+                                      author: editingReview.author,
+                                      comments: editingReview.comments,
+                                  }
+                                : review,
+                        ),
+                    );
+                    setEditingReview(null);
+
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error saving review edit.");
+                });
         }
     };
 
     return (
         <div className="min-h-screen p-8 bg-gray-100">
+            {showConfirmation && (
+                <MessagePopup message={confirmationMessage} onClose={handleCloseConfirmation} />
+            )}
             <h1 className="text-3xl font-bold text-center mb-6">Admin Panel</h1>
             <ServiceTable
                 services={services}
@@ -206,3 +278,5 @@ export default function AdminPanel() {
         </div>
     );
 }
+
+// TODO: add and immediate, response 400
