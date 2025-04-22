@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                                 />
                                 <a href={`tel:5626336412`}>562-633-6412</a>
                             </p>
-                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg">
+                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] max-sm:text-[3.33vw] text-[clamp(0px,10vw,36px)] md:text-base">
                                 <Image
                                     src="/mail.png"
                                     alt="Mail Icon"
