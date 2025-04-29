@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
             </div>
             <hr className="w-[90.2vw] h-[0.07vw] mx-auto "></hr>
 
-            <footer className="bg-primary text-[#F0F0F0] py-8 border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row items-center sm:h-[30vh]">
+            <footer className="bg-primary text-[#F0F0F0] py-8 border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row sm:h-[30vh]">
                 <div className="max-w-screen-lg mx-auto flex flex-col sm:flex-row items-center justify-center w-full h-full">
                     <Image
                         src="/lakewoodlogo.png"
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
                     />
                     <div className="w-full sm:w-1/2 flex flex-col items-center sm:items-end text-center sm:text-left mt-4 sm:mt-0">
                         <div>
-                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg">
+                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg xl:text-2xl">
                                 <Image
                                     src="/call.png"
                                     alt="Call Icon"
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                                 />
                                 <a href={`tel:5626336412`}>562-633-6412</a>
                             </p>
-                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] max-sm:text-[3.33vw] text-[clamp(0px,10vw,36px)] md:text-base">
+                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg xl:text-2xl">
                                 <Image
                                     src="/mail.png"
                                     alt="Mail Icon"
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
                                     lakewooodhvac90712@gmail.com
                                 </a>
                             </p>
-                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg">
+                            <p className="mb-[0.8vw] flex items-center gap-[1.2vw] text-xs sm:text-xs md:text-base lg:text-lg xl:text-2xl">
                                 <Image
                                     src="/clock.png"
                                     alt="Clock Icon"
