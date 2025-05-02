@@ -1,30 +1,27 @@
 "use client";
 
 import React from "react";
+import { Engagement } from "@/models/Engagement";
 
-export type Service = {
-    id: number;
-    name: string;
-    description: string;
-};
-
-type ServiceRowProps = {
-    service: Service;
-    onEdit: (id: number, name: string, description: string) => void;
+type EnagementRowProps = {
+    engagement: Engagement;
+    onEdit: (engagement: Engagement) => void;
     onDelete: (id: number) => void;
 };
 
-export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProps) {
+export default function ReviewRow({ engagement, onEdit, onDelete }: EnagementRowProps) {
     return (
         <tr className="border">
-            <td className="p-2">{service.name}</td>
-            <td className="p-2">{service.description}</td>
+            <td className="p-2">{engagement.title}</td>
+            <td className="p-2">{engagement.date.toString()}</td>
+            <td className="p-2">{engagement.description}</td>
+            <td className="p-2">{engagement.isVisible.toString()}</td>
             <td className="p-2 text-right">
                 <div className="flex flex-col items-end space-y-1">
                     <button
                         className="bg-yellow-500 text-white px-3 py-1 rounded w-20"
                         onClick={() => {
-                            onEdit(service.id, service.name, service.description);
+                            onEdit(engagement);
                         }}
                     >
                         Edit
@@ -32,7 +29,7 @@ export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProp
                     <button
                         className="bg-red-500 text-white px-3 py-1 rounded w-20"
                         onClick={() => {
-                            onDelete(service.id);
+                            onDelete(engagement.id);
                         }}
                     >
                         Delete

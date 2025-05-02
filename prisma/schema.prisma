@@ -16,3 +16,12 @@ model reviews {
   author   String
   comments String
 }
+
+model engagements {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  imageUrl    String
+  isVisible   Boolean  @default(true)
+}
