@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 
+import EngagementModal from "./components/EngagementTable/EngagementModal";
+import EngagementTable from "./components/EngagementTable/EngagementTable";
+
 import ReviewModal from "./components/ReviewTable/ReviewModal";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
 
@@ -10,12 +13,10 @@ import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
 
 import MessagePopup from "@/components/MessagePopup";
+import { Engagement } from "@/models/Engagement";
 import { Review } from "@/models/Review";
 
 import { Message } from "@/types/message";
-
-// import AboutUsTable, { AboutUsData } from "./components/AboutUsTable/AboutUsTable";
-// import EditAboutUsModal from "./components/AboutUsTable/EditAboutUsModal";
 
 export default function AdminPanel() {
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -28,7 +29,124 @@ export default function AdminPanel() {
         setShowConfirmation(false);
     };
 
-    // Services state
+    const [action, setAction] = useState<string>("");
+    const ACTIONS = {
+        ADD: "Add",
+        EDIT: "Edit",
+    };
+
+    // Engagements state and editing
+    const [engagements, setEngagements] = useState<Engagement[]>([]);
+    const [editingEngagement, setEditingEngagement] = useState<Engagement | null>(null);
+    const [addingEnagement, setAddingEnagement] = useState<Engagement | null>(null);
+
+    const handleEngagementEditClick = (engagement: Engagement) => {
+        setAction(ACTIONS.EDIT);
+        setEditingEngagement(engagement);
+    };
+
+    const handleAddEngagementClick = () => {
+        const newEnagement: Engagement = {
+            id: 0,
+            title: "",
+            description: "",
+            date: new Date(),
+            imageUrl: "",
+            isVisible: true,
+        };
+
+        setAction(ACTIONS.ADD);
+        setAddingEnagement(newEnagement);
+    };
+
+    const handleAddEngagement = () => {
+        if (addingEnagement) {
+            const { id: _, ...engagementWithoutId } = addingEnagement;
+            const message: Message = {
+                title: "Event Added",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch("/api/engagements", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(engagementWithoutId),
+            })
+                .then((response) => response.json())
+                .then(() => {
+                    setEngagements((prev) => [...prev, addingEnagement]);
+                    setAddingEnagement(null);
+
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error adding engagement.");
+                });
+        }
+    };
+
+    const handleDeleteEngagement = (id: number) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this event?");
+        if (!isConfirmed) return;
+
+        const message: Message = {
+            title: "Engagement Deleted",
+            body: "Your changes have been saved",
+        };
+        setConfirmationMessage(message);
+
+        fetch(`/api/engagements?id=${String(id)}`, { method: "DELETE" })
+            .then(() => {
+                setEngagements((prev) => prev.filter((engagement) => engagement.id !== id));
+                setShowConfirmation(true);
+            })
+            .catch(() => {
+                console.error("Error deleting engagement.");
+            });
+    };
+
+    const handleSaveEngagementEdit = () => {
+        if (editingEngagement) {
+            const { id: _, ...engagementWithoutId } = editingEngagement;
+            const engagementUpdateRequest = { update: engagementWithoutId };
+            const message: Message = {
+                title: "Event Edited",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch(`/api/engagements?id=${String(editingEngagement.id)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(engagementUpdateRequest),
+            })
+                .then(() => {
+                    setEngagements((prev) =>
+                        prev.map((engagement) =>
+                            engagement.id === editingEngagement.id
+                                ? {
+                                      ...engagement,
+                                      title: editingEngagement.title,
+                                      description: editingEngagement.description,
+                                      date: editingEngagement.date,
+                                      imageUrl: editingEngagement.imageUrl,
+                                      isVisible: editingEngagement.isVisible,
+                                  }
+                                : engagement,
+                        ),
+                    );
+                    setEditingEngagement(null);
+
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error saving engagement edit.");
+                });
+        }
+    };
+
+    // Services state and editing
     const [services, setServices] = useState<Service[]>([
         {
             id: 0,
@@ -61,11 +179,6 @@ export default function AdminPanel() {
         const newId = counter + 1;
         setCounter(newId);
         return newId;
-    };
-    const [action, setAction] = useState<string>("");
-    const ACTIONS = {
-        ADD: "Add",
-        EDIT: "Edit",
     };
 
     const [editingService, setEditingService] = useState<Service | null>(null);
@@ -110,40 +223,10 @@ export default function AdminPanel() {
         }
     };
 
-    // // About Us state and editing
-    // const [aboutUs, setAboutUs] = useState<AboutUsData>({
-    //     slogan: "Using the only highest quality materials, we aim to provide our clients the best service and results.",
-    //     title: "Where It All Began",
-    //     description: "Lakewood Heating and Air Conditioning Inc. is a professional HVAC company in Lakewood, CA with 30+ years in the community. We use only the highest quality materials and techniques and are dedicated to providing our clients with superior service and results. We offer a variety of services such as AC repair, heat pump installation, HVAC maintenance, and more. For friendly neighborhood air conditioning technicians, contact us today to schedule your appointment!",
-    // });
-    // const [editingAboutUs, setEditingAboutUs] = useState<AboutUsData | null>(null);
-
-    // const handleAboutUsEditClick = () => {
-    //     setEditingAboutUs({ ...aboutUs });
-    // };
-
-    // const handleSaveAboutUs = () => {
-    //     if (editingAboutUs) {
-    //     setAboutUs(editingAboutUs);
-    //     setEditingAboutUs(null);
-    //     }
-    // };
-
     // Reviews state and editing
     const [reviews, setReviews] = useState<Review[]>([]);
     const [editingReview, setEditingReview] = useState<Review | null>(null);
     const [addingReview, setAddingReview] = useState<Review | null>(null);
-
-    useEffect(() => {
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
-            .then((data) => {
-                setReviews(data);
-            })
-            .catch((error: unknown) => {
-                console.error("Error fetching reviews.", error);
-            });
-    }, []);
 
     const handleReviewEditClick = (id: number, author: string, comments: string) => {
         setAction(ACTIONS.EDIT);
@@ -239,12 +322,46 @@ export default function AdminPanel() {
         }
     };
 
+    useEffect(() => {
+        fetch("/api/engagements")
+            .then((response) => response.json() as Promise<Engagement[]>)
+            .then((data) => {
+                setEngagements(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching engagements.", error);
+            });
+
+        fetch("/api/reviews")
+            .then((response) => response.json() as Promise<Review[]>)
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching reviews.", error);
+            });
+    }, []);
+
     return (
         <div className="min-h-screen p-8 bg-gray-100">
             {showConfirmation && (
                 <MessagePopup message={confirmationMessage} onClose={handleCloseConfirmation} />
             )}
             <h1 className="text-3xl font-bold text-center mb-6">Admin Panel</h1>
+            <EngagementTable
+                engagements={engagements}
+                onEdit={handleEngagementEditClick}
+                onDelete={handleDeleteEngagement}
+                onAddClick={handleAddEngagementClick}
+            />
+            <EngagementModal
+                action={action}
+                engagement={action === ACTIONS.ADD ? addingEnagement : editingEngagement}
+                setEngagement={action === ACTIONS.ADD ? setAddingEnagement : setEditingEngagement}
+                handleEngagement={
+                    action === ACTIONS.ADD ? handleAddEngagement : handleSaveEngagementEdit
+                }
+            />
             <ServiceTable
                 services={services}
                 onEdit={handleServiceEditClick}
@@ -257,12 +374,6 @@ export default function AdminPanel() {
                 setService={action === ACTIONS.ADD ? setAddingService : setEditingService}
                 handleService={action === ACTIONS.ADD ? handleAddService : handleSaveServiceEdit}
             />
-            {/* <AboutUsTable aboutUs={aboutUs} onEdit={handleAboutUsEditClick} />
-        <EditAboutUsModal
-            aboutUs={editingAboutUs}
-            setAboutUs={setEditingAboutUs}
-            handleSaveEdit={handleSaveAboutUs}
-        /> */}
             <ReviewTable
                 reviews={reviews}
                 onEdit={handleReviewEditClick}
@@ -278,5 +389,3 @@ export default function AdminPanel() {
         </div>
     );
 }
-
-// TODO: add and immediate, response 400
