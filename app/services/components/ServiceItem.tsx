@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const ServiceItem = ({
     title,
@@ -21,16 +22,18 @@ const ServiceItem = ({
                 />
             </div>
             <div className="flex w-[66.67] flex-1 flex-col">
-                <p className=" pb-[1.67vw] text-[4.51vw] max-sm:text-[9.02vw] text-[clamp(0px,4.51vw,97.5px)] leading-none">
+                <p className=" pb-[1.67vw] max-sm:text-[9.02vw] text-[clamp(0px,4.51vw,97.5px)] leading-none">
                     {title}
                 </p>
-                <p className=" pb-[2.22vw] text-[1.67vw] max-sm:text-[3.34vw] text-[clamp(0px,1.67vw,36px)]">
+                <p className=" pb-[2.22vw] max-sm:text-[3.34vw] text-[clamp(0px,1.67vw,36px)]">
                     {description}
                 </p>
                 <div>
-                    <button className="text-[1.74vw] bg-primary rounded-[1.39vw] text-[clamp(0px,1.74vw,37.5px)] py-[1.04vw] px-[1.94vw] max-sm:text-[3.48vw]">
-                        Schedule Today
-                    </button>
+                    <Link href="/contact">
+                        <button className="bg-primary rounded-[1.39vw] text-[clamp(0px,1.74vw,37.5px)] py-[1.04vw] px-[1.94vw] max-sm:text-[3.48vw]">
+                            Schedule Today
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>
