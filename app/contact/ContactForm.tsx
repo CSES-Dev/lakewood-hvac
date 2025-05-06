@@ -48,7 +48,7 @@ export default function ContactForm() {
             >
                 {" "}
                 {/* Line 40 */}
-                <div className="flex grow gap-2.5 items-center px-9 py-4 w-full text-xl leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
+                <div className="flex grow gap-2.5 items-center px-9 py-4 w-full max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)] leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
                     <div className="flex flex-col self-stretch my-auto w-full max-md:max-w-full">
                         <FormInput
                             label="Full Name"
