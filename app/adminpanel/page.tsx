@@ -18,6 +18,11 @@ import { Review } from "@/models/Review";
 
 import { Message } from "@/types/message";
 
+export const ACTIONS = {
+    ADD: "Add",
+    EDIT: "Edit",
+};
+
 export default function AdminPanel() {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState<Message>({
@@ -30,10 +35,6 @@ export default function AdminPanel() {
     };
 
     const [action, setAction] = useState<string>("");
-    const ACTIONS = {
-        ADD: "Add",
-        EDIT: "Edit",
-    };
 
     // Engagements state and editing
     const [engagements, setEngagements] = useState<Engagement[]>([]);
@@ -73,11 +74,15 @@ export default function AdminPanel() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(engagementWithoutId),
             })
-                .then((response) => response.json())
-                .then(() => {
-                    setEngagements((prev) => [...prev, addingEnagement]);
-                    setAddingEnagement(null);
+                .then((response) => response.json() as Promise<Engagement>)
+                .then((createdEngagement) => {
+                    const engagementWithId = {
+                        ...addingEnagement,
+                        id: createdEngagement.id,
+                    };
 
+                    setEngagements((prev) => [...prev, engagementWithId]);
+                    setAddingEnagement(null);
                     setShowConfirmation(true);
                 })
                 .catch(() => {
