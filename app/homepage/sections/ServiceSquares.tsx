@@ -24,7 +24,7 @@ const squareData = [
 export default function ServiceSquares() {
     return (
         <div className="px-4 py-8 sm:p-8 mx-auto">
-            <h2 className="text-4xl text-center font-medium mb-8 text-primary-foreground">
+            <h2 className="max-sm:text-[6.25vw] text-[clamp(0px,3.13vw,67.5px)] text-center mb-8 text-primary-foreground">
                 Professional Work, With Professional Services
             </h2>
             {/* Images */}
