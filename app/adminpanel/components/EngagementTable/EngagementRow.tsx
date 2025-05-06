@@ -1,7 +1,7 @@
 "use client";
 
+import { FileImage } from "lucide-react";
 import React from "react";
-import { FaImage } from "react-icons/fa6";
 import { Engagement } from "@/models/Engagement";
 
 type EnagementRowProps = {
@@ -38,7 +38,7 @@ export default function EngagementRow({ engagement, onEdit, onDelete }: Enagemen
             <td className="p-2">{engagement.description}</td>
             <td className="p-2">
                 <div className="flex items-center space-x-2">
-                    <FaImage className="text-gray-500" />
+                    <FileImage color="#4F6E4E" />
                     <a
                         href={engagement.imageUrl}
                         target="_blank"

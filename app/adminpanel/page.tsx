@@ -76,12 +76,7 @@ export default function AdminPanel() {
             })
                 .then((response) => response.json() as Promise<Engagement>)
                 .then((createdEngagement) => {
-                    const engagementWithId = {
-                        ...addingEnagement,
-                        id: createdEngagement.id,
-                    };
-
-                    setEngagements((prev) => [...prev, engagementWithId]);
+                    setEngagements((prev) => [...prev, createdEngagement]);
                     setAddingEnagement(null);
                     setShowConfirmation(true);
                 })
@@ -96,7 +91,7 @@ export default function AdminPanel() {
         if (!isConfirmed) return;
 
         const message: Message = {
-            title: "Engagement Deleted",
+            title: "Event Deleted",
             body: "Your changes have been saved",
         };
         setConfirmationMessage(message);
@@ -129,16 +124,7 @@ export default function AdminPanel() {
                 .then(() => {
                     setEngagements((prev) =>
                         prev.map((engagement) =>
-                            engagement.id === editingEngagement.id
-                                ? {
-                                      ...engagement,
-                                      title: editingEngagement.title,
-                                      description: editingEngagement.description,
-                                      date: editingEngagement.date,
-                                      imageUrl: editingEngagement.imageUrl,
-                                      isVisible: editingEngagement.isVisible,
-                                  }
-                                : engagement,
+                            engagement.id === editingEngagement.id ? editingEngagement : engagement,
                         ),
                     );
                     setEditingEngagement(null);
