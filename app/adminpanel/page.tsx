@@ -167,11 +167,11 @@ export default function AdminPanel() {
             fetch("/api/reviews", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(reviewWithoutId), // Send without the id
+                body: JSON.stringify(reviewWithoutId),
             })
-                .then((response) => response.json())
-                .then(() => {
-                    setReviews((prev) => [...prev, addingReview]);
+                .then((response) => response.json() as Promise<Review>)
+                .then((createdReview) => {
+                    setReviews((prev) => [...prev, createdReview]);
                     setAddingReview(null);
 
                     setShowConfirmation(true);
