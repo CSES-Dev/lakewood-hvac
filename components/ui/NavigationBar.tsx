@@ -1,9 +1,11 @@
+// components/ui/NavigationBar.tsx
 "use client";
 
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { NavigationLink } from "@/types/navigation";
 
 export const navigationLinks: NavigationLink[] = [
@@ -14,10 +16,30 @@ export const navigationLinks: NavigationLink[] = [
 
 export default function NavigationBar() {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const router = useRouter();
 
     const closeMenu = () => {
         setMobileMenuOpen(false);
     };
+
+    useEffect(() => {
+        async function checkAuth() {
+            try {
+                const res = await fetch("/api/auth/me");
+                setIsLoggedIn(res.ok);
+            } catch {
+                setIsLoggedIn(false);
+            }
+        }
+        checkAuth();
+    }, []);
+
+    async function handleLogout() {
+        await fetch("/api/auth/logout", { method: "POST" });
+        setIsLoggedIn(false);
+        router.push("/login");
+    }
 
     return (
         <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 pt-4 pb-6 h-auto  max-sm:text-[2.78vw] text-[clamp(0px,1.39vw,30px)] font-medium bg-background text-[#F0F0F0]">
@@ -43,6 +65,11 @@ export default function NavigationBar() {
                         Schedule Service
                     </button>
                 </Link>
+                {isLoggedIn && (
+                    <button onClick={handleLogout} className="px-4 py-3 rounded-2xl bg-red-600 text-white">
+                        Logout
+                    </button>
+                )}
             </nav>
 
             {/* Mobile */}
@@ -87,6 +114,11 @@ export default function NavigationBar() {
                             {item.label}
                         </Link>
                     ))}
+                    {isLoggedIn && (
+                        <button onClick={() => { handleLogout(); closeMenu(); }} className="mt-4 text-red-500">
+                            Logout
+                        </button>
+                    )}
                 </div>
             </div>
         </header>
