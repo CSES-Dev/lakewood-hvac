@@ -4,6 +4,7 @@ generator client {
 
 generator zod {
   provider = "prisma-zod-generator"
+  output   = "./generated"
 }
 
 datasource db {
@@ -16,7 +17,6 @@ model reviews {
   author   String
   comments String
 }
-<<<<<<< HEAD
 model products {
   id           Int      @id @default(autoincrement())
   image_url    String
@@ -39,10 +39,9 @@ model User {
   password String
   createdAt DateTime @default(now())
 }
-=======
+
 model reviews {
   id       Int    @id @default(autoincrement())
   author   String
   comments String
 }
->>>>>>> 7bfdade8c358833bb4a1666c1875eaf703ce985b
