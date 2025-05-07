@@ -16,3 +16,25 @@ model reviews {
   author   String
   comments String
 }
+model products {
+  id           Int      @id @default(autoincrement())
+  image_url    String
+  name         String
+  status       status
+  price        Decimal  @db.Decimal(10, 2)
+  stock        Int
+  available_at DateTime @db.Timestamp(6)
+}
+
+enum status {
+  active
+  inactive
+  archived
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  createdAt DateTime @default(now())
+}
