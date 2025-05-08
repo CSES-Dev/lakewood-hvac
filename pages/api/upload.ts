@@ -26,6 +26,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         const allowedTypes = ['image/jpeg', 'image/png'];
         if (allowedTypes.includes(file.mimetype)) {
@@ -42,6 +43,11 @@ export const config = {
         bodyParser: false,
     },
 };
+
+// --- Extend NextApiRequest to include Multer's file property
+interface ExtendedNextApiRequest extends NextApiRequest {
+    file: Express.Multer.File;
+}
 
 // --- Custom middleware runner
 function runMiddleware(
