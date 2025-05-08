@@ -1,8 +1,8 @@
 //**TODO: Create YOUR_ADMIN_TOKEN*/
 
-import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import multer from 'multer';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // --- Create uploads folder if it doesn't exist
@@ -52,7 +52,7 @@ type ExtendedNextApiRequest = NextApiRequest & {
 function runMiddleware(
     req: ExtendedNextApiRequest,
     res: NextApiResponse,
-    fn: Function
+    fn: (req: ExtendedNextApiRequest, res: NextApiResponse, next: (result: any) => void) => void
 ) {
     return new Promise((resolve, reject) => {
         fn(req, res, (result: any) => {
