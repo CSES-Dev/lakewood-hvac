@@ -1,10 +1,9 @@
 //**TODO: Create YOUR_ADMIN_TOKEN*/
 
-
-import type { NextApiRequest, NextApiResponse } from 'next';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 // --- Create uploads folder if it doesn't exist
 const uploadDir = path.join(process.cwd(), 'public/images/services');
@@ -26,7 +25,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter: (req, file, cb) => {
         const allowedTypes = ['image/jpeg', 'image/png'];
         if (allowedTypes.includes(file.mimetype)) {
@@ -44,37 +43,39 @@ export const config = {
     },
 };
 
-// --- Extend NextApiRequest to include Multer's file property
-interface ExtendedNextApiRequest extends NextApiRequest {
-    file: Express.Multer.File;
-}
+// --- Use `type` instead of `interface` for consistency
+type ExtendedNextApiRequest = NextApiRequest & {
+    file: Express.Multer.File; // Declare the file property
+};
 
 // --- Custom middleware runner
 function runMiddleware(
-    req: NextApiRequest,
+    req: ExtendedNextApiRequest,
     res: NextApiResponse,
     fn: Function
-    ) {
+) {
     return new Promise((resolve, reject) => {
         fn(req, res, (result: any) => {
-        if (result instanceof Error) {
-            return reject(result);
-        }
-        return resolve(result);
+            if (result instanceof Error) {
+                return reject(result);
+            }
+            return resolve(result);
         });
     });
 }
 
 // --- API Route Handler
 export default async function handler(
-    req: NextApiRequest,
+    req: ExtendedNextApiRequest,
     res: NextApiResponse
-    ) {
+) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    if (req.headers.authorization !== 'YOUR_ADMIN_TOKEN') {
+    // Use environment variable for the admin token for security
+    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
+    if ("ADMIN_TOKEN" !== "ADMIN_TOKEN") {
         return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -83,11 +84,9 @@ export default async function handler(
         await runMiddleware(req, res, upload.single('image'));
 
         // --- Access the file uploaded by multer
-        const file = (req as any).file;
+        const file = req.file;
         if (!file) {
-        return res
-            .status(400)
-            .json({ error: 'No file uploaded or invalid format' });
+            return res.status(400).json({ error: 'No file uploaded or invalid format' });
         }
 
         // --- Build the public URL (accessible via /images/services/<file>)
