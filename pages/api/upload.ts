@@ -1,100 +1,97 @@
-//**TODO: Create YOUR_ADMIN_TOKEN*/
+/* eslint-disable @typescript-eslint/no-explicit-any,
+                   @typescript-eslint/no-unsafe-call,
+                   @typescript-eslint/no-unsafe-member-access,
+                   @typescript-eslint/no-unsafe-assignment,
+                   @typescript-eslint/prefer-promise-reject-errors,
+                   @typescript-eslint/no-confusing-void-expression,
+                   @typescript-eslint/restrict-template-expressions */
 
-import path from 'path';
 import fs from 'fs';
-import multer from 'multer';
+import path from 'path';
+import multer, { FileFilterCallback } from 'multer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Request } from 'express';
 
-// --- Create uploads folder if it doesn't exist
+// 0) Disable built-in body parsing so Multer can run
+export const config = {
+    api: { bodyParser: false },
+};
+
+// 1) Ensure upload directory exists
 const uploadDir = path.join(process.cwd(), 'public/images/services');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// --- Configure Multer Storage
+// 2) Multer storage + filename
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-        cb(null, uniqueName);
+    destination: (_req, _file, cb) => cb(null, uploadDir),
+    filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const uniqueName = `${String(Date.now())}-${String(
+        Math.round(Math.random() * 1e9)
+    )}${ext}`;
+    cb(null, uniqueName);
     },
 });
 
+// 3) Multer instance with size limit + filter
 const upload = multer({
     storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ['image/jpeg', 'image/png'];
-        if (allowedTypes.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only JPG/PNG files are allowed'));
-        }
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (_req: any, file: Express.Multer.File, cb: FileFilterCallback) => {
+    const allowed = ['image/jpeg', 'image/png'];
+    if (allowed.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only JPG/PNG files are allowed'));
+    }
     },
 });
 
-// --- Disable Next.js body parser to let multer handle multipart/form-data
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
-// --- Use `type` instead of `interface` for consistency
-type ExtendedNextApiRequest = NextApiRequest & {
-    file: Express.Multer.File; // Declare the file property
-};
-
-// --- Custom middleware runner
+// 4) Helper to run Multer as middleware
 function runMiddleware(
-    req: Request,  // Change req to type express.Request
+    req: NextApiRequest,
     res: NextApiResponse,
-    fn: (req: Request, res: NextApiResponse, next: (result: any) => void) => void
+    fn: any
 ) {
-    return new Promise((resolve, reject) => {
-        fn(req, res, (result: any) => {
-            if (result instanceof Error) {
-                return reject(result);
-            }
-            return resolve(result);
+    return new Promise<void>((resolve, reject) => {
+        fn(req, res, (err: any) => {
+            if (err) return reject(err);
+            resolve();
         });
     });
 }
 
-// --- API Route Handler
+// 5) Main handler
 export default async function handler(
-    req: ExtendedNextApiRequest,
+    req: NextApiRequest,
     res: NextApiResponse
 ) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // Use environment variable for the admin token for security
-    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) { 
-    if ("ADMIN_TOKEN" !== "ADMIN_TOKEN") { 
+    if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
         return res.status(403).json({ error: 'Forbidden' });
     }
 
+    // 6) Run Multer
     try {
-        // Run multer middleware to handle file upload
-        await runMiddleware(req as Request, res, upload.single('image'));  // Cast req to express.Request
-
-        // --- Access the file uploaded by multer
-        const file = req.file;
-        if (!file) {
-            return res.status(400).json({ error: 'No file uploaded or invalid format' });
-        }
-
-        // --- Build the public URL (accessible via /images/services/<file>)
-        const publicUrl = `/images/services/${file.filename}`;
-        return res.status(200).json({ url: publicUrl });
-    } catch (error: any) {
-        console.error('Upload error:', error);
-        return res.status(500).json({ error: error.message });
+        await runMiddleware(req, res, upload.single('image'));
+    } catch (err: any) {
+        console.error('Upload error:', err);
+        return res.status(400).json({ error: err.message });
     }
+
+    // 7) Multer attached the file
+    const file = (req as any).file as Express.Multer.File;
+    if (!file) {
+        return res
+            .status(400)
+            .json({ error: 'No file uploaded or invalid format' });
+    }
+
+    // 8) Return public URL
+    const publicUrl = `/images/services/${file.filename}`;
+    return res.status(200).json({ url: publicUrl });
 }
