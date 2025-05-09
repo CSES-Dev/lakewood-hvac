@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import multer from 'multer';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { Request } from 'express';  // Import Request from express
 
 // --- Create uploads folder if it doesn't exist
 const uploadDir = path.join(process.cwd(), 'public/images/services');
@@ -50,9 +51,9 @@ type ExtendedNextApiRequest = NextApiRequest & {
 
 // --- Custom middleware runner
 function runMiddleware(
-    req: ExtendedNextApiRequest,
+    req: Request,  // Change req to type express.Request
     res: NextApiResponse,
-    fn: (req: ExtendedNextApiRequest, res: NextApiResponse, next: (result: any) => void) => void
+    fn: (req: Request, res: NextApiResponse, next: (result: any) => void) => void
 ) {
     return new Promise((resolve, reject) => {
         fn(req, res, (result: any) => {
@@ -74,14 +75,14 @@ export default async function handler(
     }
 
     // Use environment variable for the admin token for security
-    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
-    if ("ADMIN_TOKEN" !== "ADMIN_TOKEN") {
+    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) { 
+    if ("ADMIN_TOKEN" !== "ADMIN_TOKEN") { 
         return res.status(403).json({ error: 'Forbidden' });
     }
 
     try {
         // Run multer middleware to handle file upload
-        await runMiddleware(req, res, upload.single('image'));
+        await runMiddleware(req as Request, res, upload.single('image'));  // Cast req to express.Request
 
         // --- Access the file uploaded by multer
         const file = req.file;
