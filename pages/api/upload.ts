@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import multer from 'multer';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Request } from 'express';  // Import Request from express
+import { Request } from 'express';
 
 // --- Create uploads folder if it doesn't exist
 const uploadDir = path.join(process.cwd(), 'public/images/services');
