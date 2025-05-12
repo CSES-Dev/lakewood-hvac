@@ -22,10 +22,10 @@ const ServiceItem = ({
                 />
             </div>
             <div className="flex w-[66.67] flex-1 flex-col">
-                <p className=" pb-[1.67vw] max-sm:text-[9.02vw] text-[clamp(0px,4.51vw,97.5px)] leading-none">
+                <p className="pb-[1.67vw] max-sm:text-[9.02vw] text-[clamp(0px,4.51vw,97.5px)] leading-none">
                     {title}
                 </p>
-                <p className=" pb-[2.22vw] max-sm:text-[3.34vw] text-[clamp(0px,1.67vw,36px)]">
+                <p className="pb-[2.22vw] max-sm:text-[3.34vw] text-[clamp(0px,1.67vw,36px)]">
                     {description}
                 </p>
                 <div>
