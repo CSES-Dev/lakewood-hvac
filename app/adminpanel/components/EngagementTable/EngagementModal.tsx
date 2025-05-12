@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { ACTIONS } from "../../page";
+import DateTimeSelect from "@/components/DataTimeSelect";
 import { Engagement } from "@/models/Engagement";
 
 type EngagementModalProps = {
@@ -26,10 +28,10 @@ export default function AddEngagementModal({
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded shadow-md w-96">
-                <h3 className="text-lg font-semibold mb-4">{`${action} Review`}</h3>
+                <h3 className="text-lg font-semibold mb-4">{`${action} Event`}</h3>
                 <form onSubmit={handleSubmit}>
                     <input
-                        className="border p-2 w-full mb-2"
+                        className="border border-gray-300 text-black p-3 w-full mb-2 rounded-sm"
                         placeholder="Title"
                         value={engagement.title}
                         onChange={(e) => {
@@ -38,7 +40,7 @@ export default function AddEngagementModal({
                         required
                     />
                     <input
-                        className="border p-2 w-full mb-2"
+                        className="border border-gray-300 text-black p-3 w-full mb-2 rounded-sm"
                         placeholder="Description"
                         value={engagement.description}
                         onChange={(e) => {
@@ -46,6 +48,23 @@ export default function AddEngagementModal({
                         }}
                         required
                     />
+                    <DateTimeSelect
+                        className="w-full mb-2"
+                        date={action === ACTIONS.EDIT ? new Date(engagement.date) : null}
+                        onChange={(newDate: Date | null) => {
+                            if (newDate) setEngagement({ ...engagement, date: newDate });
+                        }}
+                    />
+                    <div className="mt-4">
+                        <span className="mr-2">Publish Event?</span>
+                        <input
+                            type="checkbox"
+                            checked={engagement.isVisible}
+                            onChange={(e) => {
+                                setEngagement({ ...engagement, isVisible: e.target.checked });
+                            }}
+                        />
+                    </div>
                     <div className="flex justify-end space-x-2 mt-4">
                         <button
                             type="button"
