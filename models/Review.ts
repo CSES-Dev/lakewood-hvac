@@ -3,4 +3,5 @@ export type Review = {
     author: string;
     comments: string;
     rating: number;
+    createdAt: Date;
 };
