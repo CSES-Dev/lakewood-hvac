@@ -6,19 +6,24 @@ import { Review } from "@/models/Review";
 
 type ReviewTableProps = {
     reviews: Review[];
-    onEdit: (id: number, name: string, review: string) => void;
+    onEdit: (review: Review) => void;
     onDelete: (id: number) => void;
-    onAddClick: (name: string) => void;
+    onAddClick: () => void;
 };
 
-export default function ReviewTable({ reviews, onEdit, onDelete, onAddClick }: ReviewTableProps) {
+export default function ReviewTable({ 
+    reviews, 
+    onEdit, 
+    onDelete, 
+    onAddClick 
+}: ReviewTableProps) {
     return (
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Customer Reviews</h2>
                 <button
                     onClick={() => {
-                        onAddClick("");
+                        onAddClick();
                     }}
                     className="bg-pink-500 text-white px-4 py-2 rounded"
                 >
@@ -28,8 +33,10 @@ export default function ReviewTable({ reviews, onEdit, onDelete, onAddClick }: R
             <table className="w-full border border-gray-300">
                 <thead>
                     <tr className="bg-gray-200">
-                        <th className="p-2 border text-left">Name</th>
+                        <th className="p-2 border text-left">Author</th>
+                        <th className="p-2 border text-left">Date</th>
                         <th className="p-2 border text-left">Review</th>
+                        <th className="p-2 border text-left">Rating</th>
                         <th className="p-2 border text-right">Actions</th>
                     </tr>
                 </thead>
