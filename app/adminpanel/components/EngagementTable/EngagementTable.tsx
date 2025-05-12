@@ -33,10 +33,11 @@ export default function EngagementTable({
             <table className="w-full border border-gray-300">
                 <thead>
                     <tr className="bg-gray-200">
+                        <th className="p-2 border text-center">Published?</th>
                         <th className="p-2 border text-left">Event Name</th>
                         <th className="p-2 border text-left">Date</th>
                         <th className="p-2 border text-left">Description</th>
-                        <th className="p-2 border text-left">Visible?</th>
+                        <th className="p-2 border text-left">Image</th>
                         <th className="p-2 border text-right">Actions</th>
                     </tr>
                 </thead>
