@@ -84,7 +84,7 @@ test.describe.serial("Engagements API CRUD Operations", () => {
         const engagement = (await response.json()) as Engagement;
         const imageUrl = engagement.imageUrl;
 
-        const imageResponse = await request.get(`/${imageUrl}`);
+        const imageResponse = await request.get(imageUrl);
         expect(imageResponse.status()).toBe(200);
         expect(imageResponse.headers()["content-type"]).toMatch("image");
     });
