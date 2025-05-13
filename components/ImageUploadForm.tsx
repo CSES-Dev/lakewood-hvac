@@ -8,9 +8,14 @@ type UploadResponse = {
     error?: string;
 };
 
-const ImageUploadForm: React.FC = () => {
+type ImageUploadFormProps = {
+    previewImageUrl?: string;
+    onUploadSuccess?: (url: string) => void;
+};
+
+const ImageUploadForm: React.FC<ImageUploadFormProps> = ({ previewImageUrl, onUploadSuccess }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(previewImageUrl ?? null);
     const [uploading, setUploading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +57,10 @@ const ImageUploadForm: React.FC = () => {
             }
 
             setPreviewUrl(data.url);
+            if (onUploadSuccess) {
+                onUploadSuccess(data.url);
+            }
+
             alert("Upload successful!");
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -66,7 +75,7 @@ const ImageUploadForm: React.FC = () => {
 
     return (
         <div className="p-4 border rounded max-w-md">
-            <h2 className="text-xl font-semibold mb-2">Upload Service Image</h2>
+            <h2 className="text-md mb-2">Upload Image</h2>
 
             <input
                 type="file"
@@ -91,7 +100,7 @@ const ImageUploadForm: React.FC = () => {
             <button
                 onClick={() => void handleUpload()}
                 disabled={!selectedFile || uploading}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
             >
                 {uploading ? "Uploading..." : "Upload"}
             </button>

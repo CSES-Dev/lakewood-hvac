@@ -51,6 +51,7 @@ export default function AdminPanel() {
             id: 0,
             title: "",
             description: "",
+            address: "",
             date: new Date(),
             imageUrl: "",
             isVisible: true,
@@ -129,16 +130,7 @@ export default function AdminPanel() {
                 .then(() => {
                     setEngagements((prev) =>
                         prev.map((engagement) =>
-                            engagement.id === editingEngagement.id
-                                ? {
-                                      ...engagement,
-                                      title: editingEngagement.title,
-                                      description: editingEngagement.description,
-                                      date: editingEngagement.date,
-                                      imageUrl: editingEngagement.imageUrl,
-                                      isVisible: editingEngagement.isVisible,
-                                  }
-                                : engagement,
+                            engagement.id === editingEngagement.id ? editingEngagement : engagement,
                         ),
                     );
                     setEditingEngagement(null);
@@ -233,14 +225,33 @@ export default function AdminPanel() {
     const [editingReview, setEditingReview] = useState<Review | null>(null);
     const [addingReview, setAddingReview] = useState<Review | null>(null);
 
-    const handleReviewEditClick = (id: number, author: string, comments: string) => {
+    useEffect(() => {
+        fetch("/api/reviews")
+            .then((response) => response.json() as Promise<Review[]>)
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching reviews.", error);
+            });
+    }, []);
+
+    const handleReviewEditClick = (review: Review) => {
         setAction(ACTIONS.EDIT);
-        setEditingReview({ id, author, comments });
+        setEditingReview(review);
     };
 
     const handleAddReviewClick = () => {
+        const newReview: Review = {
+            id: 0,
+            author: "",
+            comments: "",
+            rating: 0.0,
+            createdAt: new Date(),
+        };
+
         setAction(ACTIONS.ADD);
-        setAddingReview({ id: 0, author: "", comments: "" });
+        setAddingReview(newReview);
     };
 
     const handleAddReview = () => {
@@ -308,17 +319,11 @@ export default function AdminPanel() {
                 .then(() => {
                     setReviews((prev) =>
                         prev.map((review) =>
-                            review.id === editingReview.id
-                                ? {
-                                      ...review,
-                                      author: editingReview.author,
-                                      comments: editingReview.comments,
-                                  }
-                                : review,
+                            review.id === editingReview.id ? editingReview : review,
                         ),
                     );
-                    setEditingReview(null);
 
+                    setEditingReview(null);
                     setShowConfirmation(true);
                 })
                 .catch(() => {
@@ -352,7 +357,7 @@ export default function AdminPanel() {
             {showConfirmation && (
                 <MessagePopup message={confirmationMessage} onClose={handleCloseConfirmation} />
             )}
-            <h1 className="text-3xl font-bold text-center mb-6">Admin Panel</h1>
+            <h1 className="text-3xl font-bold text-center my-10">Admin Panel</h1>
             <EngagementTable
                 engagements={engagements}
                 onEdit={handleEngagementEditClick}

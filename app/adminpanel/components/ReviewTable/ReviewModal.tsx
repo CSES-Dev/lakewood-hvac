@@ -1,6 +1,10 @@
 "use client";
 
+import Rating from "@mui/material/Rating";
 import React from "react";
+import { ACTIONS } from "../../page";
+import TemplateModal from "../TemplateTable/Modal";
+import DateTimeSelect from "@/components/DataTimeSelect";
 import { Review } from "@/models/Review";
 
 type ReviewModalProps = {
@@ -10,58 +14,76 @@ type ReviewModalProps = {
     handleReview: () => void;
 };
 
-export default function AddReviewModal({
-    action,
-    review,
-    setReview,
-    handleReview,
-}: ReviewModalProps) {
+export default function ReviewModal({ action, review, setReview, handleReview }: ReviewModalProps) {
     if (!review) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        handleReview();
-    };
-
     return (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md w-96">
-                <h3 className="text-lg font-semibold mb-4">{`${action} Review`}</h3>
-                <form onSubmit={handleSubmit}>
+        <TemplateModal<Review>
+            action={action}
+            title="Review"
+            item={review}
+            setItem={setReview}
+            handleItem={handleReview}
+        >
+            <div className="space-y-4">
+                <div>
+                    <label htmlFor="review-author" className="block text-md mb-2">
+                        Author
+                    </label>
                     <input
-                        className="border p-2 w-full mb-2"
-                        placeholder="Name"
+                        id="review-author"
+                        className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                        placeholder="John Smith"
                         value={review.author}
                         onChange={(e) => {
                             setReview({ ...review, author: e.target.value });
                         }}
                         required
                     />
+                </div>
+
+                <div>
+                    <label htmlFor="review-date" className="block text-md mb-2">
+                        Date
+                    </label>
+                    <DateTimeSelect
+                        date={action === ACTIONS.EDIT ? new Date(review.createdAt) : null}
+                        onChange={(newDate: Date | null) => {
+                            if (newDate) setReview({ ...review, createdAt: newDate });
+                        }}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="review-text" className="block text-md mb-2">
+                        Review
+                    </label>
                     <textarea
-                        className="border p-2 w-full mb-2"
-                        placeholder="Review"
+                        id="review-text"
+                        className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-2 w-full"
+                        placeholder="Write your review here..."
                         value={review.comments}
+                        rows={7}
                         onChange={(e) => {
                             setReview({ ...review, comments: e.target.value });
                         }}
                         required
                     />
-                    <div className="flex justify-end space-x-2 mt-4">
-                        <button
-                            type="button"
-                            className="bg-gray-500 text-white px-4 py-2 rounded"
-                            onClick={() => {
-                                setReview(null);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
-                            {action}
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+            <label htmlFor="review-rating" className="block text-md">
+                Rating
+            </label>
+            <Rating
+                id="review-rating"
+                value={action === ACTIONS.EDIT ? review.rating : 2.5}
+                precision={0.5}
+                onChange={(_, newRating) => {
+                    setReview({ ...review, rating: newRating ?? 0 });
+                }}
+                className="mt-0"
+            />
+            <div></div>
+        </TemplateModal>
     );
 }

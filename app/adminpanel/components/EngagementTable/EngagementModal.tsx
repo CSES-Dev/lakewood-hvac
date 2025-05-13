@@ -2,7 +2,9 @@
 
 import React from "react";
 import { ACTIONS } from "../../page";
+import TemplateModal from "../TemplateTable/Modal";
 import DateTimeSelect from "@/components/DataTimeSelect";
+import ImageUploadForm from "@/components/ImageUploadForm";
 import { Engagement } from "@/models/Engagement";
 
 type EngagementModalProps = {
@@ -12,7 +14,7 @@ type EngagementModalProps = {
     handleEngagement: () => void;
 };
 
-export default function AddEngagementModal({
+export default function EngagementModal({
     action,
     engagement,
     setEngagement,
@@ -20,67 +22,94 @@ export default function AddEngagementModal({
 }: EngagementModalProps) {
     if (!engagement) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        handleEngagement();
-    };
-
     return (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md w-96">
-                <h3 className="text-lg font-semibold mb-4">{`${action} Event`}</h3>
-                <form onSubmit={handleSubmit}>
+        <TemplateModal<Engagement>
+            action={action}
+            title="Engagement"
+            item={engagement}
+            setItem={setEngagement}
+            handleItem={handleEngagement}
+        >
+            <div className="space-y-4">
+                <div>
+                    <label htmlFor="engagement-name" className="block text-md mb-2">
+                        Event Name
+                    </label>
                     <input
-                        className="border border-gray-300 text-black p-3 w-full mb-2 rounded-sm"
-                        placeholder="Title"
+                        id="engagement-name"
+                        className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                        placeholder="Event Name"
                         value={engagement.title}
                         onChange={(e) => {
                             setEngagement({ ...engagement, title: e.target.value });
                         }}
                         required
                     />
-                    <input
-                        className="border border-gray-300 text-black p-3 w-full mb-2 rounded-sm"
-                        placeholder="Description"
-                        value={engagement.description}
-                        onChange={(e) => {
-                            setEngagement({ ...engagement, description: e.target.value });
-                        }}
-                        required
-                    />
+                </div>
+
+                <div>
+                    <label htmlFor="engagement-date" className="block text-md mb-2">
+                        Date
+                    </label>
                     <DateTimeSelect
-                        className="w-full mb-2"
                         date={action === ACTIONS.EDIT ? new Date(engagement.date) : null}
                         onChange={(newDate: Date | null) => {
                             if (newDate) setEngagement({ ...engagement, date: newDate });
                         }}
                     />
-                    <div className="mt-4">
-                        <span className="mr-2">Publish Event?</span>
-                        <input
-                            type="checkbox"
-                            checked={engagement.isVisible}
-                            onChange={(e) => {
-                                setEngagement({ ...engagement, isVisible: e.target.checked });
-                            }}
-                        />
-                    </div>
-                    <div className="flex justify-end space-x-2 mt-4">
-                        <button
-                            type="button"
-                            className="bg-gray-500 text-white px-4 py-2 rounded"
-                            onClick={() => {
-                                setEngagement(null);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
-                            {action}
-                        </button>
-                    </div>
-                </form>
+                </div>
+
+                <div>
+                    <label htmlFor="engagement-address" className="block text-md mb-2">
+                        Address
+                    </label>
+                    <input
+                        id="engagement-adress"
+                        className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                        placeholder="Address"
+                        value={engagement.address}
+                        onChange={(e) => {
+                            setEngagement({ ...engagement, address: e.target.value });
+                        }}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="engagement-description" className="block text-md mb-2">
+                        Description
+                    </label>
+                    <textarea
+                        id="engagement-description"
+                        className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                        placeholder="Write your event description here..."
+                        value={engagement.description}
+                        rows={7}
+                        onChange={(e) => {
+                            setEngagement({ ...engagement, description: e.target.value });
+                        }}
+                        required
+                    />
+                </div>
+
+                <ImageUploadForm
+                    previewImageUrl={engagement.imageUrl ? engagement.imageUrl : undefined}
+                    onUploadSuccess={(url) => {
+                        setEngagement({ ...engagement, imageUrl: url });
+                    }}
+                />
+
+                <div className="mt-4">
+                    <span className="mr-2">Publish Event?</span>
+                    <input
+                        type="checkbox"
+                        checked={engagement.isVisible}
+                        onChange={(e) => {
+                            setEngagement({ ...engagement, isVisible: e.target.checked });
+                        }}
+                    />
+                </div>
             </div>
-        </div>
+        </TemplateModal>
     );
 }
