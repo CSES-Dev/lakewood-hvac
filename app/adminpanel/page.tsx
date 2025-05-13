@@ -221,17 +221,6 @@ export default function AdminPanel() {
     const [editingReview, setEditingReview] = useState<Review | null>(null);
     const [addingReview, setAddingReview] = useState<Review | null>(null);
 
-    useEffect(() => {
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
-            .then((data) => {
-                setReviews(data);
-            })
-            .catch((error: unknown) => {
-                console.error("Error fetching reviews.", error);
-            });
-    }, []);
-
     const handleReviewEditClick = (review: Review) => {
         setAction(ACTIONS.EDIT);
         setEditingReview(review);
