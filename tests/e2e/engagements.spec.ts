@@ -22,8 +22,9 @@ test.describe.serial("Engagements API CRUD Operations", () => {
         const testEngagementData = {
             title: "Test title",
             description: "Test description",
+            address: "9500 Gilman Drive",
             date: new Date(),
-            imageUrl: "mail.png",
+            imageUrl: "/mail.png",
             isVisible: true,
         };
         const response = await request.post(ENGAGEMENT_API_URL, {

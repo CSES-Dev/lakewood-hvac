@@ -16,7 +16,7 @@ export const config = {
 };
 
 // 1) Ensure upload directory exists
-const uploadDir = path.join(process.cwd(), "public/images/services");
+const uploadDir = path.join(process.cwd(), "public/images/uploaded");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -80,6 +80,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // 8) Return public URL
-    const publicUrl = `/images/services/${file.filename}`;
+    const publicUrl = `/images/uploaded/${file.filename}`;
     return res.status(200).json({ url: publicUrl });
 }
