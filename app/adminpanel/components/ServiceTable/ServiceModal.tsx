@@ -2,9 +2,10 @@
 
 import React from "react";
 import { Service } from "./ServiceRow";
+import { ACTIONS } from "@/types/actions";
 
 type ServiceModalProps = {
-    action: string;
+    action: ACTIONS | null;
     service: Service | null;
     setService: React.Dispatch<React.SetStateAction<Service | null>>;
     handleService: () => void;
@@ -21,7 +22,7 @@ export default function AddServiceModal({
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded shadow-md">
-                <h3 className="text-lg font-semibold mb-4">{`${action} Service`}</h3>
+                <h3 className="text-lg font-semibold mb-4">{`${action ?? ""} Service`}</h3>
                 <input
                     className="border p-2 w-full mb-4"
                     placeholder="Name"

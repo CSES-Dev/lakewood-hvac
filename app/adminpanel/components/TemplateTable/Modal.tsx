@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { ACTIONS } from "@/types/actions";
 
 export type TemplateModalProps<T extends { id: number }> = {
-    action: ACTIONS;
+    action: ACTIONS | null;
     title: string;
     item: T | null;
     setItem: React.Dispatch<React.SetStateAction<T | null>>;
@@ -39,7 +39,7 @@ export default function TemplateModal<T extends { id: number }>({
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-[60vw] max-h-[90vh] overflow-y-auto">
-                <h3 className="text-2xl font-semibold mb-6">{`${action} ${title}`}</h3>
+                <h3 className="text-2xl font-semibold mb-6">{`${action ?? ""} ${title}`}</h3>
 
                 <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
                     <div className="space-y-3">{children}</div>

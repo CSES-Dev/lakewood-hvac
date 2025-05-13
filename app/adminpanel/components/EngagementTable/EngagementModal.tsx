@@ -8,7 +8,7 @@ import { Engagement } from "@/models/Engagement";
 import { ACTIONS } from "@/types/actions";
 
 type EngagementModalProps = {
-    action: ACTIONS;
+    action: ACTIONS | null;
     engagement: Engagement | null;
     setEngagement: React.Dispatch<React.SetStateAction<Engagement | null>>;
     handleEngagement: () => void;

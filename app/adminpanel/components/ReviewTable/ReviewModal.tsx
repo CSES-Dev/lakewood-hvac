@@ -8,7 +8,7 @@ import { Review } from "@/models/Review";
 import { ACTIONS } from "@/types/actions";
 
 type ReviewModalProps = {
-    action: ACTIONS;
+    action: ACTIONS | null;
     review: Review | null;
     setReview: React.Dispatch<React.SetStateAction<Review | null>>;
     handleReview: () => void;

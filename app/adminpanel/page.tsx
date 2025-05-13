@@ -178,13 +178,13 @@ export default function AdminPanel() {
     const [addingService, setAddingService] = useState<Service | null>(null);
 
     const handleServiceEditClick = (id: number, name: string, description: string) => {
-        setAction("Edit");
+        setAction(ACTIONS.EDIT);
         setEditingService({ id, name, description });
     };
 
     const handleServiceAddClick = (name: string) => {
         // Initialize with an empty description.
-        setAction("Add");
+        setAction(ACTIONS.ADD);
         setAddingService({ id: services.length, name, description: "" });
     };
 
