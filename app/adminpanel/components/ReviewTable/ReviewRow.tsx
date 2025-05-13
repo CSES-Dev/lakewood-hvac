@@ -24,7 +24,7 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
                         minute: "2-digit",
                         hour12: true,
                     })
-                    .replace("at", "•")}
+                    .replace(/\bat\b/, "•")}
             </td>
             <td className="p-4">{review.comments}</td>
             <td className="p-4 text-center">{review.rating}</td>
