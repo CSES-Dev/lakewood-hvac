@@ -2,9 +2,10 @@
 
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ACTIONS } from "@/types/actions";
 
 export type TemplateModalProps<T extends { id: number }> = {
-    action: string;
+    action: ACTIONS;
     title: string;
     item: T | null;
     setItem: React.Dispatch<React.SetStateAction<T | null>>;

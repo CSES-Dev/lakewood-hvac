@@ -15,13 +15,9 @@ import ServiceTable from "./components/ServiceTable/ServiceTable";
 import MessagePopup from "@/components/MessagePopup";
 import { Engagement } from "@/models/Engagement";
 import { Review } from "@/models/Review";
+import { ACTIONS } from "@/types/actions";
 
 import { Message } from "@/types/message";
-
-export const ACTIONS = {
-    ADD: "Add",
-    EDIT: "Edit",
-};
 
 export default function AdminPanel() {
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -34,7 +30,7 @@ export default function AdminPanel() {
         setShowConfirmation(false);
     };
 
-    const [action, setAction] = useState<string>("");
+    const [action, setAction] = useState<ACTIONS | null>(null);
 
     // Engagements state and editing
     const [engagements, setEngagements] = useState<Engagement[]>([]);

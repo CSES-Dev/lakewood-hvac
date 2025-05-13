@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { ACTIONS } from "../../page";
 import TemplateModal from "../TemplateTable/Modal";
 import DateTimeSelect from "@/components/DataTimeSelect";
 import ImageUploadForm from "@/components/ImageUploadForm";
 import { Engagement } from "@/models/Engagement";
+import { ACTIONS } from "@/types/actions";
 
 type EngagementModalProps = {
-    action: string;
+    action: ACTIONS;
     engagement: Engagement | null;
     setEngagement: React.Dispatch<React.SetStateAction<Engagement | null>>;
     handleEngagement: () => void;
