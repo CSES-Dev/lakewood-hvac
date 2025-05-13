@@ -2,13 +2,13 @@
 
 import Rating from "@mui/material/Rating";
 import React from "react";
-import { ACTIONS } from "../../page";
 import TemplateModal from "../TemplateTable/Modal";
 import DateTimeSelect from "@/components/DataTimeSelect";
 import { Review } from "@/models/Review";
+import { ACTIONS } from "@/types/actions";
 
 type ReviewModalProps = {
-    action: string;
+    action: ACTIONS;
     review: Review | null;
     setReview: React.Dispatch<React.SetStateAction<Review | null>>;
     handleReview: () => void;
