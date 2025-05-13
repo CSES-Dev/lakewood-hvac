@@ -12,7 +12,33 @@ datasource db {
 }
 
 model reviews {
-  id       Int    @id @default(autoincrement())
-  author   String
-  comments String
+  id        Int      @id @default(autoincrement())
+  author    String
+  comments  String
+  rating    Float
+  createdAt DateTime @default(now())
+}
+
+model services {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String
+}
+
+model engagements {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  address     String
+  date        DateTime @default(now())
+  imageUrl    String
+  isVisible   Boolean  @default(true)
+}
+
+model User {
+  id        String   @id
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 }

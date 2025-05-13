@@ -145,14 +145,22 @@ export default function AdminPanel() {
             });
     }, []);
 
-    const handleReviewEditClick = (id: number, author: string, comments: string) => {
+    const handleReviewEditClick = (review: Review) => {
         setAction(ACTIONS.EDIT);
-        setEditingReview({ id, author, comments });
+        setEditingReview(review);
     };
 
     const handleAddReviewClick = () => {
+        const newReview: Review = {
+            id: 0,
+            author: "",
+            comments: "",
+            rating: 0.0,
+            createdAt: new Date(),
+        };
+
         setAction(ACTIONS.ADD);
-        setAddingReview({ id: 0, author: "", comments: "" });
+        setAddingReview(newReview);
     };
 
     const handleAddReview = () => {
@@ -220,17 +228,11 @@ export default function AdminPanel() {
                 .then(() => {
                     setReviews((prev) =>
                         prev.map((review) =>
-                            review.id === editingReview.id
-                                ? {
-                                      ...review,
-                                      author: editingReview.author,
-                                      comments: editingReview.comments,
-                                  }
-                                : review,
+                            review.id === editingReview.id ? editingReview : review,
                         ),
                     );
-                    setEditingReview(null);
 
+                    setEditingReview(null);
                     setShowConfirmation(true);
                 })
                 .catch(() => {
