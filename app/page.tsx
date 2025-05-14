@@ -10,7 +10,7 @@ export default function Home() {
             <Landing></Landing>
             <ServiceSquares></ServiceSquares>
             <FeaturedCircles></FeaturedCircles>
-            {/* <Reviews></Reviews> */}
+            <Reviews></Reviews>
         </div>
     );
 }
