@@ -2,29 +2,29 @@
 
 import React from "react";
 
-export type Service = {
-    id: number;
-    name: string;
-    description: string;
-};
-
-type ServiceRowProps = {
-    service: Service;
-    onEdit: (id: number, name: string, description: string) => void;
+export type TemplateRowProps<T extends { id: number }> = {
+    item: T;
+    onEdit: (item: T) => void;
     onDelete: (id: number) => void;
+    children?: React.ReactNode;
 };
 
-export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProps) {
+export default function TemplateRow<T extends { id: number }>({
+    item,
+    onEdit,
+    onDelete,
+    children,
+}: TemplateRowProps<T>) {
     return (
         <tr className="border">
-            <td className="p-2">{service.name}</td>
-            <td className="p-2">{service.description}</td>
-            <td className="p-2 text-right">
+            {children}
+
+            <td className="p-4 text-center">
                 <div className="flex flex-col items-end space-y-1">
                     <button
                         className="bg-yellow-500 text-white px-3 py-1 rounded w-20"
                         onClick={() => {
-                            onEdit(service.id, service.name, service.description);
+                            onEdit(item);
                         }}
                     >
                         Edit
@@ -32,7 +32,7 @@ export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProp
                     <button
                         className="bg-red-500 text-white px-3 py-1 rounded w-20"
                         onClick={() => {
-                            onDelete(service.id);
+                            onDelete(item.id);
                         }}
                     >
                         Delete
