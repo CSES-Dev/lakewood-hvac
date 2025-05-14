@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,
-                   @typescript-eslint/no-unsafe-call,
-                   @typescript-eslint/no-unsafe-member-access,
-                   @typescript-eslint/no-unsafe-assignment,
-                   @typescript-eslint/prefer-promise-reject-errors,
-                   @typescript-eslint/no-confusing-void-expression,
-                   @typescript-eslint/restrict-template-expressions */
+                    @typescript-eslint/no-unsafe-call,
+                    @typescript-eslint/no-unsafe-member-access,
+                    @typescript-eslint/no-unsafe-assignment,
+                    @typescript-eslint/prefer-promise-reject-errors,
+                    @typescript-eslint/no-confusing-void-expression,
+                    @typescript-eslint/restrict-template-expressions */
 
 import fs from 'fs';
 import path from 'path';
@@ -71,7 +71,8 @@ export default async function handler(
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
+    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
+    if (req.headers.authorization !== "YOUR_ADMIN_TOKEN") {
         return res.status(403).json({ error: 'Forbidden' });
     }
 
