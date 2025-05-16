@@ -5,11 +5,8 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import Image from 'next/image';
 
 interface Props {
-  /** Initial image URL (e.g. when editing) */
   initialUrl?: string;
-  /** The URL to preview (controlled by parent) */
   previewUrl: string | null;
-  /** Fires when user picks a new file (or clears selection) */
   onFileSelect: (file: File | null) => void;
 }
 
@@ -22,7 +19,6 @@ const ImageUploadForm: React.FC<Props> = ({
     initialUrl || null
   );
 
-  // if parent changes the initialUrl, update preview
   useEffect(() => {
     if (initialUrl) {
       setInternalPreview(initialUrl);

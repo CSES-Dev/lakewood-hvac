@@ -80,19 +80,19 @@ export default function ServiceModal({
         }
 
         // 2) now create/update service
-        const payload = { ...data, imageUrl };
+        const payload = { ...data, imageUrl: finalImageUrl };
         const url = mode === 'add' ? '/api/services' : `/api/services/${initialData?.id}`;
         const method = mode === 'add' ? 'POST' : 'PUT';
 
         const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
         });
 
         if (!res.ok) {
-        alert(`Failed to ${mode === 'add' ? 'add' : 'update'} service.`);
-        return;
+            alert(`Failed to ${mode === 'add' ? 'add' : 'update'} service.`);
+            return;
         }
 
         alert(`Service ${mode === 'add' ? 'added' : 'updated'}!`);
