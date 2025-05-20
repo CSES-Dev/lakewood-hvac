@@ -46,8 +46,6 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
                     Delete
                 </button>
             </td>
-            <td className="p-4">{review.comments}</td>
-            <td className="p-4 text-center">{review.rating}</td>
         </tr>
     );
 }
