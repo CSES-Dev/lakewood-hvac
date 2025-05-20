@@ -17,6 +17,7 @@ model reviews {
   comments  String
   rating    Float
   createdAt DateTime @default(now())
+  service   String?
 }
 
 model services {

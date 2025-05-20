@@ -6,6 +6,12 @@ import TemplateModal from "../TemplateTable/Modal";
 import DateTimeSelect from "@/components/DataTimeSelect";
 import { Review } from "@/models/Review";
 import { ACTIONS } from "@/types/actions";
+// import { useEffect, useState } from "react";
+
+// type ReviewService = {
+//     id: string;
+//     name: string;
+// };
 
 type ReviewModalProps = {
     action: ACTIONS | null;
@@ -13,6 +19,14 @@ type ReviewModalProps = {
     setReview: React.Dispatch<React.SetStateAction<Review | null>>;
     handleReview: () => void;
 };
+
+// const [reviewTypes, setReviewTypes] = useState<ReviewService[]>([]);
+
+// useEffect(() => {
+//     fetch("/api/review-types")
+//         .then((res) => res.json())
+//         .then((data) => setReviewTypes(data));
+// }, []);
 
 export default function ReviewModal({ action, review, setReview, handleReview }: ReviewModalProps) {
     if (!review) return null;
@@ -69,6 +83,33 @@ export default function ReviewModal({ action, review, setReview, handleReview }:
                         }}
                         required
                     />
+                </div>
+                <div>
+                    <label htmlFor="service-text" className="block text-md mb-2">
+                        Service
+                    </label>
+
+                    <div>
+                        <label htmlFor="review-type" className="block text-md mb-2">
+                            Review Type
+                        </label>
+                        <select
+                            id="review-type"
+                            className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                            value={review.service}
+                            onChange={(e) => {
+                                setReview({ ...review, service: e.target.value });
+                            }}
+                            required
+                        >
+                            <option value="" disabled>
+                                Select a type
+                            </option>
+                            <option value="positive">Positive</option>
+                            <option value="neutral">Neutral</option>
+                            <option value="negative">Negative</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <label htmlFor="review-rating" className="block text-md">

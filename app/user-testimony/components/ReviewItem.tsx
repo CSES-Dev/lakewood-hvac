@@ -20,17 +20,35 @@ const getStarImages = (rating: number): string[] => {
     return stars;
 };
 
-const ReviewItem = ({ name, review, rating }: { name: string; review: string; rating: number }) => {
+const ReviewItem = ({
+    name,
+    review,
+    rating,
+    date,
+    service,
+}: {
+    name: string;
+    review: string;
+    rating: number;
+    date: Date;
+    service?: string;
+}) => {
     const stars = getStarImages(rating);
 
     return (
         <div className="py-[1.4vw]">
             <div className="bg-[#FFFDF6] rounded-xl p-[3.5vw] text-background">
-                <div className="flex flex-row justify-between items-start">
-                    <div className="max-sm:text-[3.82vw] text-[clamp(0px,1.91vw,41.3px)] font-bold pb-[0.5vw]">
+                <div className="flex flex-row justify-between items-center">
+                    <div className="max-sm:text-[3.82vw] text-[clamp(0px,1.91vw,41.3px)] font-bold">
                         {name}
                     </div>
-                    <StarItem stars={stars} />
+                    <div className="flex flex-col">
+                        <StarItem stars={stars} />
+                    </div>
+                </div>
+                <div className="flex flex-row justify-between items-start">
+                    {service ? <div className="">{service}</div> : <div></div>}
+                    <div className="flex flex-row items-end">{date.toDateString()}</div>
                 </div>
                 <div className="max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)]">{review}</div>
             </div>
