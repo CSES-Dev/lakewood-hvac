@@ -20,6 +20,8 @@ test.describe.serial("Reviews API CRUD Operations", () => {
         const testReviewData = {
             author: "This is a test author",
             comments: "This is a test review",
+            rating: 4.5,
+            createdAt: new Date(),
         };
         const response = await request.post(REVIEW_API_URL, {
             data: testReviewData,
@@ -27,7 +29,16 @@ test.describe.serial("Reviews API CRUD Operations", () => {
         expect(response.status()).toBe(201);
 
         const review = (await response.json()) as Review;
-        expect(review).toMatchObject(testReviewData);
+
+        // Check date manually
+        review.createdAt = new Date(review.createdAt);
+        expect(review.createdAt.toISOString()).toBe(testReviewData.createdAt.toISOString());
+
+        // Check other fields
+        expect(review).toMatchObject({
+            ...testReviewData,
+            createdAt: expect.any(Date),
+        });
 
         createdReviewId = review.id;
     });
