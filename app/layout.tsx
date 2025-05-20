@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Head from "next/head";
 import NavigationBar from "@/components/ui/NavigationBar";
 import Footer from "@/components/ui/footer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 import "./globals.css";
 
@@ -37,11 +38,13 @@ export default function RootLayout({
             </Head>
 
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <NavigationBar />
-                <main className="mt-[12vh] md:mt-[16vh]">{children}</main>
-                <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center w-full">
-                    <Footer />
-                </footer>
+                <AuthProvider>
+                    <NavigationBar />
+                    <main className="mt-[12vh] md:mt-[16vh]">{children}</main>
+                    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center w-full">
+                        <Footer />
+                    </footer>
+                </AuthProvider>
             </body>
         </html>
     );

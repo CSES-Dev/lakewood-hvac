@@ -1,54 +1,19 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
+import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
+    return (
+        <div className="flex overflow-hidden flex-col bg-background">
+            <main className="px-16 w-full mb-20 max-md:px-5 max-md:max-w-full">
+                <h1 className="my-16 w-full max-sm:text-[12.5vw] text-[clamp(0px,6.25vw,135px)] font-medium leading-none text-header max-md:my-6 ">
+                    Log In
+                </h1>
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      setError(data.message || "Login failed");
-      return;
-    }
-
-    router.push("/adminpanel");
-  }
-
-  return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full p-2 border"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full p-2 border"
-        />
-        {error && <p className="text-red-500">{error}</p>}
-        <button type="submit" className="w-full p-2 bg-blue-600 text-white">Login</button>
-      </form>
-    </div>
-  );
+                <div className="w-full md:w-3/5 max-md:max-w-full">
+                    <LoginForm />
+                </div>
+            </main>
+        </div>
+    );
 }

@@ -31,7 +31,7 @@ function MessagePopup({ message, onClose }: ConfirmationPopupProps) {
                 visible ? "opacity-100" : "opacity-0"
             }`}
         >
-            <div className="bg-input bg-opacity-75 text-[#1E1E1E] p-6 rounded-2xl backdrop-blur-md shadow-lg">
+            <div className="bg-[#FFFFFF] bg-opacity-75 text-[#1E1E1E] p-6 rounded-2xl backdrop-blur-md shadow-lg">
                 <div className="flex justify-between items-start">
                     <h2 className="text-2xl font-bold">{message.title}</h2>
                     <button onClick={onClose} className="text-[#1E1E1E] font-bold">

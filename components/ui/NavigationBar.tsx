@@ -4,8 +4,9 @@
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { NavigationLink } from "@/types/navigation";
 
 export const navigationLinks: NavigationLink[] = [
@@ -16,29 +17,19 @@ export const navigationLinks: NavigationLink[] = [
 
 export default function NavigationBar() {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn, setIsLoggedIn } = useAuth();
     const router = useRouter();
 
     const closeMenu = () => {
         setMobileMenuOpen(false);
     };
 
-    useEffect(() => {
-        async function checkAuth() {
-            try {
-                const res = await fetch("/api/auth/me");
-                setIsLoggedIn(res.ok);
-            } catch {
-                setIsLoggedIn(false);
-            }
-        }
-        checkAuth();
-    }, []);
-
     async function handleLogout() {
         await fetch("/api/auth/logout", { method: "POST" });
         setIsLoggedIn(false);
-        router.push("/login");
+
+        router.push("/");
+        router.refresh();
     }
 
     return (
@@ -66,7 +57,10 @@ export default function NavigationBar() {
                     </button>
                 </Link>
                 {isLoggedIn && (
-                    <button onClick={handleLogout} className="px-4 py-3 rounded-2xl bg-red-600 text-white">
+                    <button
+                        onClick={() => void handleLogout()}
+                        className="cursor-pointer px-4 py-3 rounded-2xl bg-red-600 text-[#FFFDF5]"
+                    >
                         Logout
                     </button>
                 )}
@@ -97,7 +91,7 @@ export default function NavigationBar() {
                 onClick={closeMenu}
             >
                 <div
-                    className={`fixed right-0 top-0 h-full w-[70%] bg-background text-[#F0F0F0] shadow-lg flex flex-col pl-10 pt-8 transition-transform duration-500 ${
+                    className={`fixed right-0 top-0 h-full w-[70%] bg-background text-[#F0F0F0] shadow-lg flex flex-col px-10 pt-8 transition-transform duration-500 ${
                         isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
                     }`}
                     onClick={(e) => {
@@ -115,7 +109,13 @@ export default function NavigationBar() {
                         </Link>
                     ))}
                     {isLoggedIn && (
-                        <button onClick={() => { handleLogout(); closeMenu(); }} className="mt-4 text-red-500">
+                        <button
+                            className="cursor-pointer px-3 py-2 rounded-xl bg-red-600 text-2xl text-[#FFFDF5]"
+                            onClick={() => {
+                                void handleLogout();
+                                closeMenu();
+                            }}
+                        >
                             Logout
                         </button>
                     )}
