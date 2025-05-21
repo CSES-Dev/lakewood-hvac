@@ -6,20 +6,20 @@ export async function getServices() {
 }
 
 export async function getService(
-    where: Prisma.ServicesWhereUniqueInput
+    where: Prisma.servicesWhereUniqueInput
 ) {
     return prisma.services.findUnique({ where });
 }
 
 export async function addService(
-    newService: Prisma.ServicesCreateInput
+    newService: Prisma.servicesCreateInput
 ) {
     return prisma.services.create({ data: newService });
 }
 
 export async function updateService(
     id: number,
-    data: Prisma.ServicesUpdateInput
+    data: Prisma.servicesUpdateInput
 ) {
     return prisma.services.update({
         where: { id },

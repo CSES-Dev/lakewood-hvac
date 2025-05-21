@@ -41,7 +41,9 @@ export default function AdminPanel() {
         fetch('/api/services')
             .then((res) => res.json() as Promise<Service[]>)
             .then(setServices)
-            .catch(console.error);
+            .catch((err: unknown) => {
+                console.error(err);
+            });
     };
     useEffect(loadServices, []);
 
@@ -60,17 +62,21 @@ export default function AdminPanel() {
         console.log('Editing service:', selectedService);
         setShowModal(true);
     };
-    const closeModal = () => setShowModal(false);
+    const closeModal = () => {
+        setShowModal(false);
+    }
 
     const handleDelete = (id: number) => {
         if (!confirm('Are you sure you want to delete this service?')) return;
-        fetch(`/api/services?id=${id}`, { method: 'DELETE' })
+        fetch(`/api/services?id=${String(id)}`, { method: 'DELETE' })
         .then((res) => {
             if (!res.ok) throw new Error('Delete failed');
             // refresh list
             loadServices();
         })
-        .catch(console.error);
+        .catch((err: unknown) => {
+            console.error(err);
+        });
     };
     const handleModalSuccess = () => {
         loadServices();
@@ -217,8 +223,8 @@ export default function AdminPanel() {
             <ServiceTable
                 services={services}
                 onAddClick={openAddModal}
-                onEdit={(svc) => openEditModal(svc)}
-                onDelete={(id) => handleDelete(id)}
+                onEdit={(svc) => {openEditModal(svc)}}
+                onDelete={(id) => {handleDelete(id)}}
             />
             {/* <ServiceModal
                 action={action}
@@ -229,7 +235,7 @@ export default function AdminPanel() {
             {showModal && (
                 <ServiceModal
                     mode={modalMode}
-                    initialData={modalMode === 'edit' ? selectedService! : undefined}
+                    initialData={modalMode === 'edit' && selectedService ? selectedService : undefined}
                     onClose={closeModal}
                     onSuccess={handleModalSuccess}
                 />

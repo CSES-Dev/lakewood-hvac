@@ -17,6 +17,13 @@ interface ServiceModalProps {
     onSuccess: () => void;
 }
 
+type UploadResponse = {
+    url?: string;
+    success?: {
+        error?: string;
+    };
+};
+
 type FormValues = {
     title: string;
     description: string;
@@ -31,13 +38,13 @@ export default function ServiceModal({
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } =
         useForm<FormValues>({
         defaultValues: {
-            title: initialData?.title || '',
-            description: initialData?.description || '',
+            title: initialData?.title ?? '',
+            description: initialData?.description ?? '',
         },
         });
 
     // two pieces of state now:
-    const [imageUrl, setImageUrl] = useState<string>(initialData?.imageUrl || '');
+    const [imageUrl, setImageUrl] = useState<string>(initialData?.imageUrl ?? '');
     const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
@@ -63,9 +70,9 @@ export default function ServiceModal({
             },
             body: formData,
         });
-        const json = await uploadRes.json();
+        const json = await uploadRes.json() as UploadResponse;
         if (!uploadRes.ok || !json.url) {
-            alert(json.error || 'Image upload failed');
+            alert(json.success?.error ?? 'Image upload failed');
             return;
         }
 
@@ -81,7 +88,15 @@ export default function ServiceModal({
 
         // 2) now create/update service
         const payload = { ...data, imageUrl: finalImageUrl };
-        const url = mode === 'add' ? '/api/services'  : `/api/services?id=${encodeURIComponent(initialData?.id!)}`;
+        let url: string;
+        if (mode === 'add') {
+            url = '/api/services';
+        } else if (initialData?.id) {
+            url = `/api/services?id=${encodeURIComponent(initialData.id)}`;
+        } else {
+            throw new Error('Missing service ID in edit mode');
+        }
+
         const method = mode === 'add' ? 'POST' : 'PUT';
 
         const res = await fetch(url, {
@@ -106,35 +121,34 @@ export default function ServiceModal({
             <button onClick={onClose} className="absolute top-2 right-2 text-xl">&times;</button>
             <h2 className="text-2xl mb-4">{mode === 'add' ? 'Add Service' : 'Edit Service'}</h2>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* title/description fields */}
-            <div>
-                <label className="block text-sm">Title</label>
-                <input {...register('title', { required: true })} className="w-full border p-2" />
-                {errors.title && <p className="text-red-600 text-sm">Title required</p>}
-            </div>
+            <form onSubmit={(e) => { void handleSubmit(onSubmit)(e); }} className="space-y-4">
+                <div>
+                    <label className="block text-sm">Title</label>
+                    <input {...register('title', { required: true })} className="w-full border p-2" />
+                    {errors.title && <p className="text-red-600 text-sm">Title required</p>}
+                </div>
 
-            <div>
-                <label className="block text-sm">Description</label>
-                <textarea {...register('description', { required: true })} rows={3}
-                className="w-full border p-2" />
-                {errors.description && <p className="text-red-600 text-sm">Description required</p>}
-            </div>
+                <div>
+                    <label className="block text-sm">Description</label>
+                    <textarea {...register('description', { required: true })} rows={3}
+                    className="w-full border p-2" />
+                    {errors.description && <p className="text-red-600 text-sm">Description required</p>}
+                </div>
 
-            {/* file selector + preview */}
-            <ImageUploadForm
-                initialUrl={initialData?.imageUrl}
-                previewUrl={imageUrl}
-                onFileSelect={setFile}
-            />
+                {/* file selector + preview */}
+                <ImageUploadForm
+                    initialUrl={initialData?.imageUrl}
+                    previewUrl={imageUrl}
+                    onFileSelect={setFile}
+                />
 
-            <div className="flex justify-end space-x-2">
-                <button type="button" onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
-                <button type="submit" disabled={isSubmitting}
-                className="px-4 py-2 bg-blue-600 text-white rounded">
-                {mode === 'add' ? 'Add' : 'Save'}
-                </button>
-            </div>
+                <div className="flex justify-end space-x-2">
+                    <button type="button" onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
+                    <button type="submit" disabled={isSubmitting}
+                        className="px-4 py-2 bg-blue-600 text-white rounded">
+                        {mode === 'add' ? 'Add' : 'Save'}
+                    </button>
+                </div>
             </form>
         </div>
         </div>

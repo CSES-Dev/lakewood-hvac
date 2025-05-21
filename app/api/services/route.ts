@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
 import { servicesCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/servicesCreateInput.schema";
 import { servicesUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/servicesUpdateInput.schema";
@@ -20,11 +19,11 @@ export async function GET(req: Request) {
 // POST
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const data = servicesCreateInputObjectSchema.parse(body);
+        const data = servicesCreateInputObjectSchema.parse(await req.json());
         return NextResponse.json(await addService(data), { status: 201 });
-    } catch (e: any) {
-        return NextResponse.json({ error: e.message }, { status: 400 });
+    } catch (e: unknown) {
+        const errorMessage = e instanceof Error ? e.message : "Invalid request";
+        return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 }
 
@@ -35,16 +34,15 @@ export async function PUT(req: Request) {
         const id = url.searchParams.get("id");
         if (!id) throw new Error("ID required");
 
-        // you can parse raw body directly—no need for `{ update: … }` wrapper
-        const body = await req.json();
-        const data = servicesUpdateInputObjectSchema.parse(body);
+        const data = servicesUpdateInputObjectSchema.parse(await req.json());
 
         const existing = await getService({ id: Number(id) });
         if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
         return NextResponse.json(await updateService(Number(id), data));
-    } catch (e: any) {
-        return NextResponse.json({ error: e.message }, { status: 400 });
+    } catch (e: unknown) {
+        const errorMessage = e instanceof Error ? e.message : "Invalid update request";
+        return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 }
 
@@ -57,7 +55,8 @@ export async function DELETE(req: Request) {
 
         await deleteService(Number(id));
         return NextResponse.json({ message: "Deleted" });
-    } catch (e: any) {
-        return NextResponse.json({ error: e.message }, { status: 400 });
+    } catch (e: unknown) {
+        const errorMessage = e instanceof Error ? e.message : "Delete failed";
+        return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 }

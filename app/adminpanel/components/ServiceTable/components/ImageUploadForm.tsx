@@ -12,11 +12,10 @@ interface Props {
 
 const ImageUploadForm: React.FC<Props> = ({
   initialUrl,
-  previewUrl,
   onFileSelect,
 }) => {
   const [internalPreview, setInternalPreview] = useState<string | null>(
-    initialUrl || null
+    initialUrl ?? null
   );
 
   useEffect(() => {
@@ -29,7 +28,7 @@ const ImageUploadForm: React.FC<Props> = ({
     const file = e.target.files?.[0] ?? null;
     onFileSelect(file);
     setInternalPreview(
-      file ? URL.createObjectURL(file) : initialUrl || null
+      file ? URL.createObjectURL(file) : initialUrl ?? null
     );
   }
 
