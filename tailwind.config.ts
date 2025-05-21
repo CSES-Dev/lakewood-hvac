@@ -45,7 +45,7 @@ export default {
                     foreground: "#FFFFFF",
                 },
                 border: "#E0E0E0",
-                input: "#FFFFFF",
+                input: "#2C2C2CBF",
                 ring: "#10383A",
                 chart: {
                     1: "#4F6E4E",
