@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { CommunityEvent } from '@/types/event';
 
 export const EventCard = ({ event }: { event: CommunityEvent }) => {

@@ -26,7 +26,7 @@ export const DetailRenderer = ({ events }: { events: CommunityEvent[] }) => {
 
       <div className="relative w-full h-[300px] mb-6">
         <Image
-          src={event.imageUrl || '/default-image.jpg'}
+          src={event.imageUrl ?? '/default-image.jpg'}
           alt={event.title}
           layout="fill"
           objectFit="cover"
