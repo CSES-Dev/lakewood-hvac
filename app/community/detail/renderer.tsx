@@ -6,7 +6,7 @@ import { CommunityEvent } from '@/types/event';
 
 export const DetailRenderer = ({ events }: { events: CommunityEvent[] }) => {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams?.get('id');
 
   const event = events.find((e) => e.id === id);
 
