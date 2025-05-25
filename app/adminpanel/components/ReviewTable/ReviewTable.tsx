@@ -31,6 +31,7 @@ export default function ReviewTable({ reviews, onEdit, onDelete, onAddClick }: R
                         <th className="p-2 border text-left">Author</th>
                         <th className="p-2 border text-left">Date</th>
                         <th className="p-2 border text-left">Review</th>
+                        <th className="p-2 border text-left">Service</th>
                         <th className="p-2 border text-left">Rating</th>
                         <th className="p-2 border text-right">Actions</th>
                     </tr>

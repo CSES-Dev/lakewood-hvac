@@ -17,7 +17,7 @@ const squareData = [
     },
     {
         source: "/homePage/HeatPumps.png",
-        description: "HeatPumps",
+        description: "Heat Pumps",
     },
 ];
 

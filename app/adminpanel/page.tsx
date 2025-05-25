@@ -233,6 +233,7 @@ export default function AdminPanel() {
             comments: "",
             rating: 0.0,
             createdAt: new Date(),
+            service: "",
         };
 
         setAction(ACTIONS.ADD);

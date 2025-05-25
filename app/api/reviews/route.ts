@@ -9,6 +9,8 @@ import { addReview, deleteReview, getReview, getReviews, updateReview } from "@/
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+    const pageParam = searchParams.get("page");
+    const limitParam = searchParams.get("limit");
 
     if (id) {
         // There was an id in the search, so find the review that corresponds to it
@@ -20,10 +22,21 @@ export async function GET(request: Request) {
         return NextResponse.json(review, { status: 200 });
     }
 
-    // There was no id in the get request, so return all of the reviews
-    const reviews = await getReviews();
+    const page = parseInt(pageParam ?? "1", 10);
+    const limit = parseInt(limitParam ?? "4", 10);
+    const skip = (page - 1) * limit;
 
-    return NextResponse.json(reviews, { status: 200 });
+    // There was no id in the get request, so return all of the reviews
+    const [reviews, total] = await Promise.all([
+        prisma.reviews.findMany({
+            skip,
+            take: limit,
+            orderBy: { createdAt: "desc" },
+        }),
+        prisma.reviews.count(),
+    ]);
+
+    return NextResponse.json({ reviews, page, totalPages: Math.ceil(total / limit), total });
 }
 
 // POST: Add a new review

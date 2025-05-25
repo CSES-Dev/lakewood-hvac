@@ -27,6 +27,7 @@ export default function ReviewRow({ review, onEdit, onDelete }: ReviewRowProps) 
                     .replace(/\bat\b/, "•")}
             </td>
             <td className="p-2">{review.comments}</td>
+            <td className="p-2">{review.service}</td>
             <td className="p-2">{review.rating}</td>
             <td className="p-2 text-right">
                 <button
