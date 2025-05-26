@@ -41,5 +41,11 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/adminpanel/:path*", PROTECTED_API_PATHS],
-};
+    matcher: [
+      "/adminpanel/:path*",
+      "/api/reviews",
+      "/api/engagements",
+      "/api/services",
+      "/api/upload",
+    ],
+};  
