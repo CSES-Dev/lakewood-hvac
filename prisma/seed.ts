@@ -1,19 +1,30 @@
 import bcrypt from 'bcryptjs';
-import prisma from "@/lib/prisma";
-import { UserCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/UserCreateInput.schema";
-import { addUser } from "@/services/users";
+import prisma from "../lib/prisma";
+import { addUser, getUser } from "../services/users";
+import { UserCreateInputObjectSchema } from "./generated/schemas/objects/UserCreateInput.schema";
 
 async function main() {
-    const hashedPassword = await bcrypt.hash("password123", 10);
+    const userEmail = process.env.ADMIN_EMAIL;
+    const userPassword = process.env.ADMIN_PASSWORD;
 
-    const user = {
-        email: "admin@example.com",
+    if (!userEmail || !userPassword) throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be defined in environment variables.");
+
+    const hashedPassword = await bcrypt.hash(userPassword, 10);
+
+    const existingAdmin = await getUser({ email: userEmail });
+    if (existingAdmin) {
+        console.log(`Admin ${userEmail} already exists.`);
+        return;
+    }
+
+    const adminUser = {
+        email: userEmail,
         password: hashedPassword,
         createdAt: new Date(),
     };
     
-    const createdUser = UserCreateInputObjectSchema.parse(user);
-    await addUser(createdUser);
+    const admin = UserCreateInputObjectSchema.parse(adminUser);
+    await addUser(admin);
 
     console.log('Admin user created');
 }
