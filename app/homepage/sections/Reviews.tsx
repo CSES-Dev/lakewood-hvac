@@ -12,9 +12,9 @@ export default function Reviews() {
 
     useEffect(() => {
         fetch("/api/reviews", { method: "GET" })
-            .then((response) => response.json() as Promise<Review[]>)
+            .then((response) => response.json() as Promise<{ reviews: Review[] }>)
             .then((data) => {
-                setReviews(data);
+                setReviews(data.reviews);
             })
             .catch((error: unknown) => {
                 console.error("Error fetching reviews.", error);
