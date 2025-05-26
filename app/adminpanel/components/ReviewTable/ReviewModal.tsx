@@ -70,6 +70,27 @@ export default function ReviewModal({ action, review, setReview, handleReview }:
                         required
                     />
                 </div>
+                <div>
+                    <div>
+                        <label htmlFor="service-text" className="block text-md mb-2">
+                            Service (Optional)
+                        </label>
+                        <select
+                            id="service"
+                            className="border border-gray-300 hover:border-gray-800 text-gray-700 rounded-md p-3 w-full"
+                            value={review.service}
+                            onChange={(e) => {
+                                setReview({ ...review, service: e.target.value });
+                            }}
+                        >
+                            <option value="">None</option>
+                            <option value="Air Conditioning">Air Conditioning</option>
+                            <option value="Heating">Heating</option>
+                            <option value="Thermostats">Thermostats</option>
+                            <option value="Heat Pumps">Heat Pumps</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <label htmlFor="review-rating" className="block text-md">
                 Rating

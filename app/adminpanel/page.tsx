@@ -233,6 +233,7 @@ export default function AdminPanel() {
             comments: "",
             rating: 0.0,
             createdAt: new Date(),
+            service: "",
         };
 
         setAction(ACTIONS.ADD);
@@ -327,9 +328,9 @@ export default function AdminPanel() {
                 console.error("Error fetching engagements.", error);
             });
 
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
-            .then((data) => {
+        fetch("/api/reviews?all=true")
+            .then((res) => res.json())
+            .then((data: Review[]) => {
                 setReviews(data);
             })
             .catch((error: unknown) => {
