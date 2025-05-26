@@ -11,7 +11,7 @@ export default function Reviews() {
     const itemsPerPage = 2;
 
     useEffect(() => {
-        fetch("/api/reviews")
+        fetch("/api/reviews", { method: "GET" })
             .then((response) => response.json() as Promise<Review[]>)
             .then((data) => {
                 setReviews(data);

@@ -7,6 +7,8 @@ type AuthContextType = {
     setIsLoggedIn: (value: boolean) => void;
 };
 
+type AuthResponseType = { loggedIn: true } | { loggedIn: false };
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -15,8 +17,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         async function checkAuth() {
             try {
-                const res = await fetch("/api/auth/me");
-                setIsLoggedIn(res.ok);
+                const res = await fetch("/api/auth/me", { method: "GET" });
+                const data = (await res.json()) as AuthResponseType;
+                const loggedInState = res.ok && data.loggedIn;
+
+                setIsLoggedIn(loggedInState);
             } catch {
                 setIsLoggedIn(false);
             }

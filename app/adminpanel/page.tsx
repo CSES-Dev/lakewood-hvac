@@ -69,6 +69,7 @@ export default function AdminPanel() {
             fetch("/api/engagements", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(engagementWithoutId),
             })
                 .then((response) => response.json() as Promise<Engagement>)
@@ -98,7 +99,10 @@ export default function AdminPanel() {
         };
         setConfirmationMessage(message);
 
-        fetch(`/api/engagements?id=${String(id)}`, { method: "DELETE" })
+        fetch(`/api/engagements?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
             .then(() => {
                 setEngagements((prev) => prev.filter((engagement) => engagement.id !== id));
                 setShowConfirmation(true);
@@ -121,6 +125,7 @@ export default function AdminPanel() {
             fetch(`/api/engagements?id=${String(editingEngagement.id)}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(engagementUpdateRequest),
             })
                 .then(() => {
@@ -251,6 +256,7 @@ export default function AdminPanel() {
             fetch("/api/reviews", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(reviewWithoutId),
             })
                 .then((response) => response.json() as Promise<Review>)
@@ -276,7 +282,10 @@ export default function AdminPanel() {
         };
         setConfirmationMessage(message);
 
-        fetch(`/api/reviews?id=${String(id)}`, { method: "DELETE" })
+        fetch(`/api/reviews?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
             .then(() => {
                 setReviews((prev) => prev.filter((review) => review.id !== id));
                 setShowConfirmation(true);
@@ -299,6 +308,7 @@ export default function AdminPanel() {
             fetch(`/api/reviews?id=${String(editingReview.id)}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(reviewUpdateRequest),
             })
                 .then(() => {
@@ -318,7 +328,7 @@ export default function AdminPanel() {
     };
 
     useEffect(() => {
-        fetch("/api/engagements")
+        fetch("/api/engagements", { method: "GET" })
             .then((response) => response.json() as Promise<Engagement[]>)
             .then((data) => {
                 setEngagements(data);
@@ -327,7 +337,7 @@ export default function AdminPanel() {
                 console.error("Error fetching engagements.", error);
             });
 
-        fetch("/api/reviews")
+        fetch("/api/reviews", { method: "GET" })
             .then((response) => response.json() as Promise<Review[]>)
             .then((data) => {
                 setReviews(data);
