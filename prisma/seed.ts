@@ -1,3 +1,4 @@
+/* eslint-disable */
 import bcrypt from 'bcryptjs';
 import prisma from "../lib/prisma";
 import { addUser, getUser } from "../services/users";
