@@ -2,29 +2,116 @@
 
 import { useEffect, useState } from "react";
 import ReviewItem from "../components/ReviewItem";
+import SearchBar from "../components/SearchBar";
 import { Review } from "@/models/Review";
 
 const ReviewSection = () => {
-    const [reviews, setReviews] = useState<Review[]>([]);
+    type SortOption = "date" | "rating";
+    type RatingFilter = "all" | "high" | "low";
+    type ServiceFilter =
+        | "All Services"
+        | "Air Conditioning"
+        | "Heating"
+        | "Thermostats"
+        | "Heat Pumps";
+    const [serviceFilter, setServiceFilter] = useState<ServiceFilter>("All Services");
+    const [ratingFilter, setRatingFilter] = useState<RatingFilter>("all");
+    const [sortBy, setSortBy] = useState<SortOption>("date");
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const pageSize = 4;
+    const [searchTerm, setSearchTerm] = useState("");
+    const [allReviews, setAllReviews] = useState<Review[]>([]);
+    const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 
     useEffect(() => {
-        fetch(`/api/reviews?page=${page}&limit=4`)
+        let filtered = allReviews;
+
+        if (searchTerm) {
+            const lower = searchTerm.toLowerCase();
+            filtered = filtered.filter(
+                (review) =>
+                    review.author.toLowerCase().includes(lower) ||
+                    review.comments.toLowerCase().includes(lower),
+            );
+        }
+
+        if (ratingFilter === "high") {
+            filtered = filtered.filter((review) => review.rating >= 3.5);
+        } else if (ratingFilter === "low") {
+            filtered = filtered.filter((review) => review.rating <= 3);
+        }
+
+        if (serviceFilter != "All Services") {
+            filtered = filtered.filter((review) => review.service === serviceFilter);
+        }
+
+        setFilteredReviews(filtered);
+        setPage(1);
+    }, [searchTerm, allReviews, ratingFilter, serviceFilter]);
+
+    const sortedReviews = [...filteredReviews].sort((a, b) => {
+        if (sortBy === "rating") {
+            return b.rating - a.rating;
+        }
+        // default to date sort
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    const totalPages = Math.ceil(sortedReviews.length / pageSize);
+    const currentPageReviews = sortedReviews.slice((page - 1) * pageSize, page * pageSize);
+
+    useEffect(() => {
+        fetch("/api/reviews?all=true")
             .then((res) => res.json())
             .then((data) => {
-                setReviews(data.reviews);
-                setTotalPages(data.totalPages);
+                setAllReviews(data);
             })
             .catch((error) => {
                 console.error("Error fetching reviews.", error);
             });
-    }, [page]);
+    }, []);
+
+    useEffect(() => {
+        setPage(1);
+    }, [sortBy]);
 
     return (
         <div>
+            <div className="flex flex-row mb-5 max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)]">
+                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}></SearchBar>
+                <div className="flex flex-row justify-end">
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value as SortOption)}
+                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                    >
+                        <option value="date">Date</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                    <select
+                        value={ratingFilter}
+                        onChange={(e) => setRatingFilter(e.target.value as RatingFilter)}
+                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                    >
+                        <option value="all">All Ratings</option>
+                        <option value="high">High (3.5-5)</option>
+                        <option value="low">Low (1-3)</option>
+                    </select>
+                    <select
+                        value={serviceFilter}
+                        onChange={(e) => setServiceFilter(e.target.value as ServiceFilter)}
+                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                    >
+                        <option value="All Services">All Services</option>
+                        <option value="Air Conditioning">Air Conditioning</option>
+                        <option value="Heating">Heating</option>
+                        <option value="Thermostats">Thermostats</option>
+                        <option value="Heat Pumps">Heat Pumps</option>
+                    </select>
+                </div>
+            </div>
             <div>
-                {reviews.map((data, index) => (
+                {currentPageReviews.map((data, index) => (
                     <ReviewItem
                         key={index}
                         name={data.author}
