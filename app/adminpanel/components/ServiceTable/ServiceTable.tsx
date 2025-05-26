@@ -5,9 +5,9 @@ import ServiceRow, { Service } from "./ServiceRow";
 
 type ServiceTableProps = {
     services: Service[];
-    onEdit: (id: number, name: string, description: string) => void;
+    onEdit: (service: Service) => void;
     onDelete: (id: number) => void;
-    onAddClick: (name: string) => void;
+    onAddClick: (title: string) => void;
 };
 
 export default function ServiceTable({

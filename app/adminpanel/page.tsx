@@ -8,7 +8,7 @@ import EngagementTable from "./components/EngagementTable/EngagementTable";
 import ReviewModal from "./components/ReviewTable/ReviewModal";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
 
-import ServiceModal from "./components/ServiceTable/ServiceModal";
+import ServiceModal from "@/app/adminpanel/components/ServiceTable/components/ServiceModal";
 import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
 
@@ -144,81 +144,54 @@ export default function AdminPanel() {
         }
     };
 
-    // Services state and editing
-    const [services, setServices] = useState<Service[]>([
-        {
-            id: 0,
-            name: "Air Conditioning",
-            description:
-                "At Lakewood Heating and Air Conditioning Inc., we pride ourselves on providing top-notch air conditioning services to ensure that our clients enjoy a comfortable living environment. Our team of skilled technicians is well-equipped to handle installations, maintenance, and repairs for a variety of air conditioning systems. No matter the size or complexity of your cooling needs, you can trust us to deliver efficient, cost-effective, and timely solutions that keep your home cool and comfortable throughout the year.",
-        },
-        {
-            id: 1,
-            name: "Heating",
-            description:
-                "Lakewood Heating and Air Conditioning Inc. is your reliable partner for all your heating needs. Our experienced technicians are committed to delivering exceptional heating services, from installations to repairs and maintenance for a wide range of heating systems. Our goal is to provide you with energy-efficient, safe, and comfortable heating solutions to keep your home cozy during the colder months while ensuring superior customer satisfaction. Give us a call today to learn more!",
-        },
-        {
-            id: 2,
-            name: "Thermostats",
-            description:
-                "Our thermostat services include professional installation, maintenance, and repair of a variety of thermostat types and models. Our experts work with you to identify the ideal thermostat solution for your home, ensuring optimal temperature regulation and energy management, ultimately enhancing your comfort and reducing energy costs. Contact us to get started!",
-        },
-        {
-            id: 3,
-            name: "Heat Pumps",
-            description:
-                "Lakewood Heating and Air Conditioning Inc. offers comprehensive heat pump installation services, designed to provide you with an eco-friendly, energy-efficient, and cost-effective alternative to traditional heating and cooling systems. Our skilled technicians are proficient in installing a wide range of heat pump models, ensuring seamless integration into your existing HVAC system. Trust us to help you transition to a greener, more comfortable living space while reducing your energy consumption and costs.",
-        },
-    ]);
-    // Temporary id for services
-    const [counter, setCounter] = useState(services.length - 1);
-    const getNextId = () => {
-        const newId = counter + 1;
-        setCounter(newId);
-        return newId;
+    // ----------------------------
+    // ----------Services----------
+    // ----------------------------
+    const [services, setServices] = useState<Service[]>([]);
+    const loadServices = () => {
+        fetch('/api/services')
+            .then((res) => res.json() as Promise<Service[]>)
+            .then(setServices)
+            .catch((err: unknown) => {
+                console.error(err);
+            });
     };
+    useEffect(loadServices, []);
 
-    const [editingService, setEditingService] = useState<Service | null>(null);
-    const [addingService, setAddingService] = useState<Service | null>(null);
+    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+    const [selectedService, setSelectedService] = useState<Service | null>(null);
+    const [showModal, setShowModal] = useState(false);
 
-    const handleServiceEditClick = (id: number, name: string, description: string) => {
-        setAction(ACTIONS.EDIT);
-        setEditingService({ id, name, description });
+    const openAddModal = () => {
+        setModalMode('add');
+        setSelectedService(null);
+        setShowModal(true);
     };
-
-    const handleServiceAddClick = (name: string) => {
-        // Initialize with an empty description.
-        setAction(ACTIONS.ADD);
-        setAddingService({ id: services.length, name, description: "" });
+    const openEditModal = (service: Service) => {
+        setModalMode('edit');
+        setSelectedService(service);
+        console.log('Editing service:', selectedService);
+        setShowModal(true);
     };
+    const closeModal = () => {
+        setShowModal(false);
+    }
 
-    const handleAddService = () => {
-        if (addingService) {
-            setServices((prev) => [...prev, { ...addingService, id: getNextId() }]);
-            setAddingService(null);
-        }
+    const handleDelete = (id: number) => {
+        if (!confirm('Are you sure you want to delete this service?')) return;
+        fetch(`/api/services?id=${String(id)}`, { method: 'DELETE' })
+        .then((res) => {
+            if (!res.ok) throw new Error('Delete failed');
+            // refresh list
+            loadServices();
+        })
+        .catch((err: unknown) => {
+            console.error(err);
+        });
     };
-
-    const handleDeleteService = (id: number) => {
-        setServices(services.filter((service) => service.id !== id));
-    };
-
-    const handleSaveServiceEdit = () => {
-        if (editingService) {
-            setServices((prev) =>
-                prev.map((service) =>
-                    service.id === editingService.id
-                        ? {
-                              ...service,
-                              name: editingService.name,
-                              description: editingService.description,
-                          }
-                        : service,
-                ),
-            );
-            setEditingService(null);
-        }
+    const handleModalSuccess = () => {
+        loadServices();
+        setShowModal(false);
     };
 
     // Reviews state and editing
@@ -370,16 +343,30 @@ export default function AdminPanel() {
             />
             <ServiceTable
                 services={services}
-                onEdit={handleServiceEditClick}
-                onDelete={handleDeleteService}
-                onAddClick={handleServiceAddClick}
+                onAddClick={openAddModal}
+                onEdit={(svc) => {openEditModal(svc)}}
+                onDelete={(id) => {handleDelete(id)}}
             />
-            <ServiceModal
+            {/* <ServiceModal
                 action={action}
                 service={action === ACTIONS.ADD ? addingService : editingService}
                 setService={action === ACTIONS.ADD ? setAddingService : setEditingService}
                 handleService={action === ACTIONS.ADD ? handleAddService : handleSaveServiceEdit}
-            />
+            /> */}
+            {showModal && (
+                <ServiceModal
+                    mode={modalMode}
+                    initialData={modalMode === 'edit' && selectedService ? selectedService : undefined}
+                    onClose={closeModal}
+                    onSuccess={handleModalSuccess}
+                />
+            )}
+            {/* <AboutUsTable aboutUs={aboutUs} onEdit={handleAboutUsEditClick} />
+        <EditAboutUsModal
+            aboutUs={editingAboutUs}
+            setAboutUs={setEditingAboutUs}
+            handleSaveEdit={handleSaveAboutUs}
+        /> */}
             <ReviewTable
                 reviews={reviews}
                 onEdit={handleReviewEditClick}
