@@ -10,7 +10,7 @@ test.describe.serial("Reviews API CRUD Operations", () => {
         const response = await request.get(REVIEW_API_URL);
         expect(response.status()).toBe(200);
 
-        const reviews = (await response.json()) as Review[];
+        const { reviews } = (await response.json()) as { reviews: Review[] };
 
         expect(Array.isArray(reviews)).toBeTruthy();
         expect(reviews.length > 1);
