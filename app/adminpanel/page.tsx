@@ -328,8 +328,8 @@ export default function AdminPanel() {
                 console.error("Error fetching engagements.", error);
             });
 
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
+        fetch("/api/reviews?all=true")
+            .then((res) => res.json())
             .then((data) => {
                 setReviews(data);
             })

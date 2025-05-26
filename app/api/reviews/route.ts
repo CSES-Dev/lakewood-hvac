@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-
+import prisma from "@/lib/prisma";
 import { z } from "zod";
 import { reviewsCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsCreateInput.schema";
 import { reviewsUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsUpdateInput.schema";
@@ -7,36 +7,52 @@ import { addReview, deleteReview, getReview, getReviews, updateReview } from "@/
 
 // GET: Fetch all reviews or a single review by ID
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-    const pageParam = searchParams.get("page");
-    const limitParam = searchParams.get("limit");
+    try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+        const pageParam = searchParams.get("page");
+        const limitParam = searchParams.get("limit");
+        const all = searchParams.get("all") === "true";
 
-    if (id) {
-        // There was an id in the search, so find the review that corresponds to it
-        const review = await getReview({ id: Number(id) });
-        if (!review) {
-            return NextResponse.json({ message: "Review not found" }, { status: 404 });
+        console.log("Request URL:", request.url);
+
+        if (id) {
+            // There was an id in the search, so find the review that corresponds to it
+            const review = await getReview({ id: Number(id) });
+            if (!review) {
+                return NextResponse.json({ message: "Review not found" }, { status: 404 });
+            }
+
+            return NextResponse.json(review, { status: 200 });
         }
 
-        return NextResponse.json(review, { status: 200 });
+        if (all) {
+            const reviews = await prisma.reviews.findMany({
+                orderBy: { createdAt: "desc" },
+            });
+
+            return NextResponse.json(reviews);
+        }
+
+        const page = parseInt(pageParam ?? "1", 10);
+        const limit = parseInt(limitParam ?? "4", 10);
+        const skip = (page - 1) * limit;
+
+        // There was no id in the get request, so return all of the reviews
+        const [reviews, total] = await Promise.all([
+            prisma.reviews.findMany({
+                skip,
+                take: limit,
+                orderBy: { createdAt: "desc" },
+            }),
+            prisma.reviews.count(),
+        ]);
+
+        return NextResponse.json({ reviews, page, totalPages: Math.ceil(total / limit), total });
+    } catch (error) {
+        console.error("Error in GET /api/reviews:", error);
+        return NextResponse.json([], { status: 500 });
     }
-
-    const page = parseInt(pageParam ?? "1", 10);
-    const limit = parseInt(limitParam ?? "4", 10);
-    const skip = (page - 1) * limit;
-
-    // There was no id in the get request, so return all of the reviews
-    const [reviews, total] = await Promise.all([
-        prisma.reviews.findMany({
-            skip,
-            take: limit,
-            orderBy: { createdAt: "desc" },
-        }),
-        prisma.reviews.count(),
-    ]);
-
-    return NextResponse.json({ reviews, page, totalPages: Math.ceil(total / limit), total });
 }
 
 // POST: Add a new review
