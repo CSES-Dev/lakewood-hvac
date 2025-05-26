@@ -61,10 +61,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
-        return res.status(403).json({ error: "Forbidden" });
-    }
-
     // 6) Run Multer
     try {
         await runMiddleware(req, res, upload.single("image"));
