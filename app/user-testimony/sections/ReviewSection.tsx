@@ -22,6 +22,7 @@ const ReviewSection = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [allReviews, setAllReviews] = useState<Review[]>([]);
     const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         let filtered = allReviews;
@@ -77,13 +78,18 @@ const ReviewSection = () => {
 
     return (
         <div>
-            <div className="flex flex-row mb-5 max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)]">
-                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}></SearchBar>
+            <div className="flex flex-row flex-wrap gap-[clamp(0.5rem,1.5vw,1.25rem)] mb-[clamp(1rem,2vw,2rem)] text-[clamp(0px,1.74vw,37.5px)]">
+
+                <div className="flex-grow min-w-[200px]">
+                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                </div>
+                
                 <div className="flex flex-row justify-end">
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as SortOption)}
-                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
+
                     >
                         <option value="date">Date</option>
                         <option value="rating">Rating</option>
@@ -91,7 +97,9 @@ const ReviewSection = () => {
                     <select
                         value={ratingFilter}
                         onChange={(e) => setRatingFilter(e.target.value as RatingFilter)}
-                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
+
+
                     >
                         <option value="all">All Ratings</option>
                         <option value="high">High (3.5-5)</option>
@@ -100,7 +108,8 @@ const ReviewSection = () => {
                     <select
                         value={serviceFilter}
                         onChange={(e) => setServiceFilter(e.target.value as ServiceFilter)}
-                        className="bg-primary text-[#FFFDF6] px-4 rounded-md ml-4"
+                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
+
                     >
                         <option value="All Services">All Services</option>
                         <option value="Air Conditioning">Air Conditioning</option>
