@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
 import { z } from "zod";
+import prisma from "@/lib/prisma";
 import { reviewsCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsCreateInput.schema";
 import { reviewsUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/reviewsUpdateInput.schema";
-import { addReview, deleteReview, getReview, getReviews, updateReview } from "@/services/review";
+import { addReview, deleteReview, getReview, updateReview } from "@/services/review";
 
 // GET: Fetch all reviews or a single review by ID
 export async function GET(request: Request) {

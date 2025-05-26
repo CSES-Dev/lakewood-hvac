@@ -330,7 +330,7 @@ export default function AdminPanel() {
 
         fetch("/api/reviews?all=true")
             .then((res) => res.json())
-            .then((data) => {
+            .then((data: Review[]) => {
                 setReviews(data);
             })
             .catch((error: unknown) => {

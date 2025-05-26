@@ -1,6 +1,5 @@
 "use client";
 
-import TemplateRow from "../TemplateTable/Row";
 import { Review } from "@/models/Review";
 
 type ReviewRowProps = {

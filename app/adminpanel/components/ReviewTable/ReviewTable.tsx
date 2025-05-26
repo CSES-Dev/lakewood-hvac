@@ -1,6 +1,5 @@
 "use client";
 
-import { FieldDefinition, TemplateTable } from "../TemplateTable/Table";
 import ReviewRow from "./ReviewRow";
 import { Review } from "@/models/Review";
 

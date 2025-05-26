@@ -22,5 +22,5 @@ assignees: ""
 
 ### Acceptance Criteria
 
--   [ ] Criteria 1
--   [ ] Criteria 2
+- [ ] Criteria 1
+- [ ] Criteria 2

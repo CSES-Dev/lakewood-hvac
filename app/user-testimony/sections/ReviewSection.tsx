@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import ReviewItem from "../components/ReviewItem";
 import SearchBar from "../components/SearchBar";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Review } from "@/models/Review";
 
 const ReviewSection = () => {
@@ -22,7 +29,6 @@ const ReviewSection = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [allReviews, setAllReviews] = useState<Review[]>([]);
     const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
-    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         let filtered = allReviews;
@@ -42,7 +48,7 @@ const ReviewSection = () => {
             filtered = filtered.filter((review) => review.rating <= 3);
         }
 
-        if (serviceFilter != "All Services") {
+        if (serviceFilter !== "All Services") {
             filtered = filtered.filter((review) => review.service === serviceFilter);
         }
 
@@ -64,10 +70,10 @@ const ReviewSection = () => {
     useEffect(() => {
         fetch("/api/reviews?all=true")
             .then((res) => res.json())
-            .then((data) => {
+            .then((data: Review[]) => {
                 setAllReviews(data);
             })
-            .catch((error) => {
+            .catch((error: unknown) => {
                 console.error("Error fetching reviews.", error);
             });
     }, []);
@@ -78,45 +84,60 @@ const ReviewSection = () => {
 
     return (
         <div>
-            <div className="flex flex-row flex-wrap gap-[clamp(0.5rem,1.5vw,1.25rem)] mb-[clamp(1rem,2vw,2rem)] text-[clamp(0px,1.74vw,37.5px)]">
-
+            <div className="flex flex-row flex-wrap gap-[clamp(0.5rem,1.5vw,1.25rem)] mb-[clamp(1rem,2vw,2rem)] text-[clamp(0px,1.74vw,37.5px)] items-center">
                 <div className="flex-grow min-w-[200px]">
                     <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </div>
-                
+
                 <div className="flex flex-row justify-end">
-                    <select
+                    <Select
                         value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value as SortOption)}
-                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
-
+                        onValueChange={(value) => {
+                            setSortBy(value as SortOption);
+                        }}
                     >
-                        <option value="date">Date</option>
-                        <option value="rating">Rating</option>
-                    </select>
-                    <select
+                        <SelectTrigger className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full border-none">
+                            <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="date">Date</SelectItem>
+                            <SelectItem value="rating">Rating</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    <Select
                         value={ratingFilter}
-                        onChange={(e) => setRatingFilter(e.target.value as RatingFilter)}
-                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
-
-
+                        onValueChange={(value) => {
+                            setRatingFilter(value as RatingFilter);
+                        }}
                     >
-                        <option value="all">All Ratings</option>
-                        <option value="high">High (3.5-5)</option>
-                        <option value="low">Low (1-3)</option>
-                    </select>
-                    <select
+                        <SelectTrigger className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full border-none">
+                            <SelectValue placeholder="Filter by rating" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Ratings</SelectItem>
+                            <SelectItem value="high">High (3.5-5)</SelectItem>
+                            <SelectItem value="low">Low (1-3)</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    <Select
                         value={serviceFilter}
-                        onChange={(e) => setServiceFilter(e.target.value as ServiceFilter)}
-                        className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full"
-
+                        onValueChange={(value) => {
+                            setServiceFilter(value as ServiceFilter);
+                        }}
                     >
-                        <option value="All Services">All Services</option>
-                        <option value="Air Conditioning">Air Conditioning</option>
-                        <option value="Heating">Heating</option>
-                        <option value="Thermostats">Thermostats</option>
-                        <option value="Heat Pumps">Heat Pumps</option>
-                    </select>
+                        <SelectTrigger className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full border-none">
+                            <SelectValue placeholder="Filter by service" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="All Services">All Services</SelectItem>
+                            <SelectItem value="Air Conditioning">Air Conditioning</SelectItem>
+                            <SelectItem value="Heating">Heating</SelectItem>
+                            <SelectItem value="Thermostats">Thermostats</SelectItem>
+                            <SelectItem value="Heat Pumps">Heat Pumps</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <div>
@@ -134,7 +155,9 @@ const ReviewSection = () => {
             <div className="flex flex-row justify-between items-center mt-4">
                 <div>
                     <button
-                        onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                        onClick={() => {
+                            setPage((p) => Math.max(p - 1, 1));
+                        }}
                         disabled={page === 1}
                         className="text-[#FFFDF6] max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)] px-2 py-1 rounded disabled:opacity-65"
                     >
@@ -144,7 +167,9 @@ const ReviewSection = () => {
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
                         <button
                             key={pg}
-                            onClick={() => setPage(pg)}
+                            onClick={() => {
+                                setPage(pg);
+                            }}
                             className={`text-[#FFFDF6] max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)] px-2 py-1 rounded ${
                                 pg === page ? "" : "text-[#FFFDF6] opacity-65 hover:text-[#FFFDF6]"
                             }`}
@@ -154,7 +179,9 @@ const ReviewSection = () => {
                     ))}
 
                     <button
-                        onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                        onClick={() => {
+                            setPage((p) => Math.min(p + 1, totalPages));
+                        }}
                         disabled={page === totalPages}
                         className="text-[#FFFDF6] max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)] px-2 py-1 rounded disabled:opacity-65"
                     >
