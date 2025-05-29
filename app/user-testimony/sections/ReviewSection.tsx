@@ -117,7 +117,7 @@ const ReviewSection = () => {
                         <SelectContent>
                             <SelectItem value="all">All Ratings</SelectItem>
                             <SelectItem value="high">High (3.5-5)</SelectItem>
-                            <SelectItem value="low">Low (1-3)</SelectItem>
+                            <SelectItem value="low">Low (0-3)</SelectItem>
                         </SelectContent>
                     </Select>
 
