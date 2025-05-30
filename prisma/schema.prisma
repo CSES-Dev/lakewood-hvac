@@ -4,6 +4,7 @@ generator client {
 
 generator zod {
   provider = "prisma-zod-generator"
+  output   = "./generated"
 }
 
 datasource db {
@@ -17,6 +18,7 @@ model reviews {
   comments  String
   rating    Float
   createdAt DateTime @default(now())
+  service   String?
 }
 
 model services {

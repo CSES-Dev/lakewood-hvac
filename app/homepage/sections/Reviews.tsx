@@ -11,10 +11,10 @@ export default function Reviews() {
     const itemsPerPage = 2;
 
     useEffect(() => {
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
+        fetch("/api/reviews", { method: "GET" })
+            .then((response) => response.json() as Promise<{ reviews: Review[] }>)
             .then((data) => {
-                setReviews(data);
+                setReviews(data.reviews);
             })
             .catch((error: unknown) => {
                 console.error("Error fetching reviews.", error);

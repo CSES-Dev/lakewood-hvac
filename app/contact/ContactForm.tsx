@@ -1,10 +1,10 @@
-"use client"; // This marks the file as a client component
+"use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useForm } from "react-hook-form";
-import FormInput from "./FormInput";
 import MessagePopup from "@/components/MessagePopup";
+import FormInput from "@/components/ui/FormInput";
 import { ContactFormData } from "@/types/contact";
 import { Message } from "@/types/message";
 
@@ -18,7 +18,6 @@ export default function ContactForm() {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
-    // Remove the 'async' here
     const onSubmit = (data: ContactFormData) => {
         console.log("Form submitted!", data);
         setShowConfirmation(true);
@@ -46,8 +45,6 @@ export default function ContactForm() {
                 onSubmit={(e) => void handleSubmit(onSubmit)(e)}
                 className="flex flex-col w-full max-md:max-w-full"
             >
-                {" "}
-                {/* Line 40 */}
                 <div className="flex grow gap-2.5 items-center px-9 py-4 w-full max-sm:text-[3.47vw] text-[clamp(0px,1.74vw,37.5px)] leading-none rounded-3xl bg-[#A8CCA0BF] max-md:px-5 max-md:pt-4 max-md:mt-10">
                     <div className="flex flex-col self-stretch my-auto w-full max-md:max-w-full">
                         <FormInput

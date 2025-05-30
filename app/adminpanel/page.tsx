@@ -9,12 +9,12 @@ import ReviewModal from "./components/ReviewTable/ReviewModal";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
 
 import ServiceModal from "./components/ServiceTable/ServiceModal";
-import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
 
 import MessagePopup from "@/components/MessagePopup";
 import { Engagement } from "@/models/Engagement";
 import { Review } from "@/models/Review";
+import { Service } from "@/models/Service";
 import { ACTIONS } from "@/types/actions";
 
 import { Message } from "@/types/message";
@@ -69,6 +69,7 @@ export default function AdminPanel() {
             fetch("/api/engagements", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(engagementWithoutId),
             })
                 .then((response) => response.json() as Promise<Engagement>)
@@ -98,7 +99,10 @@ export default function AdminPanel() {
         };
         setConfirmationMessage(message);
 
-        fetch(`/api/engagements?id=${String(id)}`, { method: "DELETE" })
+        fetch(`/api/engagements?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
             .then(() => {
                 setEngagements((prev) => prev.filter((engagement) => engagement.id !== id));
                 setShowConfirmation(true);
@@ -121,6 +125,7 @@ export default function AdminPanel() {
             fetch(`/api/engagements?id=${String(editingEngagement.id)}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(engagementUpdateRequest),
             })
                 .then(() => {
@@ -139,80 +144,112 @@ export default function AdminPanel() {
         }
     };
 
-    // Services state and editing
-    const [services, setServices] = useState<Service[]>([
-        {
-            id: 0,
-            name: "Air Conditioning",
-            description:
-                "At Lakewood Heating and Air Conditioning Inc., we pride ourselves on providing top-notch air conditioning services to ensure that our clients enjoy a comfortable living environment. Our team of skilled technicians is well-equipped to handle installations, maintenance, and repairs for a variety of air conditioning systems. No matter the size or complexity of your cooling needs, you can trust us to deliver efficient, cost-effective, and timely solutions that keep your home cool and comfortable throughout the year.",
-        },
-        {
-            id: 1,
-            name: "Heating",
-            description:
-                "Lakewood Heating and Air Conditioning Inc. is your reliable partner for all your heating needs. Our experienced technicians are committed to delivering exceptional heating services, from installations to repairs and maintenance for a wide range of heating systems. Our goal is to provide you with energy-efficient, safe, and comfortable heating solutions to keep your home cozy during the colder months while ensuring superior customer satisfaction. Give us a call today to learn more!",
-        },
-        {
-            id: 2,
-            name: "Thermostats",
-            description:
-                "Our thermostat services include professional installation, maintenance, and repair of a variety of thermostat types and models. Our experts work with you to identify the ideal thermostat solution for your home, ensuring optimal temperature regulation and energy management, ultimately enhancing your comfort and reducing energy costs. Contact us to get started!",
-        },
-        {
-            id: 3,
-            name: "Heat Pumps",
-            description:
-                "Lakewood Heating and Air Conditioning Inc. offers comprehensive heat pump installation services, designed to provide you with an eco-friendly, energy-efficient, and cost-effective alternative to traditional heating and cooling systems. Our skilled technicians are proficient in installing a wide range of heat pump models, ensuring seamless integration into your existing HVAC system. Trust us to help you transition to a greener, more comfortable living space while reducing your energy consumption and costs.",
-        },
-    ]);
-    // Temporary id for services
-    const [counter, setCounter] = useState(services.length - 1);
-    const getNextId = () => {
-        const newId = counter + 1;
-        setCounter(newId);
-        return newId;
-    };
-
+    // Service state and editing
+    const [services, setServices] = useState<Service[]>([]);
     const [editingService, setEditingService] = useState<Service | null>(null);
     const [addingService, setAddingService] = useState<Service | null>(null);
 
-    const handleServiceEditClick = (id: number, name: string, description: string) => {
+    const handleServiceEditClick = (service: Service) => {
         setAction(ACTIONS.EDIT);
-        setEditingService({ id, name, description });
+        setEditingService(service);
     };
 
-    const handleServiceAddClick = (name: string) => {
-        // Initialize with an empty description.
+    const handleAddServiceClick = () => {
+        const newService: Service = {
+            id: 0,
+            title: "",
+            description: "",
+            imageUrl: "",
+        };
+
         setAction(ACTIONS.ADD);
-        setAddingService({ id: services.length, name, description: "" });
+        setAddingService(newService);
     };
 
     const handleAddService = () => {
         if (addingService) {
-            setServices((prev) => [...prev, { ...addingService, id: getNextId() }]);
-            setAddingService(null);
+            const { id: _, ...serviceWithoutId } = addingService;
+            const message: Message = {
+                title: "Service Added",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch("/api/services", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(serviceWithoutId),
+            })
+                .then((response) => response.json() as Promise<Service>)
+                .then((createdService) => {
+                    const serviceWithId = {
+                        ...addingService,
+                        id: createdService.id,
+                    };
+
+                    setServices((prev) => [...prev, serviceWithId]);
+                    setAddingService(null);
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error adding service.");
+                });
         }
     };
 
     const handleDeleteService = (id: number) => {
-        setServices(services.filter((service) => service.id !== id));
+        const isConfirmed = window.confirm("Are you sure you want to delete this service?");
+        if (!isConfirmed) return;
+
+        const message: Message = {
+            title: "Service Deleted",
+            body: "Your changes have been saved",
+        };
+        setConfirmationMessage(message);
+
+        fetch(`/api/services?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
+            .then(() => {
+                setServices((prev) => prev.filter((service) => service.id !== id));
+                setShowConfirmation(true);
+            })
+            .catch(() => {
+                console.error("Error deleting service.");
+            });
     };
 
     const handleSaveServiceEdit = () => {
         if (editingService) {
-            setServices((prev) =>
-                prev.map((service) =>
-                    service.id === editingService.id
-                        ? {
-                              ...service,
-                              name: editingService.name,
-                              description: editingService.description,
-                          }
-                        : service,
-                ),
-            );
-            setEditingService(null);
+            const { id: _, ...serviceWithoutId } = editingService;
+            const serviceUpdateRequest = { update: serviceWithoutId };
+            const message: Message = {
+                title: "Service Edited",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch(`/api/services?id=${String(editingService.id)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(serviceUpdateRequest),
+            })
+                .then(() => {
+                    setServices((prev) =>
+                        prev.map((service) =>
+                            service.id === editingService.id ? editingService : service,
+                        ),
+                    );
+                    setEditingService(null);
+
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error saving service edit.");
+                });
         }
     };
 
@@ -233,6 +270,7 @@ export default function AdminPanel() {
             comments: "",
             rating: 0.0,
             createdAt: new Date(),
+            service: "",
         };
 
         setAction(ACTIONS.ADD);
@@ -251,6 +289,7 @@ export default function AdminPanel() {
             fetch("/api/reviews", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(reviewWithoutId),
             })
                 .then((response) => response.json() as Promise<Review>)
@@ -276,7 +315,10 @@ export default function AdminPanel() {
         };
         setConfirmationMessage(message);
 
-        fetch(`/api/reviews?id=${String(id)}`, { method: "DELETE" })
+        fetch(`/api/reviews?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
             .then(() => {
                 setReviews((prev) => prev.filter((review) => review.id !== id));
                 setShowConfirmation(true);
@@ -299,6 +341,7 @@ export default function AdminPanel() {
             fetch(`/api/reviews?id=${String(editingReview.id)}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify(reviewUpdateRequest),
             })
                 .then(() => {
@@ -318,7 +361,7 @@ export default function AdminPanel() {
     };
 
     useEffect(() => {
-        fetch("/api/engagements")
+        fetch("/api/engagements", { method: "GET" })
             .then((response) => response.json() as Promise<Engagement[]>)
             .then((data) => {
                 setEngagements(data);
@@ -327,9 +370,18 @@ export default function AdminPanel() {
                 console.error("Error fetching engagements.", error);
             });
 
-        fetch("/api/reviews")
-            .then((response) => response.json() as Promise<Review[]>)
+        fetch("/api/services", { method: "GET" })
+            .then((response) => response.json() as Promise<Service[]>)
             .then((data) => {
+                setServices(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching services.", error);
+            });
+
+        fetch("/api/reviews?all=true", { method: "GET" })
+            .then((res) => res.json())
+            .then((data: Review[]) => {
                 setReviews(data);
             })
             .catch((error: unknown) => {
@@ -361,7 +413,7 @@ export default function AdminPanel() {
                 services={services}
                 onEdit={handleServiceEditClick}
                 onDelete={handleDeleteService}
-                onAddClick={handleServiceAddClick}
+                onAddClick={handleAddServiceClick}
             />
             <ServiceModal
                 action={action}
