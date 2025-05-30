@@ -1,7 +1,7 @@
 "use client";
 
-import ServiceItem from "../components/ServiceItem";
 import React, { useEffect, useState } from "react";
+import ServiceItem from "../components/ServiceItem";
 
 type Service = {
     id: number;
@@ -13,7 +13,7 @@ type Service = {
 const ServiceSection = () => {
     const [services, setServices] = useState<Service[]>([]);
     const loadServices = () => {
-        fetch('/api/services')
+        fetch("/api/services")
             .then((res) => res.json() as Promise<Service[]>)
             .then(setServices)
             .catch((err: unknown) => {

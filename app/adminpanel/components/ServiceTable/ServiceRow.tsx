@@ -1,13 +1,8 @@
 "use client";
 
-import React from "react";
-
-export type Service = {
-    id: number;
-    title: string;
-    description: string;
-    imageUrl: string;
-};
+import { basename } from "path";
+import TemplateRow from "../TemplateTable/Row";
+import { Service } from "@/models/Service";
 
 type ServiceRowProps = {
     service: Service;
@@ -17,23 +12,23 @@ type ServiceRowProps = {
 
 export default function ServiceRow({ service, onEdit, onDelete }: ServiceRowProps) {
     return (
-        <tr className="border">
-            <td className="p-2">{service.title}</td>
-            <td className="p-2">{service.description}</td>
-            <td className="p-2 text-right">
-                <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mb-1 w-20"
-                    onClick={() => { onEdit(service); }}
-                >
-                    Edit
-                </button>
-                <button
-                    className="bg-red-500 text-white px-3 py-1 rounded w-20"
-                    onClick={() => { onDelete(service.id); }}
-                >
-                    Delete
-                </button>
+        <TemplateRow<Service> item={service} onEdit={onEdit} onDelete={onDelete}>
+            <td className="p-4">{service.title}</td>
+            <td className="p-4">{service.description}</td>
+            <td className="p-4">
+                {service.imageUrl ? (
+                    <a
+                        href={service.imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline hover:text-blue-800"
+                    >
+                        {basename(service.imageUrl)}
+                    </a>
+                ) : (
+                    <span>No upload</span>
+                )}
             </td>
-        </tr>
+        </TemplateRow>
     );
 }

@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 
 import { servicesCreateInputObjectSchema } from "@/prisma/generated/schemas/objects/servicesCreateInput.schema";
 import { servicesUpdateInputObjectSchema } from "@/prisma/generated/schemas/objects/servicesUpdateInput.schema";
-import { addService, deleteService, getService, getServices, updateService } from "@/services/service";
+import {
+    addService,
+    deleteService,
+    getService,
+    getServices,
+    updateService,
+} from "@/services/service";
 
 // GET
 export async function GET(req: Request) {

@@ -15,13 +15,13 @@ const AboutItem: React.FC<AboutSectionSchema> = ({ title, description, source })
                 </div>
 
                 <div className="md:w-1/2 flex justify-center">
-                    <div className="bg-foreground rounded-3xl w-full flex-1 overflow-hidden">
+                    <div className="relative w-full flex-1 overflow-hidden rounded-3xl aspect-[4/3] md:aspect-auto">
                         <Image
                             src={source}
                             alt={title}
-                            width={500}
-                            height={200}
-                            className="w-full h-auto object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
                         />
                     </div>
                 </div>

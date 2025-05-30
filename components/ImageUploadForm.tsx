@@ -43,9 +43,6 @@ const ImageUploadForm: React.FC<ImageUploadFormProps> = ({ previewImageUrl, onUp
         try {
             const response = await fetch("/api/upload", {
                 method: "POST",
-                headers: {
-                    Authorization: "YOUR_ADMIN_TOKEN", // replace with your token logic
-                },
                 body: formData,
             });
 
