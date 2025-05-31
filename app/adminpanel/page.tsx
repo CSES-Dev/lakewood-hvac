@@ -8,9 +8,9 @@ import EngagementTable from "./components/EngagementTable/EngagementTable";
 import ReviewModal from "./components/ReviewTable/ReviewModal";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
 
-import ServiceModal from "@/app/adminpanel/components/ServiceTable/components/ServiceModal";
 import { Service } from "./components/ServiceTable/ServiceRow";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
+import ServiceModal from "@/app/adminpanel/components/ServiceTable/components/ServiceModal";
 
 import MessagePopup from "@/components/MessagePopup";
 import { Engagement } from "@/models/Engagement";
@@ -149,7 +149,7 @@ export default function AdminPanel() {
     // ----------------------------
     const [services, setServices] = useState<Service[]>([]);
     const loadServices = () => {
-        fetch('/api/services')
+        fetch("/api/services")
             .then((res) => res.json() as Promise<Service[]>)
             .then(setServices)
             .catch((err: unknown) => {
@@ -158,36 +158,36 @@ export default function AdminPanel() {
     };
     useEffect(loadServices, []);
 
-    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+    const [modalMode, setModalMode] = useState<"add" | "edit">("add");
     const [selectedService, setSelectedService] = useState<Service | null>(null);
     const [showModal, setShowModal] = useState(false);
 
     const openAddModal = () => {
-        setModalMode('add');
+        setModalMode("add");
         setSelectedService(null);
         setShowModal(true);
     };
     const openEditModal = (service: Service) => {
-        setModalMode('edit');
+        setModalMode("edit");
         setSelectedService(service);
-        console.log('Editing service:', selectedService);
+        console.log("Editing service:", selectedService);
         setShowModal(true);
     };
     const closeModal = () => {
         setShowModal(false);
-    }
+    };
 
     const handleDelete = (id: number) => {
-        if (!confirm('Are you sure you want to delete this service?')) return;
-        fetch(`/api/services?id=${String(id)}`, { method: 'DELETE' })
-        .then((res) => {
-            if (!res.ok) throw new Error('Delete failed');
-            // refresh list
-            loadServices();
-        })
-        .catch((err: unknown) => {
-            console.error(err);
-        });
+        if (!confirm("Are you sure you want to delete this service?")) return;
+        fetch(`/api/services?id=${String(id)}`, { method: "DELETE" })
+            .then((res) => {
+                if (!res.ok) throw new Error("Delete failed");
+                // refresh list
+                loadServices();
+            })
+            .catch((err: unknown) => {
+                console.error(err);
+            });
     };
     const handleModalSuccess = () => {
         loadServices();
@@ -344,8 +344,12 @@ export default function AdminPanel() {
             <ServiceTable
                 services={services}
                 onAddClick={openAddModal}
-                onEdit={(svc) => {openEditModal(svc)}}
-                onDelete={(id) => {handleDelete(id)}}
+                onEdit={(svc) => {
+                    openEditModal(svc);
+                }}
+                onDelete={(id) => {
+                    handleDelete(id);
+                }}
             />
             {/* <ServiceModal
                 action={action}
@@ -356,7 +360,9 @@ export default function AdminPanel() {
             {showModal && (
                 <ServiceModal
                     mode={modalMode}
-                    initialData={modalMode === 'edit' && selectedService ? selectedService : undefined}
+                    initialData={
+                        modalMode === "edit" && selectedService ? selectedService : undefined
+                    }
                     onClose={closeModal}
                     onSuccess={handleModalSuccess}
                 />

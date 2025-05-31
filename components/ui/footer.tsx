@@ -1,14 +1,24 @@
+"use client";
+
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 import ScheduleService from "./ScheduleService";
 
+const hideScheduleButton = ["/contact"];
+
 const Footer: React.FC = () => {
+    const pathname = usePathname();
+    const isScheduleButtonHidden = pathname ? hideScheduleButton.includes(pathname) : false;
+
     return (
         <div className="w-full bg-primary">
-            <div>
-                <ScheduleService></ScheduleService>
-            </div>
-            <hr className="w-[90.2vw] h-[0.07vw] mx-auto "></hr>
+            {!isScheduleButtonHidden && (
+                <>
+                    <ScheduleService />
+                    <hr className="w-[90.2vw] h-[0.07vw] mx-auto "></hr>
+                </>
+            )}
 
             <footer className="bg-primary text-[#F0F0F0] py-8 border-border w-full h-auto min-h-[30vh] font-sans px-[4vw] mt-auto overflow-hidden flex flex-col sm:flex-row sm:h-[30vh]">
                 <div className="max-w-screen-lg mx-auto flex flex-col sm:flex-row items-center justify-center w-full h-full">
