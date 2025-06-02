@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import ScheduleService from "./ScheduleService";
 
-const hideScheduleButton = ["/contact"];
+const hideScheduleButton = ["/contact", "/schedule"];
 
 const Footer: React.FC = () => {
     const pathname = usePathname();
