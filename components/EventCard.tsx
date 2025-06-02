@@ -5,7 +5,7 @@ export const EventCard = ({ event }: { event: CommunityEvent }) => {
   const preview = event.description.split('.').slice(0, 2).join('. ') + '...';
 
   return (
-    <Link href={`/community/detail?id=${event.id}`}>
+    <Link href={`/community/detail?id=${String(event.id)}`}>
       <div className="w-full mx-auto p-6 rounded-2xl hover:shadow-md transition mb-8 bg-[#FFFDF5] cursor-pointer">
         <div className="flex items-center space-x-6">
           <div className="bg-[#5C6F5F] text-white w-[120px] aspect-square p-2 rounded-lg flex flex-col items-center justify-center">
