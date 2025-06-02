@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { DetailRenderer } from './renderer';
 import { Suspense } from 'react';
 import { CommunityEvent } from '@/types/event';
