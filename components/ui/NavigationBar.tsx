@@ -13,6 +13,7 @@ export const navigationLinks: NavigationLink[] = [
     { label: "Services", href: "/services" },
     { label: "Why Us", href: "/user-testimony" },
     { label: "About", href: "/about" },
+    { label: "Community", href: "/community" },
     { label: "Contact Us", href: "/contact" },
 ];
 

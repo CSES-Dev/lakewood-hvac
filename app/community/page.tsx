@@ -1,9 +1,26 @@
-import { getCommunityEvents } from '@/lib/getCommunityEvents';
 import { EventCard } from '@/components/EventCard';
 
+interface CommunityEvent {
+  id: number;
+  title: string;
+  date: string;
+  address: string;
+  description: string;
+  imageUrl?: string;
+}
+
 export default async function CommunityPage() {
-  const events = await getCommunityEvents();
+  const res = await fetch('http://localhost:3000/api/engagements', {
+    cache: 'no-store', // Optional: disables caching for fresh data
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch community events');
+  }
+
+  const events: CommunityEvent[] = await res.json();
   const now = new Date();
+
   const pastEvents = events.filter(e => new Date(e.date) < now);
   const futureEvents = events.filter(e => new Date(e.date) >= now);
 

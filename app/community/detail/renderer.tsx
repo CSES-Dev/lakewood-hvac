@@ -6,11 +6,13 @@ import { CommunityEvent } from '@/types/event';
 
 export const DetailRenderer = ({ events }: { events: CommunityEvent[] }) => {
   const searchParams = useSearchParams();
-  const id = searchParams?.get('id');
+  const id = searchParams?.get('id') ?? ''; // fallback to empty string
 
-  const event = events.find((e) => e.id === id);
+  const event = events.find((e) => String(e.id) === id);
 
-  if (!event) return <p className="text-white text-center mt-10">Event not found.</p>;
+  if (!event) {
+    return <p className="text-white text-center mt-10">Event not found.</p>;
+  }
 
   return (
     <div className="p-8 max-w-3xl mx-auto text-white">
