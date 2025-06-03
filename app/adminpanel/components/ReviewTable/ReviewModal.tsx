@@ -97,7 +97,6 @@ export default function ReviewModal({ action, review, setReview, handleReview }:
             </label>
             <Rating
                 id="review-rating"
-                value={action === ACTIONS.EDIT ? review.rating : 2.5}
                 precision={0.5}
                 onChange={(_, newRating) => {
                     setReview({ ...review, rating: newRating ?? 0 });
