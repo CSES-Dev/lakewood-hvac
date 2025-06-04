@@ -11,16 +11,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Review } from "@/models/Review";
+import { Service } from "@/models/Service";
 
 const ReviewSection = () => {
     type SortOption = "date" | "rating";
     type RatingFilter = "all" | "high" | "low";
-    type ServiceFilter =
-        | "All Services"
-        | "Air Conditioning"
-        | "Heating"
-        | "Thermostats"
-        | "Heat Pumps";
+    type ServiceFilter = string;
     const [serviceFilter, setServiceFilter] = useState<ServiceFilter>("All Services");
     const [ratingFilter, setRatingFilter] = useState<RatingFilter>("all");
     const [sortBy, setSortBy] = useState<SortOption>("date");
@@ -28,6 +24,7 @@ const ReviewSection = () => {
     const pageSize = 4;
     const [searchTerm, setSearchTerm] = useState("");
     const [allReviews, setAllReviews] = useState<Review[]>([]);
+    const [allServices, setAllServices] = useState<Service[]>([]);
     const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
 
     useEffect(() => {
@@ -75,6 +72,17 @@ const ReviewSection = () => {
             })
             .catch((error: unknown) => {
                 console.error("Error fetching reviews.", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        fetch("/api/services")
+            .then((res) => res.json())
+            .then((data: Service[]) => {
+                setAllServices(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching services.", error);
             });
     }, []);
 
@@ -132,10 +140,11 @@ const ReviewSection = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="All Services">All Services</SelectItem>
-                            <SelectItem value="Air Conditioning">Air Conditioning</SelectItem>
-                            <SelectItem value="Heating">Heating</SelectItem>
-                            <SelectItem value="Thermostats">Thermostats</SelectItem>
-                            <SelectItem value="Heat Pumps">Heat Pumps</SelectItem>
+                            {allServices.map((service) => (
+                                <SelectItem key={service.id} value={service.title}>
+                                    {service.title}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                 </div>
