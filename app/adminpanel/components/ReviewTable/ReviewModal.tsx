@@ -6,6 +6,8 @@ import TemplateModal from "../TemplateTable/Modal";
 import DateTimeSelect from "@/components/DataTimeSelect";
 import { Review } from "@/models/Review";
 import { ACTIONS } from "@/types/actions";
+import { Service } from "@/models/Service";
+import { useEffect, useState } from "react";
 
 type ReviewModalProps = {
     action: ACTIONS | null;
@@ -15,6 +17,19 @@ type ReviewModalProps = {
 };
 
 export default function ReviewModal({ action, review, setReview, handleReview }: ReviewModalProps) {
+    const [allServices, setAllServices] = useState<Service[]>([]);
+
+    useEffect(() => {
+        fetch("/api/services")
+            .then((res) => res.json())
+            .then((data: Service[]) => {
+                setAllServices(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching services.", error);
+            });
+    }, []);
+
     if (!review) return null;
 
     return (
@@ -84,10 +99,11 @@ export default function ReviewModal({ action, review, setReview, handleReview }:
                             }}
                         >
                             <option value="">None</option>
-                            <option value="Air Conditioning">Air Conditioning</option>
-                            <option value="Heating">Heating</option>
-                            <option value="Thermostats">Thermostats</option>
-                            <option value="Heat Pumps">Heat Pumps</option>
+                            {allServices.map((service) => (
+                                <option key={service.id} value={service.title}>
+                                    {service.title}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
