@@ -8,13 +8,13 @@ import EngagementTable from "./components/EngagementTable/EngagementTable";
 import ReviewModal from "./components/ReviewTable/ReviewModal";
 import ReviewTable from "./components/ReviewTable/ReviewTable";
 
-import ServiceModal from "@/app/adminpanel/components/ServiceTable/components/ServiceModal";
-import { Service } from "./components/ServiceTable/ServiceRow";
+import ServiceModal from "./components/ServiceTable/ServiceModal";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
 
 import MessagePopup from "@/components/MessagePopup";
 import { Engagement } from "@/models/Engagement";
 import { Review } from "@/models/Review";
+import { Service } from "@/models/Service";
 import { ACTIONS } from "@/types/actions";
 
 import { Message } from "@/types/message";
@@ -144,54 +144,113 @@ export default function AdminPanel() {
         }
     };
 
-    // ----------------------------
-    // ----------Services----------
-    // ----------------------------
+    // Service state and editing
     const [services, setServices] = useState<Service[]>([]);
-    const loadServices = () => {
-        fetch('/api/services')
-            .then((res) => res.json() as Promise<Service[]>)
-            .then(setServices)
-            .catch((err: unknown) => {
-                console.error(err);
+    const [editingService, setEditingService] = useState<Service | null>(null);
+    const [addingService, setAddingService] = useState<Service | null>(null);
+
+    const handleServiceEditClick = (service: Service) => {
+        setAction(ACTIONS.EDIT);
+        setEditingService(service);
+    };
+
+    const handleAddServiceClick = () => {
+        const newService: Service = {
+            id: 0,
+            title: "",
+            description: "",
+            imageUrl: "",
+        };
+
+        setAction(ACTIONS.ADD);
+        setAddingService(newService);
+    };
+
+    const handleAddService = () => {
+        if (addingService) {
+            const { id: _, ...serviceWithoutId } = addingService;
+            const message: Message = {
+                title: "Service Added",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
+
+            fetch("/api/services", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(serviceWithoutId),
+            })
+                .then((response) => response.json() as Promise<Service>)
+                .then((createdService) => {
+                    const serviceWithId = {
+                        ...addingService,
+                        id: createdService.id,
+                    };
+
+                    setServices((prev) => [...prev, serviceWithId]);
+                    setAddingService(null);
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error adding service.");
+                });
+        }
+    };
+
+    const handleDeleteService = (id: number) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this service?");
+        if (!isConfirmed) return;
+
+        const message: Message = {
+            title: "Service Deleted",
+            body: "Your changes have been saved",
+        };
+        setConfirmationMessage(message);
+
+        fetch(`/api/services?id=${String(id)}`, {
+            method: "DELETE",
+            credentials: "include",
+        })
+            .then(() => {
+                setServices((prev) => prev.filter((service) => service.id !== id));
+                setShowConfirmation(true);
+            })
+            .catch(() => {
+                console.error("Error deleting service.");
             });
     };
-    useEffect(loadServices, []);
 
-    const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-    const [selectedService, setSelectedService] = useState<Service | null>(null);
-    const [showModal, setShowModal] = useState(false);
+    const handleSaveServiceEdit = () => {
+        if (editingService) {
+            const { id: _, ...serviceWithoutId } = editingService;
+            const serviceUpdateRequest = { update: serviceWithoutId };
+            const message: Message = {
+                title: "Service Edited",
+                body: "Your changes have been saved",
+            };
+            setConfirmationMessage(message);
 
-    const openAddModal = () => {
-        setModalMode('add');
-        setSelectedService(null);
-        setShowModal(true);
-    };
-    const openEditModal = (service: Service) => {
-        setModalMode('edit');
-        setSelectedService(service);
-        console.log('Editing service:', selectedService);
-        setShowModal(true);
-    };
-    const closeModal = () => {
-        setShowModal(false);
-    }
+            fetch(`/api/services?id=${String(editingService.id)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(serviceUpdateRequest),
+            })
+                .then(() => {
+                    setServices((prev) =>
+                        prev.map((service) =>
+                            service.id === editingService.id ? editingService : service,
+                        ),
+                    );
+                    setEditingService(null);
 
-    const handleDelete = (id: number) => {
-        if (!confirm('Are you sure you want to delete this service?')) return;
-        fetch(`/api/services?id=${String(id)}`, { method: 'DELETE' })
-        .then((res) => {
-            if (!res.ok) throw new Error('Delete failed');
-            // refresh list
-            loadServices();
-        })
-        .catch((err: unknown) => {
-            console.error(err);
-        });
-    };
-    const handleModalSuccess = () => {
-        loadServices();
-        setShowModal(false);
+                    setShowConfirmation(true);
+                })
+                .catch(() => {
+                    console.error("Error saving service edit.");
+                });
+        }
     };
 
     // Reviews state and editing
@@ -311,6 +370,15 @@ export default function AdminPanel() {
                 console.error("Error fetching engagements.", error);
             });
 
+        fetch("/api/services", { method: "GET" })
+            .then((response) => response.json() as Promise<Service[]>)
+            .then((data) => {
+                setServices(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Error fetching services.", error);
+            });
+
         fetch("/api/reviews?all=true", { method: "GET" })
             .then((res) => res.json())
             .then((data: Review[]) => {
@@ -343,30 +411,16 @@ export default function AdminPanel() {
             />
             <ServiceTable
                 services={services}
-                onAddClick={openAddModal}
-                onEdit={(svc) => {openEditModal(svc)}}
-                onDelete={(id) => {handleDelete(id)}}
+                onEdit={handleServiceEditClick}
+                onDelete={handleDeleteService}
+                onAddClick={handleAddServiceClick}
             />
-            {/* <ServiceModal
+            <ServiceModal
                 action={action}
                 service={action === ACTIONS.ADD ? addingService : editingService}
                 setService={action === ACTIONS.ADD ? setAddingService : setEditingService}
                 handleService={action === ACTIONS.ADD ? handleAddService : handleSaveServiceEdit}
-            /> */}
-            {showModal && (
-                <ServiceModal
-                    mode={modalMode}
-                    initialData={modalMode === 'edit' && selectedService ? selectedService : undefined}
-                    onClose={closeModal}
-                    onSuccess={handleModalSuccess}
-                />
-            )}
-            {/* <AboutUsTable aboutUs={aboutUs} onEdit={handleAboutUsEditClick} />
-        <EditAboutUsModal
-            aboutUs={editingAboutUs}
-            setAboutUs={setEditingAboutUs}
-            handleSaveEdit={handleSaveAboutUs}
-        /> */}
+            />
             <ReviewTable
                 reviews={reviews}
                 onEdit={handleReviewEditClick}

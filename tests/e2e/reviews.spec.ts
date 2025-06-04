@@ -4,7 +4,7 @@ import { Review } from "@/models/Review";
 const REVIEW_API_URL = "/api/reviews";
 
 test.describe.serial("Reviews API CRUD Operations", () => {
-    let createdReviewId: number;
+    // let createdReviewId: number;
 
     test("GET all reviews - should return an array of reviews", async ({ request }) => {
         const response = await request.get(REVIEW_API_URL);

@@ -6,9 +6,9 @@
                     @typescript-eslint/no-confusing-void-expression,
                     @typescript-eslint/restrict-template-expressions */
 
+import path from "path";
 import { put } from "@vercel/blob";
 import multer, { FileFilterCallback } from "multer";
-import path from "path";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // 0) Disable built-in body parsing so Multer can run
@@ -22,37 +22,29 @@ const upload = multer({
     storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     fileFilter: (_req: any, file: Express.Multer.File, cb: FileFilterCallback) => {
-    const allowed = ["image/jpeg", "image/png"];
-    if (allowed.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error("Only JPG/PNG files are allowed"));
-    }
+        const allowed = ["image/jpeg", "image/png"];
+        if (allowed.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only JPG/PNG files are allowed"));
+        }
     },
 });
 
 // 2) Helper to run Multer as middleware
 function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: any) {
     return new Promise<void>((resolve, reject) => {
-    fn(req, res, (err: any) => {
-        if (err) return reject(err);
-        resolve();
-    });
+        fn(req, res, (err: any) => {
+            if (err) return reject(err);
+            resolve();
+        });
     });
 }
 
-// 3) Main handler
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+// 5) Main handler
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
-    }
-
-    // if (req.headers.authorization !== process.env.ADMIN_TOKEN) {
-    if (req.headers.authorization !== "YOUR_ADMIN_TOKEN") {
-        return res.status(403).json({ error: "Forbidden" });
     }
 
     // 4) Parse the multipart form to get file.buffer
@@ -76,18 +68,14 @@ export default async function handler(
     // 6) Upload to Vercel Blob
     let url: string;
     try {
-        const result = await put(
-            blobPath,
-            file.buffer,
-            {
-                access: "public",
-                token: process.env.BLOB_READ_WRITE_TOKEN
-            }
-        );
+        const result = await put(blobPath, file.buffer, {
+            access: "public",
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+        });
         url = result.url;
     } catch (err: any) {
         console.error("Blob upload error:", err);
-    return res.status(500).json({ error: "Failed to upload to blob storage" });
+        return res.status(500).json({ error: "Failed to upload to blob storage" });
     }
 
     // 7) Return the public URL
