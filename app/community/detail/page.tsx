@@ -5,7 +5,8 @@ import { Suspense } from 'react';
 import { CommunityEvent } from '@/types/event';
 
 export default async function EventDetailPage() {
-  const res = await fetch('http://localhost:3000/api/engagements', {
+  const baseURL = process.env.BASE_URL ?? ''
+  const res = await fetch(baseURL + '/api/engagements', {
     next: { revalidate: 60 },
   });
 

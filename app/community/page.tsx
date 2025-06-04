@@ -10,7 +10,8 @@ interface CommunityEvent {
 }
 
 export default async function CommunityPage() {
-  const res = await fetch('http://localhost:3000/api/engagements', {
+  const baseURL = process.env.BASE_URL ?? ''
+  const res = await fetch(baseURL + '/api/engagements', {
     cache: 'no-store', // Optional: disables caching for fresh data
   });
 
@@ -21,8 +22,8 @@ export default async function CommunityPage() {
   const events: CommunityEvent[] = (await res.json()) as CommunityEvent[];
   const now = new Date();
 
-  const pastEvents = events.filter(e => new Date(e.date) < now);
-  const futureEvents = events.filter(e => new Date(e.date) >= now);
+  const pastEvents = events.filter(e => new Date(e.date) < now).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const futureEvents = events.filter(e => new Date(e.date) >= now).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8">
