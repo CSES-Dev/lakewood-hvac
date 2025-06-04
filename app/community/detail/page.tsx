@@ -11,7 +11,7 @@ export default async function EventDetailPage() {
     throw new Error('Failed to load event details');
   }
 
-  const events: CommunityEvent[] = await res.json();
+  const events: CommunityEvent[] = (await res.json()) as CommunityEvent[];
 
   return (
     <Suspense fallback={<p className="text-white p-4">Loading event...</p>}>

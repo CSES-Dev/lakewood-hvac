@@ -18,7 +18,7 @@ export default async function CommunityPage() {
     throw new Error('Failed to fetch community events');
   }
 
-  const events: CommunityEvent[] = await res.json();
+  const events: CommunityEvent[] = (await res.json()) as CommunityEvent[];
   const now = new Date();
 
   const pastEvents = events
