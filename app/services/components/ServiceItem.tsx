@@ -29,7 +29,7 @@ const ServiceItem = ({
                     {description}
                 </p>
                 <div>
-                    <Link href="/contact">
+                    <Link href="/schedule">
                         <button className="bg-primary rounded-[1.39vw] text-[clamp(0px,1.74vw,37.5px)] py-[1.04vw] px-[1.94vw] max-sm:text-[3.48vw]">
                             Schedule Today
                         </button>

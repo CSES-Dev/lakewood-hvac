@@ -8,6 +8,28 @@ import FormInput from "@/components/ui/FormInput";
 import { ContactFormData } from "@/types/contact";
 import { Message } from "@/types/message";
 
+const successMessage: Message = {
+    title: "Thanks for your request!",
+    body: "Your message has been received, and someone from our team will be in touch soon!",
+};
+
+const errorMessage: Message = {
+    title: "Apologies!",
+    body: "Failed to send message. Please try again later.",
+};
+
+async function submitFormspree(data: ContactFormData): Promise<boolean> {
+    const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    return response.ok;
+}
+
 export default function ContactForm() {
     const {
         register,
@@ -16,12 +38,22 @@ export default function ContactForm() {
         formState: { errors },
     } = useForm<ContactFormData>();
 
+    const [message, setMessage] = useState<Message>(successMessage);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
-    const onSubmit = (data: ContactFormData) => {
-        console.log("Form submitted!", data);
+    const onSubmit = async (data: ContactFormData) => {
+        try {
+            const success = await submitFormspree(data);
+
+            if (success) {
+                setMessage(successMessage);
+                reset();
+            } else setMessage(errorMessage);
+        } catch {
+            setMessage(errorMessage);
+        }
+
         setShowConfirmation(true);
-        reset();
     };
 
     const handleCloseConfirmation = () => {
@@ -31,15 +63,7 @@ export default function ContactForm() {
     return (
         <>
             {showConfirmation && (
-                <MessagePopup
-                    message={
-                        {
-                            title: "Thanks for your request!",
-                            body: "Your message has been received, and someone from our team will be in touch soon!",
-                        } as Message
-                    }
-                    onClose={handleCloseConfirmation}
-                />
+                <MessagePopup message={message} onClose={handleCloseConfirmation} />
             )}
             <form
                 onSubmit={(e) => void handleSubmit(onSubmit)(e)}
