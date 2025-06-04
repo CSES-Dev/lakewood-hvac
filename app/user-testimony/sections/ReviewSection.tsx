@@ -132,7 +132,7 @@ const ReviewSection = () => {
                     <Select
                         value={serviceFilter}
                         onValueChange={(value) => {
-                            setServiceFilter(value as ServiceFilter);
+                            setServiceFilter(value);
                         }}
                     >
                         <SelectTrigger className="text-[clamp(0.875rem,1.2vw,1.25rem)] bg-primary text-[#FFFDF6] px-3 py-1 rounded-md ml-[clamp(0.5rem,1vw,1rem)] w-[clamp(6rem,15vw,10rem)] max-w-full border-none">
