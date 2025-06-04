@@ -10,7 +10,6 @@ import ReviewTable from "./components/ReviewTable/ReviewTable";
 
 import ServiceModal from "./components/ServiceTable/ServiceModal";
 import ServiceTable from "./components/ServiceTable/ServiceTable";
-import ServiceModal from "@/app/adminpanel/components/ServiceTable/components/ServiceModal";
 
 import MessagePopup from "@/components/MessagePopup";
 import { Engagement } from "@/models/Engagement";
