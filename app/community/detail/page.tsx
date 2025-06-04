@@ -2,16 +2,24 @@ import { DetailRenderer } from './renderer';
 import { Suspense } from 'react';
 import { CommunityEvent } from '@/types/event';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventDetailPage() {
-  const res = await fetch('http://localhost:3000/api/engagements', {
-    next: { revalidate: 60 },
-  });
+  let events: CommunityEvent[] = [];
 
-  if (!res.ok) {
-    throw new Error('Failed to load event details');
+  try {
+    const res = await fetch('http://localhost:3000/api/engagements', {
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to load event details');
+    }
+
+    events = (await res.json()) as CommunityEvent[];
+  } catch (error) {
+    console.error('Error fetching event data:', error);
   }
-
-  const events: CommunityEvent[] = (await res.json()) as CommunityEvent[];
 
   return (
     <Suspense fallback={<p className="text-white p-4">Loading event...</p>}>

@@ -9,6 +9,8 @@ interface CommunityEvent {
   imageUrl?: string;
 }
 
+export const dynamic = 'force-dynamic'; // Ensure this page is always fresh
+
 export default async function CommunityPage() {
   const res = await fetch('http://localhost:3000/api/engagements', {
     cache: 'no-store',
