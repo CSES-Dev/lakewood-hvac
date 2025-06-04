@@ -10,32 +10,24 @@ interface CommunityEvent {
 }
 
 export default async function CommunityPage() {
-<<<<<<< HEAD
-  const baseURL = process.env.BASE_URL ?? ''
-  const res = await fetch(baseURL + '/api/engagements', {
-=======
   const res = await fetch('http://localhost:3000/api/engagements', {
->>>>>>> 5bd1e1b (Connect Community page to /api/engagements and render detail view and added component to navbar)
-    cache: 'no-store', // Optional: disables caching for fresh data
+    cache: 'no-store',
   });
 
   if (!res.ok) {
     throw new Error('Failed to fetch community events');
   }
 
-<<<<<<< HEAD
-  const events: CommunityEvent[] = (await res.json()) as CommunityEvent[];
-  const now = new Date();
-
-  const pastEvents = events.filter(e => new Date(e.date) < now).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const futureEvents = events.filter(e => new Date(e.date) >= now).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-=======
   const events: CommunityEvent[] = await res.json();
   const now = new Date();
 
-  const pastEvents = events.filter(e => new Date(e.date) < now);
-  const futureEvents = events.filter(e => new Date(e.date) >= now);
->>>>>>> 5bd1e1b (Connect Community page to /api/engagements and render detail view and added component to navbar)
+  const pastEvents = events
+    .filter(e => new Date(e.date) < now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Descending
+
+  const futureEvents = events
+    .filter(e => new Date(e.date) >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Ascending
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8">
