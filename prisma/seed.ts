@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import prisma from "../lib/prisma";
 import { addUser, getUser } from "../services/users";
 import { UserCreateInputObjectSchema } from "./generated/schemas/objects/UserCreateInput.schema";
+import { v4 as uuidv4 } from 'uuid';
+
+const randomId = uuidv4();
 
 async function main() {
     const userEmail = process.env.ADMIN_EMAIL;
@@ -19,6 +22,7 @@ async function main() {
     }
 
     const adminUser = {
+        id: randomId,
         email: userEmail,
         password: hashedPassword,
         createdAt: new Date(),
