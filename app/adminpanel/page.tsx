@@ -235,7 +235,12 @@ export default function AdminPanel() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify(serviceUpdateRequest),
+                // body: JSON.stringify(serviceUpdateRequest),
+                body: JSON.stringify({
+                    title: editingService.title,
+                    description: editingService.description,
+                    imageUrl: editingService.imageUrl,
+                }),
             })
                 .then(() => {
                     setServices((prev) =>
