@@ -223,8 +223,6 @@ export default function AdminPanel() {
 
     const handleSaveServiceEdit = () => {
         if (editingService) {
-            const { id: _, ...serviceWithoutId } = editingService;
-            const serviceUpdateRequest = { update: serviceWithoutId };
             const message: Message = {
                 title: "Service Edited",
                 body: "Your changes have been saved",
@@ -235,7 +233,6 @@ export default function AdminPanel() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                // body: JSON.stringify(serviceUpdateRequest),
                 body: JSON.stringify({
                     title: editingService.title,
                     description: editingService.description,
